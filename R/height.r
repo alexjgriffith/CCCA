@@ -40,7 +40,11 @@ convertChroms<-function(lis){
 #' @export
 getChroms<-function(file,n=100){
     file<-as.character(normalizePath(file))
-    return(Filter(function(x) x!="", .C("getChroms",file,choms=character(n))$choms))
+    if(!file.exists(file)){        
+        stop(paste("Can't find file",file))
+    }
+    else{        
+        return(Filter(function(x) x!="", .C("getChroms",file,choms=character(n))$choms))}
 }
 
 #' rankChroms
@@ -149,7 +153,6 @@ chromGenomeSort<-function(chromOrder){
    return(rf)
 }
     
-
 #' getData
 #'
 #' loads data from file returns a sorted set with a height matrix
@@ -162,4 +165,3 @@ getData<-function(file,rawdata,n=0){
     data<-hg19Sort(loadBedFile(file))
     score<-pileUp(data,rawdata,n=n)
     c(data=data,score=score)}
-
