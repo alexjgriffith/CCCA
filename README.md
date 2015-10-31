@@ -4,6 +4,8 @@ Alexander Griffith, University of Ottawa
 --
 
 This system is composed of two portions
+
+
 1. First the combination of data sets
    - Generate a unified peak set
    - determine the read pile up count

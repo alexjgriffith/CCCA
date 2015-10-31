@@ -101,18 +101,23 @@ getPileUp<-function(file,bed,chroms,peakLength){
 #'   data<-hg19Sort(data.frame(chro=regions[,1],start=as.integer(regions[,2]), end=as.integer(regions[,3])))
 #'   score<-pileUp(data,rawdata,n=22)
 #' @export
-pileUp<-function(data,rawdata,n=0){
+pileUp<-function(data,rawdata,n=0,verbose=FALSE){
     for(file in rawdata){
         if(!file.exists(file)){
             sprintf("Can't find file %s.",file)
-            return}}
+            return}
+        if(verbose)
+            print(paste("# Raw data file ",file," was found.",sep=""))
+    }
     peakLength<-length(data$chro)
+
     chroms<-rankChroms(data$chro)
+
     if(n>0){
         cs<-makeForkCluster(n,renice=0)
         ret<-matrix(unlist(parLapply(cs,rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)
-        stopCluster(cs)}
-    else{
+        stopCluster(cs)
+    }else{
     ret<-matrix(unlist(lapply(rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)}
     ret}
 

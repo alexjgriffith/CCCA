@@ -11,5 +11,7 @@
 library(devtools)
 setwd("~/Masters/CCCA")
 document()
+install()
 library(CCCA)
+
 getChroms("~/Dropbox/UTX-Alex/jan/combined_mock.bed")

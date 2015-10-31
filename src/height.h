@@ -27,6 +27,7 @@ void read_bed(char ** filename,char ** chrom,int *start, int *end);
 
 
 void getChroms(char ** filename,char ** chroms);
+
 R_CMethodDef cMethods[]={
 {"read_bed",(DL_FUNC) &read_bed,4,{STRSXP,STRSXP,INTSXP,INTSXP}},
 {"file_length",(DL_FUNC) &file_length,2,{STRSXP,INTSXP} },
