@@ -178,7 +178,3 @@ void read_bed(char ** filename,char ** chrom,int *start, int *end)
   fclose(f);
 }
 
-void R_init_myLib(DllInfo *info)
-{
-R_registerRoutines(info,cMethods,NULL,NULL,NULL);
-}

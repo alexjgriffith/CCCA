@@ -1,3 +1,9 @@
 .Rproj.user
 .Rhistory
 .RData
+.o
+.so
+*#
+#*
+/inst/data
+*~

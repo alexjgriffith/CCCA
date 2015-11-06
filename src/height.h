@@ -5,6 +5,10 @@
    Author : Alexander Griffith
    Contact: griffitaj@gmail.com */
 
+//#ifndef CCCA_
+//#include "CCCA.h"
+//#define CCCA_
+//#endif 
 #include <R.h>
 #include <R_ext/Rdynload.h>
 #include <Rinternals.h>
@@ -12,7 +16,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
 
 int getChromosome(char value[10]);
 int getChromosomeShort(char value[2]);
@@ -24,21 +27,8 @@ void pileup(char ** filename,int * chro,int *start,
 	    int *end,int *peaknum,int *scores);
 void file_length(char ** filename,int * i);
 void read_bed(char ** filename,char ** chrom,int *start, int *end);
-
-
 void getChroms(char ** filename,char ** chroms);
 
-R_CMethodDef cMethods[]={
-{"read_bed",(DL_FUNC) &read_bed,4,{STRSXP,STRSXP,INTSXP,INTSXP}},
-{"file_length",(DL_FUNC) &file_length,2,{STRSXP,INTSXP} },
-{"pileup",(DL_FUNC) &pileup,6, {STRSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP}},
-{"rankChromosomes",(DL_FUNC) &rankChromosomes,6,{STRSXP,INTSXP,INTSXP}},
-{"valueChromosomes",(DL_FUNC) &valueChromosomes,6,{STRSXP,INTSXP,INTSXP}},
-{"getChroms",(DL_FUNC) &getChroms,2,{STRSXP,STRSXP}},
-{NULL,NULL,0}
-  };
-
-void R_init_myLib(DllInfo *info);
 
 
 typedef struct chromosomes {

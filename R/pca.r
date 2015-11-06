@@ -56,9 +56,11 @@ qn <-function(data){
 #' @return list($normData,$eigenVectors)
 #' @export
 pca<-function(data,norm="qn"){
-    
-    normDatadata<-ifelse( is.function(), norm,
-        switch(norm,
+    print(head(data))
+    if( is.function(norm))
+       normData<-norm(data)
+    else
+        normData<-switch(norm,
                rowSumOne=t(apply(data,1, function(x) {x/sum(x)})),
                colSumOne=apply(data,2, function(x) x/sum(x)),
                normRow=t(apply(data,1, function(x) (x-mean(x))/var(x))),
@@ -67,7 +69,8 @@ pca<-function(data,norm="qn"){
                colsVarOne=apply(data,2, function(x) x/var(x)),
                qn=qn(data),
                none=data,
-               data))
+               data)
+    print(head(normData))
     prc<-prcomp(t(normData))$rotation
     list(normData=normData,eigenVectors=prc)
 }
@@ -142,7 +145,7 @@ plotPCs<-function(pcs,pos,data,cats,lab=c("xlabel","ylable","Title")){
     if("rotation" %in% names(pcs))
         x<-t(as.matrix(pcs$rotation)) %*% as.matrix(data)
     else
-        x<-t(as.matrix(pcs)) %*% as.matrix(data)
+        x<-  t(as.matrix(pcs)) %*% as.matrix(data)
     d1<-data.frame(x[pos[1],])
     d2<-data.frame(x[pos[2],])
     plot(t(d1),t(d2),xlab=lab[1],ylab=lab[2])
