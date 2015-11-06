@@ -26,6 +26,32 @@ void region(int * value, int * logical , int * category,int * buffer, int * outM
     }
 }
 
+void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, int * peaklength, int* peakwidth, int* retChr, int * retSummit, int * retMatrix)
+{
+  int i,j,k;
+  int nextSummit,temp;
+  for(i=0;i<(*peaklength);i++)
+    {
+      retChr[i]=intChr[l1[i]-1];
+      nextSummit=0;
+      j=0;
+      for(k=(l1[i]-1);k<l2[i];k++)
+	{
+	  retMatrix[i* (*peakwidth)+name[k]-1]=1;
+	  temp=nextSummit+intSummit[k];
+	  nextSummit=temp;
+	  j++;
+	}
+      if(j==0){
+	Rprintf("Divide by Zero in unityOutput");
+	exit(0);
+      }
+      retSummit[i]=nextSummit/j;
+     
+    }  
+}
+
+
   
 // region takes an input list of form 
 // value logical category categories outMatrix

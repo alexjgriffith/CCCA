@@ -17,6 +17,7 @@ void getChroms(char ** filename,char ** chroms);
 // regions.c
 int addToBuffer(int logical, int category, int *buffer);
 void region(int * value, int * logical , int * category,int * buffer, int * outMatrix,int * length,int * width);
+void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, int * peaklength, int* peakwidth, int* retChr, int * retSummit, int * retMatrix);
 
 #ifndef CME_
 static R_NativePrimitiveArgType read_bed_t[]={STRSXP,STRSXP,INTSXP,INTSXP};
@@ -27,6 +28,8 @@ static R_NativePrimitiveArgType valueChromosomes_t[]={STRSXP,INTSXP,INTSXP};
 static R_NativePrimitiveArgType getChroms_t[]={STRSXP,STRSXP};
 static R_NativePrimitiveArgType region_t[]={INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
 
+static R_NativePrimitiveArgType unityOutput_t[]={INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
+
 
 static R_CMethodDef cMethods[]={
 {"read_bed",(DL_FUNC) &read_bed,4,read_bed_t},
@@ -35,7 +38,8 @@ static R_CMethodDef cMethods[]={
 {"rankChromosomes",(DL_FUNC) &rankChromosomes,6,rankChromosomes_t},
 {"valueChromosomes",(DL_FUNC) &valueChromosomes,6,valueChromosomes_t},
 {"getChroms",(DL_FUNC) &getChroms,3,getChroms_t},
-{"region",(DL_FUNC) &region,8,region_t},
+{"region",(DL_FUNC) &region,7,region_t},
+{"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
 {NULL,NULL,0}
   };
 #define CME_
