@@ -56,7 +56,7 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 	  nextSummit=0;
 	  for(k=(l1[i]-1);k<l2[i];k++)
 	    {
-	      temp=nextSummit*(j-1)/j+intSummit[k]/j;
+	      temp=nextSummit+intSummit[k]/j;
 	      nextSummit=temp;
 	      n++;
 	    }
