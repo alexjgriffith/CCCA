@@ -53,7 +53,7 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 	if (i== broken[k]){
 	  Rprintf("chr=%d\t",retChr[i]);
 	  for(j=0;j<(*peakwidth);j++)
-	    Rprintf("chr=%d\t",retMatrix[i* (*peakwidth)+name[k]-1]);
+	    Rprintf("%d\t",retMatrix[i* (*peakwidth)+name[k]-1]);
 	  Rprintf("\n");
 	}
 
