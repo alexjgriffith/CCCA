@@ -29,7 +29,7 @@ void region(int * value, int * logical , int * category,int * buffer, int * outM
 void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, int * peaklength, int* peakwidth, int* retChr, int * retSummit, int * retMatrix)
 {
    int broken[4]={8009,8047,8474,8480};
-  int i,j,k;
+   int i,j,k,n;
   int nextSummit,temp;
   for(i=0;i<(*peaklength);i++)
     {
@@ -49,8 +49,8 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 	exit(0);
       }
       retSummit[i]=nextSummit/j;
-      for(j=0;k<j;j++)
-	if (i== broken[j]-1){
+      for(n=0;n<j;n++)
+	if (i== broken[n]-1){
 	  Rprintf("chr=%d\tsummit=%d\n",retChr[i],retSummit[i]);
 	  for(k=(l1[i]-1);k<l2[i];k++)
 	    {
