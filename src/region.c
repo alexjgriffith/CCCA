@@ -49,9 +49,14 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 	exit(0);
       }
       retSummit[i]=nextSummit/j;
-      for(k=0;k<4;k++)
-	if (i== broken[k]-1){
+      for(j=0;k<j;j++)
+	if (i== broken[j]-1){
 	  Rprintf("chr=%d\tsummit=%d\n",retChr[i],retSummit[i]);
+	  for(k=(l1[i]-1);k<l2[i];k++)
+	    {
+	      Rprintf("%d\t",intSummit[k]);
+		}
+	  Rprintf("\n")
 
 	}
       
