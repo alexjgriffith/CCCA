@@ -171,15 +171,15 @@ motifAllFrequency<-function(...){
 }
 
 
-motifs<-genEboxCombs()
-types<-uniqueTags(peaks)    
+#motifs<-genEboxCombs()
+#types<-uniqueTags(peaks)    
 
-mloc<-sapply(motifs,grepMotifs,Sequences)
-ploc<-lapply(types,grep,peaks[,4])
-uniqueLocs<-uniqueOnGenome(peaks)
+#mloc<-sapply(motifs,grepMotifs,Sequences)
+#ploc<-lapply(types,grep,peaks[,4])
+#uniqueLocs<-uniqueOnGenome(peaks)
 
 
 
-allData<-data.frame(count=do.call(rbind,lapply(mloc,length)))
-motifUniqueFrequency(motifs,types,mloc,ploc,uniqueLocs)
-motifAllFrequency(motifs,types,mloc,ploc)
+#allData<-data.frame(count=do.call(rbind,lapply(mloc,length)))
+#motifUniqueFrequency(motifs,types,mloc,ploc,uniqueLocs)
+#motifAllFrequency(motifs,types,mloc,ploc)

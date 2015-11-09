@@ -25,3 +25,21 @@ and<-function(inList){
         return ( and(ltemp))
     }
 }
+
+#' ors
+#'
+#' Recursivly finds the union of a list of logicals
+#' @export
+ors<-function(inList){
+    l<-length(inList)
+    if(l==0)
+        return(NULL)
+    if(l==1)
+        return(inList[[1]])
+    if(l==2)
+        return(inList[[1]] | inList[[2]])
+    if(l>2){
+        ltemp<-append(list(inList[[1]] | inList[[2]]),inList[3:l])
+        return ( and(ltemp))
+    }
+}

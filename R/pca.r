@@ -56,7 +56,7 @@ qn <-function(data){
 #' @return list($normData,$eigenVectors)
 #' @export
 pca<-function(data,norm="qn"){
-    print(head(data))
+    #print(head(data))
     if( is.function(norm))
        normData<-norm(data)
     else
@@ -70,7 +70,7 @@ pca<-function(data,norm="qn"){
                qn=qn(data),
                none=data,
                data)
-    print(head(normData))
+    #print(head(normData))
     prc<-prcomp(t(normData))$rotation
     list(normData=normData,eigenVectors=prc)
 }
