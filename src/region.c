@@ -56,7 +56,7 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 	    {
 	      Rprintf("%d\t",intSummit[k]);
 		}
-	  Rprintf("\n")
+	  Rprintf("\n");
 
 	}
       
