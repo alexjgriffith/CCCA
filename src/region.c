@@ -48,6 +48,20 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 	Rprintf("Divide by Zero in unityOutput");
 	exit(0);
       }
+      if(nextSummit<0)
+	{
+	  //had memory overflow
+	  n=0;
+	  temp=0;
+	  nextSummit=0;
+	  for(k=(l1[i]-1);k<l2[i];k++)
+	    {
+	      temp=nextSummit(j-1)/j+intSummit[k]/j;
+	      nextSummit=temp;
+	      n++;
+	    }
+	  
+	}
       retSummit[i]=nextSummit/j;
       for(n=0;n<j;n++)
 	if (i== broken[n]-1){
