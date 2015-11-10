@@ -10,5 +10,5 @@ NULL
 #' @import Biostrings
 #' @import ggplot2
 #' @import grid
-#' @import data.table
+#' @import abind
 NULL

@@ -11,11 +11,11 @@ Takes a string which can include base nucleaotides (AGCT) and
 brakets ("[","]") and returns the reverse compliment including brakets
 }
 \examples{
-> compliment("[ACT]TA")
-[1] "TA[AGT]"
-> compliment(IUPACtoBase("STA"))
-[1] "TA[CG]"
-> consenusIUPAC(compliment(IUPACtoBase("STA")))
-[1] "TAS"
+compliment("[ACT]TA")
+# [1] "TA[AGT]"
+compliment(IUPACtoBase("STA"))
+# [1] "TA[CG]"
+consenusIUPAC(compliment(IUPACtoBase("STA")))
+# [1] "TAS"
 }
 

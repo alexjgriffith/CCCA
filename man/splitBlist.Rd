@@ -10,9 +10,9 @@ splitBlist(mstring)
 Applied to DNA nucleotides (ACGT). Returns a list with [] removed
 }
 \examples{
-> consensus<-"AGCT[AGCT]G"
-> splitBlist(consensus)
-     buf buf buf buf buf    buf
-[1,] "A" "G" "C" "T" "AGCT" "G"
+consensus<-"AGCT[AGCT]G"
+ splitBlist(consensus)
+ #     buf buf buf buf buf    buf
+ # [1,] "A" "G" "C" "T" "AGCT" "G"
 }
 

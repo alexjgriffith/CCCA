@@ -21,7 +21,8 @@
 #' @export
 loadPWM<-function(fileLocation,version="homer")
 {
-    loadDataBuilder<-function(splitfun,header=FALSE,skip=1,id=">",split=" ",region=1){
+    loadDataBuilder<-function(splitfun,header=FALSE,skip=1,id=">",
+                              split=" ",region=1){
         function(fileLocation){
             data<-read.delim(fileLocation,header=header,skip=skip,sep="\n")
             out<-list()
@@ -36,12 +37,12 @@ loadPWM<-function(fileLocation,version="homer")
                         if (! n==0){out<-append(out,list(matrix(box,4)))}
                         box<-c()
                         name<-c(name,d[1])
-                        info<-c(info,d[2:l])
+                        info<-c(info,paste(d[2:l],sep="\t",collapse=""))
                         n<-n+1}
                 else{
                     box<-c(box,splitfun(d,l))
                 }}
-            cbind(name=name,info=info,data=append(out,list(matrix(box,4))) )}}    
+            cbind(name=name,info=info,data=append(out,list(matrix(box,4))) )}}
     loadFunctions<-list(
         homer=c(
             skip=0,

@@ -19,7 +19,7 @@ c("A","G","C","T","R","Y","S","W","K","M","B","D","H","V","N")}
 Turn IUPAC lables into basic neucleotides
 }
 \examples{
-> IUPACtoBase("ARYS")
-[1] "A[AG][CT][CG]"
+IUPACtoBase("ARYS")
+# [1] "A[AG][CT][CG]"
 }
 

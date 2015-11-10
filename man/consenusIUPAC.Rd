@@ -11,7 +11,7 @@ The reverse of IUPACtoBase, takes base nucleotides and transforms
 them them to their IUPAC equivelent
 }
 \examples{
-> consenusIUPAC( IUPACtoBase("ARYS"))
-[1] "ARYS"
+consenusIUPAC( IUPACtoBase("ARYS"))
+# [1] "ARYS"
 }
 

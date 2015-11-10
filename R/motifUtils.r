@@ -26,8 +26,8 @@
 #' \item{\strong{FALSE}}{Direct translation to brakets R=[AG]}}
 #' @export
 #' @examples
-#' > IUPACtoBase("ARYS")
-#' [1] "A[AG][CT][CG]"
+#' IUPACtoBase("ARYS")
+#' # [1] "A[AG][CT][CG]"
 IUPACtoBase<-function(char,rl=FALSE){
     IUPAC<-strsplit(char,"")[[1]]
     # Define standard IPAC Characters
@@ -53,7 +53,7 @@ IUPACtoBase<-function(char,rl=FALSE){
     # nucleotides
     vals<-sapply(IUPAC,function(x){(IUPACCharacters[x])})
     # if rl is true base becomes a cons of all posible outcomes
-    # from the iupac ex TW > c(TA,TT)
+    # from the iupac ex TW = c(TA,TT)
     if(rl){
         Base<-c("")
         for(i in vals){
@@ -81,12 +81,12 @@ IUPACtoBase<-function(char,rl=FALSE){
 #' brakets ("[","]") and returns the reverse compliment including brakets 
 #' @export
 #' @examples
-#' > compliment("[ACT]TA")
-#' [1] "TA[AGT]"
-#' > compliment(IUPACtoBase("STA"))
-#' [1] "TA[CG]"
-#' > consenusIUPAC(compliment(IUPACtoBase("STA")))
-#' [1] "TAS"
+#' compliment("[ACT]TA")
+#' # [1] "TA[AGT]"
+#' compliment(IUPACtoBase("STA"))
+#' # [1] "TA[CG]"
+#' consenusIUPAC(compliment(IUPACtoBase("STA")))
+#' # [1] "TAS"
 compliment<-function(string){
     chars<-c("A","G","C","T","[","]")
     names(chars)<-c("T","C","G","A","]","[")
@@ -101,8 +101,8 @@ compliment<-function(string){
 #' them them to their IUPAC equivelent
 #' @export
 #' @examples
-#' > consenusIUPAC( IUPACtoBase("ARYS"))
-#' [1] "ARYS"
+#' consenusIUPAC( IUPACtoBase("ARYS"))
+#' # [1] "ARYS"
 consenusIUPAC<-function(mstring){
         IUPACCharacters<-list("A","C","G","T",c("A","G"),c("C","T"),c("C","G"),c("A","T"),c("G","T"),c("A","C"),c("C","G","T"),c("A","G","T"),c("A","C","T"),c("A","C","G"),c("A","C","G","T"))
         names(IUPACCharacters)<-c("A","C","G","T","R","Y","S","W","K","M","B","D","H","V","N")
@@ -115,10 +115,10 @@ consenusIUPAC<-function(mstring){
 #' Applied to DNA nucleotides (ACGT). Returns a list with [] removed
 #' @export
 #' @examples
-#' > consensus<-"AGCT[AGCT]G"
-#' > splitBlist(consensus)
-#'      buf buf buf buf buf    buf
-#' [1,] "A" "G" "C" "T" "AGCT" "G"
+#'  consensus<-"AGCT[AGCT]G"
+#'  splitBlist(consensus)
+#'  #     buf buf buf buf buf    buf
+#'  # [1,] "A" "G" "C" "T" "AGCT" "G"
 splitBlist<-function(mstring){
     ret<-c()
     buf<-""
@@ -144,8 +144,8 @@ splitBlist<-function(mstring){
 #' A scoring mechanism to convert PWM to strings
 #' @export
 #' @examples
-#' > motifString(matrix(c(1,1,1,1,7,1,1,1),ncol=2))
-#' [1] "[ACGT]A"
+#' motifString(matrix(c(1,1,1,1,7,1,1,1),ncol=2))
+#' # [1] "[ACGT]A"
 motifString<-function(x){
     paste(apply(x,2,function(x){
         DNA<-c("A","C","G","T")
@@ -166,7 +166,21 @@ motifString<-function(x){
 #'
 #' A caller for ConsesnusIUPAC, Recives PWM and returns a consusensus motif
 #' The PWMs should be loaded through the loadPWM utility.
+#' @param x A PWM loaded by loadPWMs
+#' @return The consensus IUPAC string equivelent
 #' @export
+#' @examples
+#' categories<-do.call(function(x)as.character(unlist(read.table(x))),
+#' as.list("~/Dropbox/UTX-Alex/jan/catagories"))
+#' allData<-readDNAStringSet("~/Dropbox/UTX-Alex/jan/combined.fasta")
+#' heights<-read.table("~/Dropbox/UTX-Alex/jan/combined_heights.bed")
+#' data<-heights[,4:dim(heights)[2]]
+#' pcs<-pca(data)
+#' plotPCs(pcs$eigenVector,c(1,3),pcs$normData,categories)
+#' objEryt<-list(1,"gt",1) # pc=1 function = greater than 1 sd of the mean
+#' objTALL<-list(1,"lt",1) # pc=1 function = less than - 1 sd of the mean
+#' reg<-applyPeakPartitions(pcs$eigenVectors,list(objEryt,objTALL))
+#' homerWrapper(allData,objEryt,objTALL,"~/Masters/mulcal/inst/lib/homer-4.7/bin/homer2",inst/data/eryt_jurk_1.pwm)
 PWMtoCons<-function(x)
     consenusIUPAC(motifString(x))
 

@@ -10,7 +10,7 @@ motifString(x)
 A scoring mechanism to convert PWM to strings
 }
 \examples{
-> motifString(matrix(c(1,1,1,1,7,1,1,1),ncol=2))
-[1] "[ACGT]A"
+motifString(matrix(c(1,1,1,1,7,1,1,1),ncol=2))
+# [1] "[ACGT]A"
 }
 
