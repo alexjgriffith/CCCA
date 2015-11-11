@@ -73,7 +73,7 @@ int compare(int start1, int end1,int start2, int end2)
 void pileup(char ** filename,int * chro,int *start,
 	    int *end,int *peaknum,int *scores)
 {
-#ifndef _VERBOSE
+#ifdef _VERBOSE
   Rprintf("N=2\tfilename=%s\n",*filename);
 #endif
   char  buffer[1024];
