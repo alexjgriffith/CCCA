@@ -85,8 +85,13 @@ makeAFS<-function(peakList,categories,format="xls",pValue=FALSE){
     readPeaksXLS<-function(file,name=file){
         bedData<-read.table(file,header=TRUE,skip="#")
         bedData<-bedData[bedData$X.log10.pvalue>pValue,]
-        ret<-data.frame(bedData$chr,bedData$abs_summit,name)
-        colnames(ret)<-c("chr","summit","name")
+        if(dim(bedData)[1]>0){
+           ret<-data.frame(bedData$chr,bedData$abs_summit,name)
+           colnames(ret)<-c("chr","summit","name")
+       }
+        else
+            ret<-NULL
+        
         ret
     }
     readPeaksBed<-function(file,name=file){
@@ -100,8 +105,8 @@ makeAFS<-function(peakList,categories,format="xls",pValue=FALSE){
                        xls=readPeaksXLS,
                        bed=readPeaksBed)
     testBed<-unifyBedFile(
-        sortDataFrame(do.call(rbind,lapply( mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))),"chr","summit"),700)
-    return(testBed)
+        sortDataFrame(do.call(rbind,Filter(function(x) ! is.null(x), lapply( mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x))))),"chr","summit"),700)
+    #return(testBed)
     testBedSE<-shiftFromZero(testBed$summit)
     width<-dim(testBed)[2]
     retData<-data.frame(chr=testBed[,1], start=testBedSE[,1],end=testBedSE[,2])

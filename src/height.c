@@ -74,6 +74,7 @@ void pileup(char ** filename,int * chro,int *start,
 	    int *end,int *peaknum,int *scores)
 {
   char  buffer[1024];
+  Rprintf("filename=%s\n",*filename)
   FILE  * f = fopen(*filename,"r");
   char string[1024];
   int inStart,inEnd,inChro;

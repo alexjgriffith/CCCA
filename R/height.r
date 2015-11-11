@@ -67,8 +67,16 @@ rankChroms<-function(lis){
 #' @param peakLength The length of the bed data provided
 #' @export
 getPileUp<-function(file,bed,chroms,peakLength){
-    results<-.C("pileup",file,chroms,as.integer(as.character(bed$start)),as.integer(as.character(bed$end)),as.integer(peakLength),score=integer(peakLength))
-    results$score}
+    start<-as.integer(as.character(bed$start))
+    end<-as.integer(as.character(bed$end))
+    peaknum<-as.integer(peakLength)
+    score<-integer(peakLength)
+    print(sapply(list(start,end,score,chroms),length))
+    print(file)
+    #results<-.C("pileup",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
+    #results$score
+    NULL
+}
 
 #' PileUp
 #'
