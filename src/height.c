@@ -73,6 +73,9 @@ int compare(int start1, int end1,int start2, int end2)
 void pileup(char ** filename,int * chro,int *start,
 	    int *end,int *peaknum,int *scores)
 {
+#ifndef _VERBOSE
+  Rprintf("N=2\tfilename=%s\n",string);
+#endif
   char  buffer[1024];
   FILE  * f = fopen(*filename,"r");
   char string[1024];
@@ -82,9 +85,7 @@ void pileup(char ** filename,int * chro,int *start,
   while(fgets(buffer,1024, f))
     {      
       sscanf(buffer,"chr%s\t%d\t%d", string,&inStart,&inEnd);
-      Rprintf("N=1\tfilename=%s\n",*filename);
       inChro=getChromosomeShort(string);
-      Rprintf("N=2\tfilename=%s\n",string);
       if(inChro==chro[i])
 	{
 	  decision=compare(start[i],end[i],inStart,inEnd);

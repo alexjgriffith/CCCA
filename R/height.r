@@ -73,6 +73,7 @@ getPileUp<-function(file,bed,chroms,peakLength){
     score<-integer(peakLength)
     print(sapply(list(start,end,score,chroms),length))
     print(file)
+    #list(chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
     results<-.C("pileup",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
     results$score
     #NULL
@@ -116,9 +117,9 @@ getPileUp<-function(file,bed,chroms,peakLength){
 #' @export
 pileUp<-function(data,rawdata,n=0,verbose=FALSE){
     for(file in rawdata){
-        if(!file.exists(file)){
-            sprintf("Can't find file %s.",file)
-            return}
+        if(! file.exists(file)){
+            stop("Can't find file ",file,".")
+            }
         if(verbose)
             print(paste("# Raw data file ",file," was found.",sep=""))
     }
