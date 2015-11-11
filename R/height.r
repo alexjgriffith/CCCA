@@ -73,9 +73,9 @@ getPileUp<-function(file,bed,chroms,peakLength){
     score<-integer(peakLength)
     print(sapply(list(start,end,score,chroms),length))
     print(file)
-    #results<-.C("pileup",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
-    #results$score
-    NULL
+    results<-.C("pileup",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
+    results$score
+    #NULL
 }
 
 #' PileUp

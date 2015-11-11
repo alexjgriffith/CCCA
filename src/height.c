@@ -74,16 +74,17 @@ void pileup(char ** filename,int * chro,int *start,
 	    int *end,int *peaknum,int *scores)
 {
   char  buffer[1024];
-  Rprintf("filename=%s\n",*filename);
   FILE  * f = fopen(*filename,"r");
   char string[1024];
   int inStart,inEnd,inChro;
   int i=0;
   int decision;
+  Rprintf("filename=%s\n",*filename);
   while(fgets(buffer,1024, f))
     {      
       sscanf(buffer,"chr%s\t%d\t%d", string,&inStart,&inEnd);
       inChro=getChromosomeShort(string);
+      Rprintf("filename=%s\n",string);
       if(inChro==chro[i])
 	{
 	  decision=compare(start[i],end[i],inStart,inEnd);
