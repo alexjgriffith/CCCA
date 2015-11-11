@@ -6,9 +6,11 @@ Description: Cross Condition ChIP Analysis (CCCA) combines ChIP seq data between
 Depends: R (>= 3.0.0)
 Imports:
     abind,	
+    parallel,
+    functional
+Suggests:
     Biostrings,	
     ggplot2,
-    parallel,
     grid
 License: BSD
 LazyData: true
