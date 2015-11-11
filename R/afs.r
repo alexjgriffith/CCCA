@@ -102,7 +102,7 @@ makeAFS<-function(peakList,categories,format="xls",pValue=FALSE){
     testBed<-unifyBedFile(
         sortDataFrame(do.call(rbind,lapply( mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))),"chr","summit"),700)
     return(testBed)
-    shiftFromZero(testBed$summit)
+    testBedSE<-shiftFromZero(testBed$summit)
     width<-dim(testBed)[2]
     retData<-data.frame(chr=testBed[,1], start=testBedSE[,1],end=testBedSE[,2])
     #retData<-data.frame(chr=testBed[,1], summit=testBed$summit)
