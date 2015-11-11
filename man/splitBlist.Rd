@@ -6,6 +6,9 @@
 \usage{
 splitBlist(mstring)
 }
+\arguments{
+\item{mstring}{a base pare string with only nucleotides eg A[AG]AGT}
+}
 \description{
 Applied to DNA nucleotides (ACGT). Returns a list with [] removed
 }

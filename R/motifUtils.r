@@ -78,7 +78,8 @@ IUPACtoBase<-function(char,rl=FALSE){
 #' reverse compliment
 #'
 #' Takes a string which can include base nucleaotides (AGCT) and
-#' brakets ("[","]") and returns the reverse compliment including brakets 
+#' brakets ("[","]") and returns the reverse compliment including brakets
+#' @param string input base string, eg A[AG]CT
 #' @export
 #' @examples
 #' compliment("[ACT]TA")
@@ -99,6 +100,7 @@ compliment<-function(string){
 #'
 #' The reverse of IUPACtoBase, takes base nucleotides and transforms
 #' them them to their IUPAC equivelent
+#' @param mstring a base pare string with only nucleotides eg A[AG]AGT
 #' @export
 #' @examples
 #' consenusIUPAC( IUPACtoBase("ARYS"))
@@ -113,6 +115,7 @@ consenusIUPAC<-function(mstring){
 #' Split by List
 #'
 #' Applied to DNA nucleotides (ACGT). Returns a list with [] removed
+#' @param mstring a base pare string with only nucleotides eg A[AG]AGT
 #' @export
 #' @examples
 #'  consensus<-"AGCT[AGCT]G"
@@ -143,6 +146,7 @@ splitBlist<-function(mstring){
 #'
 #' A scoring mechanism to convert PWM to strings
 #' @export
+#' @param x a matrix of values representing AGCT in a motif
 #' @examples
 #' motifString(matrix(c(1,1,1,1,7,1,1,1),ncol=2))
 #' # [1] "[ACGT]A"
@@ -170,6 +174,7 @@ motifString<-function(x){
 #' @return The consensus IUPAC string equivelent
 #' @export
 #' @examples
+#' library(Biostrings)
 #' categories<-do.call(function(x)as.character(unlist(read.table(x))),
 #' as.list("~/Dropbox/UTX-Alex/jan/catagories"))
 #' allData<-readDNAStringSet("~/Dropbox/UTX-Alex/jan/combined.fasta")
@@ -180,7 +185,9 @@ motifString<-function(x){
 #' objEryt<-list(1,"gt",1) # pc=1 function = greater than 1 sd of the mean
 #' objTALL<-list(1,"lt",1) # pc=1 function = less than - 1 sd of the mean
 #' reg<-applyPeakPartitions(pcs$eigenVectors,list(objEryt,objTALL))
-#' homerWrapper(allData,objEryt,objTALL,"~/Masters/mulcal/inst/lib/homer-4.7/bin/homer2",inst/data/eryt_jurk_1.pwm)
+#' #homerWrapper(allData,objEryt,objTALL,
+#' #             "~/Masters/mulcal/inst/lib/homer-4.7/bin/homer2",
+#' #             inst/data/eryt_jurk_1.pwm)
 PWMtoCons<-function(x)
     consenusIUPAC(motifString(x))
 

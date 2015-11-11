@@ -8,6 +8,7 @@
 # Contact: griffitaj@gmail.com
 
 library(CCCA)
+library(Biostrings)
 library(parallel)
 
 # categories<-c("cd34_new","eryt","jurk","cem_1")

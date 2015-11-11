@@ -87,7 +87,7 @@ getHeights<-function(h,range=c(min(h),max(h))){
        # hist(h,breaks=1000,xlim=width,xlab=paste(mList[n1],mList[n2],sep=" - "))
     h}
 
-
+#' @title nearSummit
 #'@export
 nearSummit<-function(data,mList,cList,locationsM,locationsC,n1,reg,width=150)
     {
@@ -106,6 +106,7 @@ nearSummit<-function(data,mList,cList,locationsM,locationsC,n1,reg,width=150)
     h<-c(getDistance(unlist(bM),width),getDistance(unlist(bC),width))
     h}
 
+#' @title getDistance
 #' @export
 getDistance<-function(x,y,one=FALSE){
     as.numeric(
@@ -215,6 +216,12 @@ locHist<-function(t0,xlab="Histogram",limits=c(-32,32)){
     #p+scale_x_continuous(breaks=b,limits=limits)
 }
 
+#' locHist
+#' 
+#' @param t1
+#' @param x
+#' @param xlab
+#' @param limits
 #' @export
 locHist2<-function(t1,x,xlab="Histogram",limits=c(-32,32)){
     p<-qplot(x,t1,geom="step",ylab="frequency",xlab=xlab)+stat_function(fun=function(x){0})#+xlim(limits)

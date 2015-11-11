@@ -15,7 +15,7 @@
 #' 
 regionWrapper<-function(temp,chroms){
     width<-length(chroms)
-    buffer<-as.ineger(rep(0,width))
+    buffer<-as.integer(rep(0,width))
     outMatrix<-integer((width+2)*(length-1))
     length<-length(temp[,1])
     .C("region",temp[,1],temp[,3],temp[,2],buffer,outMatrix,length,width)

@@ -6,6 +6,9 @@
 \usage{
 consenusIUPAC(mstring)
 }
+\arguments{
+\item{mstring}{a base pare string with only nucleotides eg A[AG]AGT}
+}
 \description{
 The reverse of IUPACtoBase, takes base nucleotides and transforms
 them them to their IUPAC equivelent

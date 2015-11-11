@@ -39,8 +39,13 @@ plot(hclust(dist(temp)),hang=-1)
 # human.hg19.genome provides the start and stop point for each genome
 # bin size desides how large the regions should be
 binSize=10000
-regions<-do.call(rbind, apply(read.table("/data/binaries/BEDTools/genomes/human.hg19.genome")[1:24,],1, function(x,step) {y<-seq(1,as.numeric(x[2]),step); cbind(as.character(x[1]),as.character(y),as.character(y+step))} ,binSize))
-  data<-hg19Sort(data.frame(chro=regions[,1],start=as.integer(regions[,2]), end=as.integer(regions[,3])))
+regions<-do.call(rbind,
+apply(read.table("/data/binaries/BEDTools/genomes/human.hg19.genome")[1:24,],1,
+function(x,step) {y<-seq(1,as.numeric(x[2]),step);
+cbind(as.character(x[1]),as.character(y),as.character(y+step))} ,binSize))
+  data<-hg19Sort(data.frame(chro=regions[,1],
+                            start=as.integer(regions[,2]),
+                            end=as.integer(regions[,3])))
   score<-pileUp(data,rawdata,n=22)
 }
 \author{

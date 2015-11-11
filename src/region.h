@@ -1,15 +1,20 @@
-//#ifndef CCCA_
-//#include "CCCA.h"
-//#define CCCA_
-//#endif 
+/* This file is part of CCCA,
+   http://github.com/alexjgriffith/CCCA/, 
+   and is Copyright (C) University of Ottawa, 2015. It is Licensed under 
+   the three-clause BSD License; see LICENSE.txt.
+   Author : Alexander Griffith
+   Contact: griffitaj@gmail.com */
 
+#include <stdio.h>
+
+#define R_NO_REMAP
 
 #include <R.h>
 #include <R_ext/Rdynload.h>
+#include <R_ext/Error.h>
 #include <Rinternals.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+
 
 int addToBuffer(int logical, int category, int *buffer);
 void region(int * value, int * logical , int * category,int * buffer, int * outMatrix,int * length,int * width);

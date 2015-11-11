@@ -6,6 +6,9 @@
 \usage{
 compliment(string)
 }
+\arguments{
+\item{string}{input base string, eg A[AG]CT}
+}
 \description{
 Takes a string which can include base nucleaotides (AGCT) and
 brakets ("[","]") and returns the reverse compliment including brakets

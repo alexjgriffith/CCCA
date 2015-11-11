@@ -97,8 +97,13 @@ getPileUp<-function(file,bed,chroms,peakLength){
 #' # human.hg19.genome provides the start and stop point for each genome
 #' # bin size desides how large the regions should be
 #' binSize=10000
-#' regions<-do.call(rbind, apply(read.table("/data/binaries/BEDTools/genomes/human.hg19.genome")[1:24,],1, function(x,step) {y<-seq(1,as.numeric(x[2]),step); cbind(as.character(x[1]),as.character(y),as.character(y+step))} ,binSize))
-#'   data<-hg19Sort(data.frame(chro=regions[,1],start=as.integer(regions[,2]), end=as.integer(regions[,3])))
+#' regions<-do.call(rbind,
+#' apply(read.table("/data/binaries/BEDTools/genomes/human.hg19.genome")[1:24,],1,
+#' function(x,step) {y<-seq(1,as.numeric(x[2]),step);
+#' cbind(as.character(x[1]),as.character(y),as.character(y+step))} ,binSize))
+#'   data<-hg19Sort(data.frame(chro=regions[,1],
+#'                             start=as.integer(regions[,2]),
+#'                             end=as.integer(regions[,3])))
 #'   score<-pileUp(data,rawdata,n=22)
 #' @export
 pileUp<-function(data,rawdata,n=0,verbose=FALSE){
@@ -142,7 +147,9 @@ hg19Sort<-function(data){
 #' Returns a function that reorders the peak data based on the chromosome order provided
 #' @param chromOrder A list of chromosomes to be found in the data
 #' @examples
-#' sortedChroms<-strsplit("chr1 chr2 chr3 chr4 chr5 chr6 chr7 chrX chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr20 chrY chr19 chr22 chr21 chrM" ," ")[[1]]
+#' sortedChroms<-strsplit("chr1 chr2 chr3 chr4 chr5 chr6 chr7 chrX
+#' chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17
+#' chr18 chr20 chrY chr19 chr22 chr21 chrM" ," ")[[1]]
 #' hg19Sort<-chromGenomeSort(sortedChroms)
 #' bedData<-loadBedData("test.bed")
 #' sortedBedData<-hg19Sort(bedData)

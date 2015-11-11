@@ -17,6 +17,7 @@ A caller for ConsesnusIUPAC, Recives PWM and returns a consusensus motif
 The PWMs should be loaded through the loadPWM utility.
 }
 \examples{
+library(Biostrings)
 categories<-do.call(function(x)as.character(unlist(read.table(x))),
 as.list("~/Dropbox/UTX-Alex/jan/catagories"))
 allData<-readDNAStringSet("~/Dropbox/UTX-Alex/jan/combined.fasta")
@@ -27,6 +28,8 @@ plotPCs(pcs$eigenVector,c(1,3),pcs$normData,categories)
 objEryt<-list(1,"gt",1) # pc=1 function = greater than 1 sd of the mean
 objTALL<-list(1,"lt",1) # pc=1 function = less than - 1 sd of the mean
 reg<-applyPeakPartitions(pcs$eigenVectors,list(objEryt,objTALL))
-homerWrapper(allData,objEryt,objTALL,"~/Masters/mulcal/inst/lib/homer-4.7/bin/homer2",inst/data/eryt_jurk_1.pwm)
+#homerWrapper(allData,objEryt,objTALL,
+#             "~/Masters/mulcal/inst/lib/homer-4.7/bin/homer2",
+#             inst/data/eryt_jurk_1.pwm)
 }
 

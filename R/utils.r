@@ -81,7 +81,9 @@ mapziplist<-function(...){
 #' A small utility to functionalize the sorting of data frames
 #' @export
 #' @examples
-#' dd<-data.frame(initial1=LETTERS[runif(100,1,24)],initial2=LETTERS[runif(100,1,24)],age=floor(runif(100,21,35)))
+#' dd<-data.frame(initial1=LETTERS[runif(100,1,24)],
+#'                initial2=LETTERS[runif(100,1,24)],
+#'                age=floor(runif(100,21,35)))
 #' sortDataFrame(dd,"initial2","age")
 sortDataFrame<-function(dd,...)    
     dd[do.call(order,lapply(list(...),function(x) dd[x])),]

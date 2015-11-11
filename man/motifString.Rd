@@ -6,6 +6,9 @@
 \usage{
 motifString(x)
 }
+\arguments{
+\item{x}{a matrix of values representing AGCT in a motif}
+}
 \description{
 A scoring mechanism to convert PWM to strings
 }

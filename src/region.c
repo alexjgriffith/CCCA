@@ -1,3 +1,10 @@
+/* This file is part of CCCA,
+   http://github.com/alexjgriffith/CCCA/, 
+   and is Copyright (C) University of Ottawa, 2015. It is Licensed under 
+   the three-clause BSD License; see LICENSE.txt.
+   Author : Alexander Griffith
+   Contact: griffitaj@gmail.com */
+
 #include "region.h"
 
 int addToBuffer(int logical, int category, int *buffer)
@@ -28,59 +35,22 @@ void region(int * value, int * logical , int * category,int * buffer, int * outM
 
 void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, int * peaklength, int* peakwidth, int* retChr, int * retSummit, int * retMatrix)
 {
-   int broken[4]={8009,8047,8474,8480};
-   int i,j,k,n;
-  int nextSummit,temp;
-  for(i=0;i<(*peaklength);i++)
-    {
+   int i,j,k;
+   int nextSummit,temp;
+   for(i=0;i<(*peaklength);i++)
+     {       
+       retChr[i]=intChr[l1[i]-1];
+       nextSummit=0;
+       j=l2[i]-l1[i]+1;
+       if(j==0)	
+	 Rf_error("Divide by zero in file<-region.c function<-unityOutput\n");
       
-      retChr[i]=intChr[l1[i]-1];
-      nextSummit=0;
-      j=0;
-      for(k=(l1[i]-1);k<l2[i];k++)
-	{
-	  retMatrix[i* (*peakwidth)+name[k]-1]=1;
-	  temp=nextSummit+intSummit[k];
-	  nextSummit=temp;
-	  j++;
-	}
-      if(j==0){
-	Rprintf("Divide by Zero in unityOutput");
-	exit(0);
-      }
-      if(nextSummit<0)
-	{
-	  //had memory overflow
-	  n=0;
-	  temp=0;
-	  nextSummit=0;
-	  for(k=(l1[i]-1);k<l2[i];k++)
-	    {
-	      temp=nextSummit+intSummit[k]/j;
-	      nextSummit=temp;
-	      n++;
-	    }
-	  
-	}
-      retSummit[i]=nextSummit/j;
-      for(n=0;n<j;n++)
-	if (i== broken[n]-1){
-	  Rprintf("chr=%d\tsummit=%d\n",retChr[i],retSummit[i]);
-	  for(k=(l1[i]-1);k<l2[i];k++)
-	    {
-	      Rprintf("%d\t",intSummit[k]);
-		}
-	  Rprintf("\n");
-
-	}
-      
-    }  
+       for(k=(l1[i]-1);k<l2[i];k++)
+	 {
+	   retMatrix[i* (*peakwidth)+name[k]-1]=1;
+	   temp=nextSummit+intSummit[k]/j;
+	   nextSummit=temp;
+	 }	  	
+       retSummit[i]=nextSummit;      
+     }  
 }
-
-
-  
-// region takes an input list of form 
-// value logical category categories outMatrix
-// logical indicates that the value is a
-// start or end value
-// it will return a matrix of integers width = 2+#cat

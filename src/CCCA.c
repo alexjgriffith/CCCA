@@ -4,6 +4,7 @@
    the three-clause BSD License; see LICENSE.txt.
    Author : Alexander Griffith
    Contact: griffitaj@gmail.com */
+
 #include "CCCA.h"
 
 void R_init_myLib(DllInfo *info)
