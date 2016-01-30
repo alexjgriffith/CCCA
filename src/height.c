@@ -77,6 +77,8 @@ void pileup(char ** filename,char ** chro,int *start,
   Rprintf("N=2\tfilename=%s\n",*filename);
 #endif
 #ifdef _test
+  Rprintf("N=2\tfilename=%s\n",*filename);
+  Rprintf("N=2\ttesting\n",*filename);
   int i;
   for(i=0;i<*length;i++)
     Rprintf("%s\n",chro[i]);
