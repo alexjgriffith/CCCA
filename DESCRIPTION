@@ -7,10 +7,12 @@ Depends: R (>= 3.0.0)
 Imports:
     abind,	
     parallel,
-    functional
-Suggests:
+    functional,
     Biostrings,	
     ggplot2,
     grid
+Suggests:
+    httr,
+    BSgenome.Hsapiens.UCSC.hg19
 License: BSD
 LazyData: true

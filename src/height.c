@@ -70,50 +70,67 @@ int compare(int start1, int end1,int start2, int end2)
     return 2 ; //add to score and move reads forward
 }
 
-void pileup(char ** filename,int * chro,int *start,
-	    int *end,int *peaknum,int *scores)
+void pileup(char ** filename,char ** chro,int *start,
+	    int *end,int *length,int *scores)
 {
 #ifdef _VERBOSE
   Rprintf("N=2\tfilename=%s\n",*filename);
 #endif
+#ifdef _test
+  int i;
+  for(i=0;i<*length;i++)
+    Rprintf("%s\n",chro[i]);
+#else
   char  buffer[1024];
   FILE  * f = fopen(*filename,"r");
   char string[1024];
   int inStart,inEnd,inChro;
   int i=0;
-  int decision;
+
+  int coll;
+  int chrC;
+  int ed1C;
+  int ed2C;
+
   while(fgets(buffer,1024, f))
     {      
-      sscanf(buffer,"chr%s\t%d\t%d", string,&inStart,&inEnd);
-      inChro=getChromosomeShort(string);
-      if(inChro==chro[i])
-	{
-	  decision=compare(start[i],end[i],inStart,inEnd);
-	    if(decision==1)
-	      {
-	      while(1)
-		{
-		  i=i+1;
-		  if(i>=*peaknum-1) return;
-		  if(inChro!=chro[i]){break;}
-		  decision=compare(start[i],end[i],inStart,inEnd);
-		  if(decision!=1) break;
-		}	      		    
-	      }
-	    if(decision==2) scores[i]++;
-	}
-      else if(inChro>chro[i])
-	{	  
-	while(1)
-	  {
-	    i=i+1;	    
-	    if( i>=*peaknum-1){ return;}
-	    if(inChro<=chro[i]){ 
-	      break;}
+      sscanf(buffer,"%s\t%d\t%d", string,&inStart,&inEnd);
+      chrC=strcmp(chro[i],string); // < 0 next peak
+                                   // == 0 next compare
+                                   // > 0 next reed
+
+      while(chrC<=0){
+	if(i>=*length)
+	  break;
+	ed1C=inStart-end[i]; //  =< 0 -- inStart < end
+	                           //  > 0 next read
+	ed2C=start[i]-inEnd; // =< 0-- inEnd > start
+                                    // > 0 -- next peak
+	if(chrC==0){
+	  if(ed1C<=0 && ed2C<=0){
+	    scores[i]++;
+	    //coll++
+	    break;
+	    //i++;
 	  }
+	  else if (ed1C>0){
+	    i++;
+	  }
+	  else{
+	    break;
+	  }
+	    
 	}
+	else{
+	  i++;
+	}
+	chrC=strcmp(chro[i],string);
+	}
+      if(i>=*length)
+	break;	
     }
   fclose(f);
+#endif
 }
 
 void file_length(char ** filename,int * i)

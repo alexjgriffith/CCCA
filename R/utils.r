@@ -25,6 +25,21 @@ ors<-function(inList){
     }
 }
 
+#' @export
+orM<-function(inList){
+    l<-dim(inList)[2]
+    if(l==0)
+        return(NULL)
+    if(l==1)
+        return(inList[,1])
+    if(l==2)
+        return(inList[,1] | inList[,2])
+    if(l>2){
+        ltemp<-cbind((inList[,1] | inList[,2]),inList[,3:l])
+        return ( orM(ltemp))
+    }
+}
+
 #' Overlap
 #'
 #' Takes a matrix of logical inputs, each column representing a data set each
@@ -103,8 +118,9 @@ mWidth<-function(x)
 
 mLength<-function(x)
     or(dim(x)[1],length(x))
-    
-and<-function(inList){
+
+#' @export
+andL<-function(inList){
     l<-length(inList)
     if(l==0)
         return(NULL)
@@ -117,3 +133,25 @@ and<-function(inList){
         return ( and(ltemp))
     }
 }
+
+#' @export
+andM<-function(inList){
+    l<-dim(inList)[2]
+    if(is.null(l))
+        return (inList)
+    if(l==0)
+        return(NULL)
+    if(l==1)
+        return(inList[,1])
+    if(l==2)
+        return(inList[,1] & inList[,2])
+    if(l>2){
+        ltemp<-cbind((inList[,1] & inList[,2]),inList[,3:l])
+        return ( andM(ltemp))
+    }
+}
+
+#' @export
+modulous<-function(x,m)
+    {t1<-floor(x/m)
+     (x-t1*m)}

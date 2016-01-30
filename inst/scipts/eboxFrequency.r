@@ -1,15 +1,5 @@
 library(CCCA)
 library(Biostrings)
-FastaFile<-"~/Dropbox/UTX-Alex/jan/combined.fasta"
-peakFile<-"~/Dropbox/UTX-Alex/jan/combined_mock.bed"
-heightFile<-"~/Dropbox/UTX-Alex/jan/combined_heights.bed"
-catagoryFile<-"~/Dropbox/UTX-Alex/jan/catagories"
-peaks<-read.table(peakFile)
-Sequences <- readDNAStringSet(FastaFile, "fasta")
-temp<-read.table("~/Dropbox/UTX-Alex/jan/combined_heights.bed")
-data<-as.matrix(temp[,4:dim(temp)[2]])
-catagories<-as.character(unlist(read.table(catagoryFile)))
-colnames(data)<-catagories
 
 #' Is Palandrome
 #' Tests if biostring is a palandrome... takes IUPAC caracters
@@ -99,13 +89,13 @@ intersectN<-function(...){
 
 genEboxPerms<-function(){
     options<-strsplit("ATGC","")[[1]]
-    optcombs<-unlist(lapply(unique(lapply(permutations(options),function(x) sort(c(x, compliment(x))))),"[[",1))
+    optcombs<-sort(apply(cbind(combn(options,2),rbind(combn(options,1),combn(options,1))),2,function(x) paste(x,collapse="")))
     unlist(lapply(permutations(options),function(x) paste("CA",x,"TG",sep="")))
 }
 
 genEboxCombs<-function(){
     options<-strsplit("ATGC","")[[1]]
-    optcombs<-apply(pairwiseCombs(strsplit("ATGC","")[[1]]),2,function(x) paste(x[1],x[2],sep=""))
+    optcombs<-unique((function(x) apply(cbind(sapply(x,reverseIUPAC),x),1,function(x) sort(x)[1] ) )(permutations(options)))
     unlist(lapply(optcombs,function(x) paste("CA",x,"TG",sep="")))
 }
 
@@ -114,7 +104,7 @@ grepMotifs<-function(stringIn,Sequences){
     motif<-IUPACtoBase(stringIn)
     compl<-compliment(motif)
     mac<-list(motif,compl)
-    unlist(do.call(union, lapply(mac, grep,Sequences)))
+    unlist(do.call(union, lapply(mac, grep,Sequences)))    
 }
 
     
@@ -170,6 +160,18 @@ motifAllFrequency<-function(...){
     motifFreqGen(funIn)(...)
 }
 
+
+
+# FastaFile<-"~/Dropbox/UTX-Alex/jan/combined.fasta"
+# peakFile<-"~/Dropbox/UTX-Alex/jan/combined_mock.bed"
+# heightFile<-"~/Dropbox/UTX-Alex/jan/combined_heights.bed"
+# catagoryFile<-"~/Dropbox/UTX-Alex/jan/catagories"
+# peaks<-read.table(peakFile)
+# Sequences <- readDNAStringSet(FastaFile, "fasta")
+# temp<-read.table("~/Dropbox/UTX-Alex/jan/combined_heights.bed")
+# data<-as.matrix(temp[,4:dim(temp)[2]])
+# catagories<-as.character(unlist(read.table(catagoryFile)))
+# colnames(data)<-catagories
 
 #motifs<-genEboxCombs()
 #types<-uniqueTags(peaks)    

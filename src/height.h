@@ -13,6 +13,8 @@
 #include <R_ext/Rdynload.h>
 #include <Rinternals.h>
 
+#define _test
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -23,8 +25,8 @@ void getChromosomeValue(int order,char * value);
 void rankChromosomes(char ** chroms,int *length, int *out);
 void valueChromosomes(char ** chroms,int *length, int *out);
 int compare(int start1, int end1,int start2, int end2);
-void pileup(char ** filename,int * chro,int *start,
-	    int *end,int *peaknum,int *scores);
+void pileup(char ** filename,char ** chro,int *start,
+	    int *end,int *length,int *scores);
 void file_length(char ** filename,int * i);
 void read_bed(char ** filename,char ** chrom,int *start, int *end);
 void getChroms(char ** filename,char ** chroms);

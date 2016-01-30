@@ -26,6 +26,9 @@
 #' @param data matrix of data to be normalized
 #' @return matrix of the same dimensions as data
 #' @export
+#' @example
+#' matr<-cbind(rbind(5,2,3,4),rbind(4,1,4,2),rbind(3,4,6,8))
+#' qn(matr)
 qn <-function(data){
     shape<-dim(data)
     sequence<-apply(data,2,order)

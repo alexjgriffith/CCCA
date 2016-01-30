@@ -25,6 +25,8 @@ void getChroms(char ** filename,char ** chroms);
 int addToBuffer(int logical, int category, int *buffer);
 void region(int * value, int * logical , int * category,int * buffer, int * outMatrix,int * length,int * width);
 void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, int * peaklength, int* peakwidth, int* retChr, int * retSummit, int * retMatrix);
+void generateFasta(char **sourceFasta,char **indexFasta,char ** chrs, int * starts, int * ends,int *length, int * width,char ** fastadata);
+int generateIndex(char ** sourceFasta,char ** indexFasta);
 
 #ifndef CME_
 static R_NativePrimitiveArgType read_bed_t[]={STRSXP,STRSXP,INTSXP,INTSXP};
@@ -36,7 +38,8 @@ static R_NativePrimitiveArgType getChroms_t[]={STRSXP,STRSXP};
 static R_NativePrimitiveArgType region_t[]={INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
 
 static R_NativePrimitiveArgType unityOutput_t[]={INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
-
+static R_NativePrimitiveArgType generateFasta_t[]={STRSXP,STRSXP,STRSXP,INTSXP,INTSXP,INTSXP,INTSXP,STRSXP};
+static R_NativePrimitiveArgType generateIndex_t[]={STRSXP,STRSXP};
 
 static R_CMethodDef cMethods[]={
 {"read_bed",(DL_FUNC) &read_bed,4,read_bed_t},
@@ -47,6 +50,8 @@ static R_CMethodDef cMethods[]={
 {"getChroms",(DL_FUNC) &getChroms,3,getChroms_t},
 {"region",(DL_FUNC) &region,7,region_t},
 {"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
+{"generateFasta",(DL_FUNC) &generateFasta,8,generateFasta_t},
+{"generateIndex",(DL_FUNC) &generateIndex,2,generateIndex_t},
 {NULL,NULL,0}
   };
 #define CME_

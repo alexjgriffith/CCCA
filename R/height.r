@@ -115,7 +115,7 @@ getPileUp<-function(file,bed,chroms,peakLength){
 #'                             end=as.integer(regions[,3])))
 #'   score<-pileUp(data,rawdata,n=22)
 #' @export
-pileUp<-function(data,rawdata,n=0,verbose=FALSE){
+pileUp<-function(data,rawdata,n=0,verbose=FALSE,clust=FALSE){
     for(file in rawdata){
         if(! file.exists(file)){
             stop("Can't find file ",file,".")
@@ -123,14 +123,17 @@ pileUp<-function(data,rawdata,n=0,verbose=FALSE){
         if(verbose)
             print(paste("# Raw data file ",file," was found.",sep=""))
     }
-    peakLength<-length(data$chro)
+    peakLength<-length(data$chr)
 
-    chroms<-rankChroms(data$chro)
-
+    chroms<-rankChroms(data$chr)
     if(n>0){
-        cs<-makeForkCluster(n,renice=0)
+        if(clust==FALSE)
+            cs<-makeForkCluster(n,renice=0)
+        else
+            cs<-clust
         ret<-matrix(unlist(parLapply(cs,rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)
-        stopCluster(cs)
+        if(clust==FALSE)
+            stopCluster(cs)
     }else{
     ret<-matrix(unlist(lapply(rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)}
     ret}
