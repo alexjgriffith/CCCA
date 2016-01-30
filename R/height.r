@@ -70,7 +70,7 @@ getPileUp<-function(file,bed,chroms,peakLength){
     start<-as.integer(as.character(bed$start))
     end<-as.integer(as.character(bed$end))
     peaknum<-as.integer(peakLength)
-    score<-integer(peakLength)
+    score<-as.integer(rep(0,peakLength))
     #print(sapply(list(start,end,score,chroms),length))
     #print(file)
     #list(chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
@@ -125,7 +125,7 @@ pileUp<-function(data,rawdata,n=0,verbose=FALSE,clust=FALSE){
     }
     peakLength<-length(data$chr)
 
-    chroms<-rankChroms(data$chr)
+    chroms<-as.character(data$chr)
     if(n>0){
         if(clust==FALSE)
             cs<-makeForkCluster(n,renice=0)

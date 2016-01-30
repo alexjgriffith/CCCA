@@ -13,7 +13,7 @@
 #include <R_ext/Rdynload.h>
 #include <Rinternals.h>
 
-#define _test
+
 
 #include <stdlib.h>
 #include <stdio.h>

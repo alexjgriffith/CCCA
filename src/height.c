@@ -76,13 +76,7 @@ void pileup(char ** filename,char ** chro,int *start,
 #ifdef _VERBOSE
   Rprintf("N=2\tfilename=%s\n",*filename);
 #endif
-#ifdef _test
-  Rprintf("N=2\tfilename=%s\n",*filename);
-  Rprintf("N=2\ttesting\n",*filename);
-  int i;
-  for(i=0;i<*length;i++)
-    Rprintf("%s\n",chro[i]);
-#else
+#ifndef _test
   char  buffer[1024];
   FILE  * f = fopen(*filename,"r");
   char string[1024];
@@ -95,15 +89,12 @@ void pileup(char ** filename,char ** chro,int *start,
   int ed2C;
 
   while(fgets(buffer,1024, f))
-    {      
+    {            
       sscanf(buffer,"%s\t%d\t%d", string,&inStart,&inEnd);
       chrC=strcmp(chro[i],string); // < 0 next peak
                                    // == 0 next compare
                                    // > 0 next reed
-
       while(chrC<=0){
-	if(i>=*length)
-	  break;
 	ed1C=inStart-end[i]; //  =< 0 -- inStart < end
 	                           //  > 0 next read
 	ed2C=start[i]-inEnd; // =< 0-- inEnd > start
@@ -117,6 +108,7 @@ void pileup(char ** filename,char ** chro,int *start,
 	  }
 	  else if (ed1C>0){
 	    i++;
+
 	  }
 	  else{
 	    break;
@@ -124,14 +116,27 @@ void pileup(char ** filename,char ** chro,int *start,
 	    
 	}
 	else{
+
 	  i++;
 	}
+	if(i>=*length)
+	  break;	
 	chrC=strcmp(chro[i],string);
 	}
       if(i>=*length)
 	break;	
     }
+
   fclose(f);
+#else
+  Rprintf("N=2\tfilename=%s\n",*filename);
+  Rprintf("N=2\ttesting\n",*filename);
+  Rprintf("N=2\t%d\n",*length);
+  Rprintf("N=2\t%s\n",chro[0]);
+  int i;
+  for(i=0;i<*length;i++)
+    Rprintf("%s\n",chro[i]);
+
 #endif
 }
 
