@@ -9,6 +9,14 @@
 #include <R_ext/Rdynload.h>
 #include <Rinternals.h>
 
+typedef struct {
+  char chr[100];
+  int chr_ord;
+  int start;
+  int end;
+} peak;
+
+
 // heights.c
 int getChromosome(char value[10]);
 int getChromosomeShort(char value[2]);
@@ -29,12 +37,13 @@ void generateFasta(char **sourceFasta,char **indexFasta,char ** chrs, int * star
 int generateIndex(char ** sourceFasta,char ** indexFasta);
 
 // hrange.c
+void buildPeaks(char **chr, int * start, int * end , int length, peak ** temp);
 void rheight(char * filename,peak * peaks,int length, peak *** scores,int ** heights);
 
 int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn);
 
 void  peakDensity(char ** filename,char ** chro,int *start,
-	    int *end,int *length,int *scoresOut){
+		  int *end,int *length,int *scoresOut);
 
 #ifndef CME_
 static R_NativePrimitiveArgType read_bed_t[]={STRSXP,STRSXP,INTSXP,INTSXP};
@@ -62,7 +71,7 @@ static R_CMethodDef cMethods[]={
 {"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
 {"generateFasta",(DL_FUNC) &generateFasta,8,generateFasta_t},
 {"generateIndex",(DL_FUNC) &generateIndex,2,generateIndex_t},
-{"peakDensity",(DL_FUNC) &pileup,6, peaKDensity_t},
+{"peakDensity",(DL_FUNC) &pileup,6, peakDensity_t},
 {NULL,NULL,0}
   };
 #define CME_

@@ -22,4 +22,8 @@ Applies quantile normalization to data in matrix form.
 \item{3. Put the data back in order}
 }
 }
+\examples{
+matr<-cbind(rbind(5,2,3,4),rbind(4,1,4,2),rbind(3,4,6,8))
+qn(matr)
+}
 

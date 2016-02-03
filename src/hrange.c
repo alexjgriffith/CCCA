@@ -5,9 +5,9 @@ void peakDensity(char ** filename,char ** chro,int *start,
   int j;
   int i;
   peak *temp;
-  int * lengths= malloc(length*sizeof(int));
-  peak ** scores= malloc(length*sizeof(int*));
-  int ** collect=malloc(length*sizeof(int*));
+  int * lengths= malloc(*length*sizeof(int));
+  peak ** scores= malloc(*length*sizeof(int*));
+  int ** collect=malloc(*length*sizeof(int*));
   buildPeaks(chro,start,end,*length,&temp);
   for(i=0;i<*length;i++){
     lengths[i]=0;
@@ -15,13 +15,24 @@ void peakDensity(char ** filename,char ** chro,int *start,
     collect[i]=malloc((temp[i].end-temp[i].start) *sizeof(peak));
   }
   //printf("Allocated\n");
-  rheight(raw_data_files[0],temp,length,&scores,&lengths);
-  convertHeights(temp,length, scores, lengths, &collect);
+  rheight(*filename,temp,*length,&scores,&lengths);
+  convertHeights(temp,*length, scores, lengths, &collect);
   //printConvertedHeights( collect, temp, length);
   int width=temp[0].end-temp[0].start;
-  for(i=0;i<length;i++){    
+  for(i=0;i<*length;i++){    
     for(j=0;j<width;j++)
 	scoresOut[i*width+j]=collect[i][j];
+  }
+}
+
+void buildPeaks(char **chr, int * start, int * end , int length, peak ** temp)
+{
+  int i;
+  temp=malloc(sizeof(peak)*length);
+  for(i=0;i<length;i++){
+    strcpy((*temp)[i].chr,chr[i]);
+    (*temp)[i].start=start[i];
+    (*temp)[i].end=end[i];
   }
 }
 

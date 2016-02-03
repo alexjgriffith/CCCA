@@ -26,6 +26,7 @@
 #'   .p(tags,"tabular",opts=layout,n=c("{","}")))    
 #'   wf(paste(makeLines(ins,paste(vb(),
 #'                      vb(makeLine(unlist(list(cn,colnames)))))),vb()))
+#' }
 #' makeT<-makeTable(defaultFun)
 #' cat(makeT(a,"llllllll",label="tab:centers",caption="data table"))
 makeTable<-function(fun=defaultFun){

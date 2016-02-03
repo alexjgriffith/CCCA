@@ -31,12 +31,6 @@ void file_length(char ** filename,int * i);
 void read_bed(char ** filename,char ** chrom,int *start, int *end);
 void getChroms(char ** filename,char ** chroms);
 
-typedef struct {
-  char chr[100];
-  int chr_ord;
-  int start;
-  int end;
-} peak;
 
 typedef struct chromosomes {
   int order;
