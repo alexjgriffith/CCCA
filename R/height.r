@@ -79,6 +79,42 @@ getPileUp<-function(file,bed,chroms,peakLength){
     #NULL
 }
 
+
+#' @export
+getPeakDensity<-function(file,bed,chroms,peakLength,width){
+    start<-as.integer(as.character(bed$start))
+    end<-as.integer(as.character(bed$end))
+    peaknum<-as.integer(peakLength)
+    score<-as.integer(rep(0,peakLength*width))
+    results<-.C("peakDensity",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
+    matrix(results$score,ncol=width)
+}
+
+#' @export
+peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=FALSE){
+    for(file in rawdata){
+        if(! file.exists(file)){
+            stop("Can't find file ",file,".")
+            }
+        if(verbose)
+            print(paste("# Raw data file ",file," was found.",sep=""))
+    }
+    peakLength<-length(data$chr)
+
+    chroms<-as.character(data$chr)
+    if(n>0){
+        if(clust==FALSE)
+            cs<-makeForkCluster(n,renice=0)
+        else
+            cs<-clust
+        ret<-matrix(unlist(parLapply(cs,rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)
+        if(clust==FALSE)
+            stopCluster(cs)
+    }else{
+    ret<-lapply(rawdata,getPileUp,data,chroms,peakLength,width)}
+    ret}
+
+
 #' PileUp
 #'
 #' Generates a pile up matrix from a unified set of peaks and a list of raw data sets

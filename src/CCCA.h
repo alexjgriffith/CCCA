@@ -28,6 +28,14 @@ void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, 
 void generateFasta(char **sourceFasta,char **indexFasta,char ** chrs, int * starts, int * ends,int *length, int * width,char ** fastadata);
 int generateIndex(char ** sourceFasta,char ** indexFasta);
 
+// hrange.c
+void rheight(char * filename,peak * peaks,int length, peak *** scores,int ** heights);
+
+int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn);
+
+void  peakDensity(char ** filename,char ** chro,int *start,
+	    int *end,int *length,int *scoresOut){
+
 #ifndef CME_
 static R_NativePrimitiveArgType read_bed_t[]={STRSXP,STRSXP,INTSXP,INTSXP};
 static R_NativePrimitiveArgType file_length_t[]={STRSXP,INTSXP};
@@ -41,6 +49,8 @@ static R_NativePrimitiveArgType unityOutput_t[]={INTSXP,INTSXP,INTSXP,INTSXP,INT
 static R_NativePrimitiveArgType generateFasta_t[]={STRSXP,STRSXP,STRSXP,INTSXP,INTSXP,INTSXP,INTSXP,STRSXP};
 static R_NativePrimitiveArgType generateIndex_t[]={STRSXP,STRSXP};
 
+static R_NativePrimitiveArgType peakDensity_t[]={STRSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
+
 static R_CMethodDef cMethods[]={
 {"read_bed",(DL_FUNC) &read_bed,4,read_bed_t},
 {"file_length",(DL_FUNC) &file_length,2, file_length_t},
@@ -52,6 +62,7 @@ static R_CMethodDef cMethods[]={
 {"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
 {"generateFasta",(DL_FUNC) &generateFasta,8,generateFasta_t},
 {"generateIndex",(DL_FUNC) &generateIndex,2,generateIndex_t},
+{"peakDensity",(DL_FUNC) &pileup,6, peaKDensity_t},
 {NULL,NULL,0}
   };
 #define CME_
