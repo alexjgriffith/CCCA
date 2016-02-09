@@ -15,6 +15,8 @@ typedef struct peak{
 } peak;
 
 
+
+int printConvertedHeights(int ** collect,peak * temp, int length);
 void rheight(char * filename,peak * peaks,int length, peak *** scores,int ** heights);
 
 int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn);

@@ -8,16 +8,22 @@ void peakDensity(char ** filename,char ** chro,int *start,
   int * lengths= malloc(*length*sizeof(int));
   peak ** scores= malloc(*length*sizeof(int*));
   int ** collect=malloc(*length*sizeof(int*));
+
   buildPeaks(chro,start,end,*length,&temp);
+  //Rprintf("out\n");
+  //Rprintf("%d\n",start[0]);
+  //Rprintf("%d\n",temp[0].start);
   for(i=0;i<*length;i++){
     lengths[i]=0;
     scores[i]=malloc(100*sizeof(peak));    
     collect[i]=malloc((temp[i].end-temp[i].start) *sizeof(peak));
   }
   //printf("Allocated\n");
+
   rheight(*filename,temp,*length,&scores,&lengths);
+
   convertHeights(temp,*length, scores, lengths, &collect);
-  //printConvertedHeights( collect, temp, length);
+  //printConvertedHeights( collect, temp, *length);
   int width=temp[0].end-temp[0].start;
   for(i=0;i<*length;i++){    
     for(j=0;j<width;j++)
@@ -27,13 +33,22 @@ void peakDensity(char ** filename,char ** chro,int *start,
 
 void buildPeaks(char **chr, int * start, int * end , int length, peak ** temp)
 {
-  int i;
-  temp=malloc(sizeof(peak)*length);
+  int i,k;
+  (*temp)=malloc(sizeof(peak)*length);
+
   for(i=0;i<length;i++){
-    strcpy((*temp)[i].chr,chr[i]);
+    k=0;
+    while(chr[i][k]!='\0'){
+      (*temp)[i].chr[k]=chr[i][k];
+      k++;
+    }
+    (*temp)[i].chr[k]='\0';
+
     (*temp)[i].start=start[i];
+
     (*temp)[i].end=end[i];
   }
+  //Rprintf("%s:%d-%d\n",(*temp)[0].chr,(*temp)[0].start,(*temp)[0].end);
 }
 
 void rheight(char * filename,peak * peaks,int length, peak *** scores,int ** heights){
@@ -135,10 +150,23 @@ int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *
       }
       if(height<0)
 	error("Height cannot be less than 0\n");
-      if(k>0 && k< (temp[i].end-temp[i].start)){
+      if(k>=0 && k< (temp[i].end-temp[i].start)){
 	(*collectIn)[i][k]=height;
 
       }
     }
   }
 }
+
+int printConvertedHeights(int ** collect,peak * temp, int length){
+  int i;
+  int j;
+  for(i=0;i<length;i++){
+    Rprintf("%s:%d-%d",temp[i].chr,temp[i].start,temp[i].end);
+    for(j=0;j<(temp[i].end-temp[i].start);j++){
+	Rprintf("%i ",collect[i][j]);      
+    }
+    Rprintf("\n");
+  }
+}
+

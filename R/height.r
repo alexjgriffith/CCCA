@@ -87,11 +87,11 @@ getPeakDensity<-function(file,bed,chroms,peakLength,width){
     peaknum<-as.integer(peakLength)
     score<-as.integer(rep(0,peakLength*width))
     results<-.C("peakDensity",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
-    matrix(results$score,ncol=width)
+    t(matrix(results$score,ncol=peakLength))
 }
 
 #' @export
-peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=FALSE){
+peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=NULL){
     for(file in rawdata){
         if(! file.exists(file)){
             stop("Can't find file ",file,".")
@@ -103,12 +103,12 @@ peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=FALSE){
 
     chroms<-as.character(data$chr)
     if(n>0){
-        if(clust==FALSE)
+        if(is.null(clust))
             cs<-makeForkCluster(n,renice=0)
         else
             cs<-clust
-        ret<-matrix(unlist(parLapply(cs,rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)
-        if(clust==FALSE)
+        ret<-parLapply(cs,rawdata,getPeakDensity,data,chroms,peakLength,width)
+        if(is.null(clust))
             stopCluster(cs)
     }else{
     ret<-lapply(rawdata,getPileUp,data,chroms,peakLength,width)}
@@ -151,7 +151,7 @@ peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=FALSE){
 #'                             end=as.integer(regions[,3])))
 #'   score<-pileUp(data,rawdata,n=22)
 #' @export
-pileUp<-function(data,rawdata,n=0,verbose=FALSE,clust=FALSE){
+pileUp<-function(data,rawdata,n=0,verbose=FALSE,clust=NULL){
     for(file in rawdata){
         if(! file.exists(file)){
             stop("Can't find file ",file,".")
@@ -163,12 +163,12 @@ pileUp<-function(data,rawdata,n=0,verbose=FALSE,clust=FALSE){
 
     chroms<-as.character(data$chr)
     if(n>0){
-        if(clust==FALSE)
+        if(is.null(clust))
             cs<-makeForkCluster(n,renice=0)
         else
             cs<-clust
         ret<-matrix(unlist(parLapply(cs,rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)
-        if(clust==FALSE)
+        if(is.null(clust))
             stopCluster(cs)
     }else{
     ret<-matrix(unlist(lapply(rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)}
