@@ -4,7 +4,7 @@
 \alias{getDistance}
 \title{getDistance}
 \usage{
-getDistance(x, y, one = FALSE)
+getDistance(x, y, one = FALSE, width = 150)
 }
 \description{
 getDistance

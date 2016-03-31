@@ -6,7 +6,20 @@
 \usage{
 ors(inList)
 }
+\arguments{
+\item{inList}{a list of vectors}
+}
+\value{
+the union of the list of vectors
+}
 \description{
 Recursivly finds the union of a list of logicals
+}
+\examples{
+result<-ors(list(c(1,2,3),c(3,4,5)))
+result<-c(TRUE,TRUE,TRUE)
+}
+\seealso{
+~\code{\link{orM} \link{"|"}}
 }
 

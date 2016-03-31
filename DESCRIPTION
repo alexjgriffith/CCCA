@@ -8,10 +8,10 @@ Imports:
     abind,	
     parallel,
     functional,
-    Biostrings,	
-    ggplot2,
-    grid
+    Biostrings
 Suggests:
+    ggplot2,
+    grid,
     httr,
     BSgenome.Hsapiens.UCSC.hg19
 License: BSD

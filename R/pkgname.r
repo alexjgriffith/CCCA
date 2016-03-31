@@ -8,7 +8,7 @@ NULL
 #' @useDynLib CCCA, .registration =TRUE
 #' @import parallel
 #' @import Biostrings
+#' @import functional
 #' @import ggplot2
-#' @import grid
 #' @import abind
 NULL

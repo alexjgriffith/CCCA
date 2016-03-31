@@ -58,33 +58,6 @@ reverseIUPAC<-function(stringIn)
 permutations<-function(lin)
     sort(as.vector(outer(lin,lin,function(x,y) paste(x,y,sep=""))))
 
-# comment this and put it in utils
-unionN<-function(...){
-    a<-list(...)
-    len<-length(a)
-    if( len==0)
-        c()
-    else if(len==1)
-        a[[1]]
-    else if (len==2)
-        union(a[[1]],a[[2]])
-    else if (len >2 )
-        unlist(do.call(unionN,append(list(as.list(union(a[[1]],a[[2]]))),a[3:len])))
-}
-
-# comment this and put it in utils
-intersectN<-function(...){
-    a<-list(...)
-    len<-length(a)
-    if( len==0)
-        c()
-    else if(len==1)
-        a[[1]]
-    else if (len==2)
-        intersect(a[[1]],a[[2]])
-    else if (len >2 )
-        unlist(do.call(intersectN,append(list(as.list(intersect(a[[1]],a[[2]]))),a[3:len])))
-}
 
 
 genEboxPerms<-function(){

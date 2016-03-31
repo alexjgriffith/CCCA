@@ -7,7 +7,7 @@
 \url{https://github.com/alexjgriffith/mulcal}
 }
 \usage{
-pileUp(data, rawdata, n = 0, verbose = FALSE, clust = FALSE)
+pileUp(data, rawdata, n = 0, verbose = FALSE, clust = NULL)
 }
 \arguments{
 \item{data}{A preloaded bed data.frame which includes slots $chro $start $end}

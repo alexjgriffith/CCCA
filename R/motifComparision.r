@@ -52,6 +52,60 @@ getHeights<-function(h,range=c(min(h),max(h))){
 
 #### Efficient comparision of motif locations
 
+#' Find Shared Regions
+#'
+#' Finds the intersection of the motifs and optionaly a subset region
+#' this function is meant to be called after the locations have been
+#' found (i.e. using grep("motif",Sequence,ignore.case=TRUE)
+#' 
+#' @export
+findSharedRegions<-function(lm,lc,n1,n2,reg=NULL){
+    if(is.null(reg)){
+         lM<-intersect(lm[[n1]],lm[[n2]])
+         lC<-intersect(lc[[n1]],lc[[n2]])
+    }
+     else{   
+         lM<-intersect(intersect(lm[[n1]],lm[[n2]]),which(reg))
+         lC<-intersect(intersect(lc[[n1]],lc[[n2]]),which(reg))
+     }
+    union(lM,lC)
+}
+
+#' distanceBetweenMoitfs
+#'
+#' @export
+distanceBetweenMotifs<-function(sequence,motifs,locationsM,locationsC,m1,m2){
+    reg<-addNames(lapply(m1,function(x) findSharedRegions(locationsM,locationsC,x,m2)),sapply(motifs[m1],consenusIUPAC),list=TRUE)
+    md20<-addNames(motifDistances(reg,sequence),paste0(names(reg)),list=TRUE)
+    md20
+}
+
+
+#' motif distances
+#'
+#' @export
+motifDistances<-function(loc,fasta,motifsPre=NULL,width=150){
+    allLoc<-sort(unique(unlist(loc)))
+    if(is.null(motifsPre))
+        motifsPre=names(loc)
+    motifs<-sapply(motifsPre,IUPACtoBase)
+    compl<-sapply(motifs,compliment);
+    shift<-function(x,width) min(abs(x-width))
+    findEbox<-function(ebox,width){
+        mlo<-gregexpr(ebox,fasta[allLoc],ignore.case = TRUE)
+        sapply(mlo ,shift,width)
+    }
+    findMin<-function(x) motifs[which.min(x)]
+    regionsA <-do.call(cbind,lapply(motifs,findEbox,width))
+    regionsB <-do.call(cbind,lapply(compl,findEbox,width))
+    combined<-abind(regionsA,regionsB,along=3)
+    low3D<-Vectorize(function(i,j)min(combined[i,j,]))
+    regions<-outer(seq(dim(combined)[1]),seq(dim(combined)[2]),low3D)
+    distances<-apply(regions,1,findMin)
+    lapply(motifs,function(motif,close){allLoc[motif==close]}, distances)
+}
+
+
 #' Motif histogram
 #'
 #' @examples
@@ -68,24 +122,26 @@ getHeights<-function(h,range=c(min(h),max(h))){
 #' l<-length(cList)
 #' motifHist(mList,cList,locationsM,locationsC,4,l,reg)
 #' @export
- motifHist<-function(data,mList,cList,locationsM,locationsC,n1,n2,reg,width=c(-30,30)){
-    lM<-intersect(intersect(locationsM[[n1]],locationsM[[n2]]),which(reg))
-    lC<-intersect(intersect(locationsC[[n1]],locationsC[[n2]]),which(reg))
-    bM<-c()
-    bC<-c()
-    if(length(lM)>0)
-        bM<-lapply(c(mList[n1],mList[n2]),function(x) lapply(gregexpr(x, data[lM]),as.numeric))
-    if(length(lC)>0)        
-        bC<-lapply(c(cList[n1],cList[n2]),function(x) lapply(gregexpr(x, data[lC]),as.numeric))
-    #h<-c(getDistance(bM[[1]],bM[[2]]),-getDistance(bC[[1]],bC[[2]]))
-    #print(c(mList[n1],consensusIUPAC(mList[n2]))
-    #print(nchar(mList[n1])-nchar(mList[n2]))
-    print(nchar(consenusIUPAC(mList[n1]))-nchar(consenusIUPAC(mList[n2])))
-    h<-c(getDistance(bM[[1]],bM[[2]]),-(nchar(consenusIUPAC(mList[n1]))-nchar(consenusIUPAC(mList[n2]))+getDistance(bC[[1]],bC[[2]])))
-    #h<-getDistance(bM[[1]],bM[[2]])#getDistance(bM[[1]],bM[[2]])#,-getDistance(bC[[1]],bC[[2]]))
-    #if(length(h)>0)
-       # hist(h,breaks=1000,xlim=width,xlab=paste(mList[n1],mList[n2],sep=" - "))
-    h}
+ motifHist<-function(data,mList,cList,locationsM,locationsC,n1,n2,reg,one=FALSE){
+     h<-NA
+     lM<-intersect(intersect(locationsM[[n1]],locationsM[[n2]]),which(reg))
+     lC<-intersect(intersect(locationsC[[n1]],locationsC[[n2]]),which(reg))
+     print(c(length(lM),length(lC)))
+     bM<-c()
+     bC<-c()
+     L<-union(lM,lC)
+     if(length(L)>1){
+         bM<-lapply(c(mList[n1],mList[n2]),function(x) lapply(gregexpr(x, data[L]),as.numeric))
+         bC<-lapply(c(cList[n1],cList[n2]),function(x) lapply(gregexpr(x, data[L]),as.numeric))
+         print(length(which(unlist(sapply(bC,function(x) x[[1]]==-1))))/length(bC))
+         distribution<-Filter(function(x) ! is.na(x),c(getDistance(bM[[1]],bM[[2]],one),-(nchar(consenusIUPAC(mList[n1]))-nchar(consenusIUPAC(mList[n2]))+getDistance(bC[[1]],bC[[2]],one))))
+         h<-distribution[ !(distribution> (-1 *nchar(consenusIUPAC(mList[n1])))
+                                           & distribution< (  nchar(consenusIUPAC(mList[n2]))))]
+     }
+         #h<-c(getDistance(bM[[1]],bM[[2]]),
+         #     (getDistance(bC[[1]],bC[[2]]))*-1)
+     h
+     }
 
 #' @title nearSummit
 #'@export
@@ -103,18 +159,35 @@ nearSummit<-function(data,mList,cList,locationsM,locationsC,n1,reg,width=150)
         bC<-lapply(gregexpr(cList[n1], data[lC]),as.numeric)
         #print("b")
     }
-    h<-c(getDistance(unlist(bM),width),getDistance(unlist(bC),width))
+    h<-Filter(function(x) ! is.na(x),c(getDistance(unlist(bM),width),getDistance(unlist(bC),width)))
     h}
 
 #' @title getDistance
 #' @export
-getDistance<-function(x,y,one=FALSE){
+getDistance<-function(x,y,one=FALSE,width=150){
+   # print(str(x))
+   # print(str(y))
+    is.m1<-function (x){
+        x[[1]]==-1 | is.na(x[[1]])
+    }
+    if(is.m1(x[[1]])&  is.m1(y[[1]])){
+        return (NA)
+    }
     as.numeric(
         unlist(mapply(function(x,y){
-        temp<-outer(x, y,"-")
-        temp<-temp[upper.tri(x=temp,diag=TRUE)]
-        #print(str(temp))
-        if(one ){temp[which.max(abs(temp))]}
+            if(! (is.m1(x[[1]])&  is.m1(y[[1]]))){
+                temp<-outer(x, y,"-")
+                #temp<-temp[upper.tri(x=temp,diag=TRUE)]
+                temp<-unlist(temp)
+            }            
+            if(is.m1(x[[1]])){
+                temp<-y
+            }
+            if(is.m1(y[[1]])){
+                temp<-x
+            }                        
+                                        #print(str(temp))
+            if(one ){temp[which.min(abs(width-temp))]}
         else  {temp}
     },x,y)))}
 
