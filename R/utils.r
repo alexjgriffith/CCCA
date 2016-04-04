@@ -142,6 +142,7 @@ addNames<-function(matrix,colnames,rownames=colnames,list=NULL){
 #' x<-rnorm(100,10,2)
 #' y<-normalize(x)
 #' print(c(mean(y),sd(y)))
+#' @export
 normalize<-function(x){
     (x-mean(x))/(sqrt(var(x)))
 }
