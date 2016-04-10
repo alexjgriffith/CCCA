@@ -7,6 +7,7 @@
 # Author : Alexander Griffith
 # Contact: griffitaj@gmail.com
 
+# multiPlot
 # lzip
 # pass
 # createZip
@@ -28,6 +29,32 @@
 # mWidth
 # mLength
 # modulous
+
+#' Multi Plot
+#'
+#' Takes mutliple ggplots and aranges them using grid.layout. The
+#' result can be saved using standard png and pdf commands.
+#' @param plots A list of plots to be ploted
+#' @param rows The number of rows to plot
+#' @param cols The number of columns to plot
+#' @examples
+#' a<-data.frame(a=runif(100),b=runif(100),x=seq(100))
+#' p<-c(ggplot(a,aes(x=x,y=a))+geom_points(),
+#'      ggplot(a,aes(x=x,y=b))+geom_points())
+#' multiPlot(p,2)
+#' @export
+multiPlot<-function(plots,rows=1,cols=1){
+    if(!require(grid))
+        stop("requires grid. install.packages(\"grid\")")
+    pushViewport(viewport(layout=grid.layout(rows,cols)))
+    for(i in seq(length(plots))){
+        r<-modulous((i-1),cols)+1
+        c<-floor((i-1)/cols)+1
+        print(plots[[i]],vp=viewport(layout.pos.row=c,layout.pos.col=r))
+        if(i>=rows*cols)
+            break
+    }
+}
 
 
 #' List Zip
@@ -144,7 +171,12 @@ addNames<-function(matrix,colnames,rownames=colnames,list=NULL){
 #' print(c(mean(y),sd(y)))
 #' @export
 normalize<-function(x){
-    (x-mean(x))/(sqrt(var(x)))
+    norm<-function(x){
+                      (x-mean(x))/(sqrt(var(x)))}
+    if(is.null(dim(x)))
+        norm(x)
+    else
+        apply(x,2,norm)
 }
 
 #' Make Logical
@@ -233,6 +265,32 @@ orM<-function(mat){
     if(l>2){
         ltemp<-cbind((mat[,1] | mat[,2]),mat[,3:l])
         return ( orM(ltemp))
+    }
+}
+
+#' and for Matrix
+#'
+#' applies the and (&) function accross a matrix recursivly
+#' @seealso ~\code{\link{ors} \link{"&"}}
+#' @param mat input matrix of logicals
+#' @return a vector of logicals
+#' @examples
+#' a<-as.matrix(cbind(c(TRUE,TRUE,TRUE),
+#'                     c(FALSE,TRUE,FALSE)))
+#' result<-orM(a)
+#' result==c(TRUE,TRUE,TRUE)
+#' @export
+andM<-function(mat){
+    l<-dim(mat)[2]
+    if(l==0)
+        return(NULL)
+    if(l==1)
+        return(mat[,1])
+    if(l==2)
+        return(mat[,1] & mat[,2])
+    if(l>2){
+        ltemp<-cbind((mat[,1] & mat[,2]),mat[,3:l])
+        return ( andM(ltemp))
     }
 }
 
@@ -424,4 +482,14 @@ modulous<-function(x,m){
     # t1<-floor(x/m)
     # (x-t1*m)
     x %% m
+}
+
+#' Select Second
+#'
+#' The same as second is common-lisp but applied specificly to columns
+#' @param y
+#' @return the second column of y
+sel2<-function(y){
+    function(x)
+        y[,x]
 }

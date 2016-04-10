@@ -27,7 +27,6 @@ ispalandrome<-function(stringIn){
 #' @examples
 #' characters<-c("A","C","G","T")
 #' pairwiseCombs(characters)
-#' @export
 pairwiseCombs<-function(options){ 
     singleC<-do.call(rbind, as.list(rep(list(combn(options, 1)),2)))
     out1<-cbind(combn(options,2),singleC)

@@ -8,6 +8,9 @@
 # Contact: griffitaj@gmail.com
 #
 # functions:
+# grepMotifs
+# ispalandrome
+# pairwiseCombs
 # IUPACtoBase
 # compliment
 # consenusIUPAC
@@ -15,6 +18,79 @@
 # motifString
 # PWMtoCons
 #
+
+#' Grep Motifs
+#' 
+#' used to find the union of the location of motifs and their compliments
+#' @export
+grepMotifs<-function(stringIn,Sequences){
+    motif<-IUPACtoBase(stringIn)
+    compl<-compliment(motif)
+    mac<-list(motif,compl)
+    unlist(do.call(union, lapply(mac, grep,Sequences,ignore.case=TRUE)))    
+}
+
+#' Is Palandrome
+#' 
+#' Tests if biostring is a palandrome... takes IUPAC caracters
+#' as input and returns a TRUE or FALSE
+#' @param stringIn a string, limited to IUPAC characters
+#' @return TRUE if palandrme FALSE if not
+#' @examples
+#' stringIn<-"CANNTG" # NN E-Box
+#' ispalandrome(stringIn)
+#' > TRUE
+#' stringIn<-"GATTAG" 
+#' ispalandrome(stringIn)
+#' > FALSE
+#' @export
+ispalandrome<-function(stringIn){
+    reverseString<-reverseIUPAC(stringIn)
+    stringIn==reverseString
+}
+
+#' pariwise Combinations
+#'
+#' Takes a list and returns the pairwise combinations of all members
+#' @param options list or cons
+#' @return cbind(lista,listb)
+#' @examples
+#' characters<-c("A","C","G","T")
+#' pairwiseCombs(characters)
+pairwiseCombs<-function(options){ 
+    singleC<-do.call(rbind, as.list(rep(list(combn(options, 1)),2)))
+    out1<-cbind(combn(options,2),singleC)
+    out1[,order(out1[1,])] #orders the output
+}
+
+
+#' reverse IUPAC
+#'
+#' Takes one set of iupac characters and returns the reverse compliment
+#' @param stringIn a string of iupac characters
+#' @return returns a string equal in length to stringIn
+#' @examples
+#' motif<-"CANN"
+#' reverseIUPAC("CANN")
+#' # > NNTG
+#' @export
+reverseIUPAC<-function(stringIn)
+    consenusIUPAC(compliment(IUPACtoBase(stringIn)))
+
+#' Generate Ebox Combinations
+#'
+#' Generates the 10 ebox variations
+#' @export
+genEboxCombs<-function(){
+    permutations<-function(lin)
+        sort(as.vector(outer(lin,lin,function(x,y) paste(x,y,sep=""))))
+    options<-strsplit("ATGC","")[[1]]
+    optcombs<-unique((function(x) apply(cbind(sapply(x,reverseIUPAC),x),1,function(x) sort(x)[1] ) )(permutations(options)))
+    unlist(lapply(optcombs,function(x) paste("CA",x,"TG",sep="")))
+}
+
+
+
 
 #' Turn IUPAC lables into basic neucleotides
 #'
@@ -106,8 +182,20 @@ compliment<-function(string){
 #' consenusIUPAC( IUPACtoBase("ARYS"))
 #' # [1] "ARYS"
 consenusIUPAC<-function(mstring){
-        IUPACCharacters<-list("A","C","G","T",c("A","G"),c("C","T"),c("C","G"),c("A","T"),c("G","T"),c("A","C"),c("C","G","T"),c("A","G","T"),c("A","C","T"),c("A","C","G"),c("A","C","G","T"))
-        names(IUPACCharacters)<-c("A","C","G","T","R","Y","S","W","K","M","B","D","H","V","N")
+        IUPACCharacters<-list("A","C","G","T",
+                              c("A","G"),
+                              c("C","T"),
+                              c("C","G"),
+                              c("A","T"),
+                              c("G","T"),
+                              c("A","C"),
+                              c("C","G","T"),
+                              c("A","G","T"),
+                              c("A","C","T"),
+                              c("A","C","G"),
+                              c("A","C","G","T"))
+        names(IUPACCharacters)<-c("A","C","G","T","R","Y",
+                                  "S","W","K","M","B","D","H","V","N")
         IUPACc<-unlist(lapply(IUPACCharacters,paste,collapse=""))
         x<-splitBlist(mstring)
         paste(lapply(x,function(x)names(which(x==IUPACc))),collapse="")}
