@@ -130,9 +130,9 @@ peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=NULL){
 #' rawdata<-apply(cats,1,function(x){paste(prefix,x,"/",x,suffix,sep="")})
 #' # Apply pileUp to peaks found using MACS
 #' data<-hg19Sort(loadBedFile(file))
-#' score<-pileUp(data,rawdata,n=22)
+#' # score<-pileUp(data,rawdata,n=22)
 #' # cluster the data sets based on the read hights of the peaks
-#' temp<-cor(score)
+#' # temp<-cor(score)
 #' rownames(temp)<-t(cats)
 #' colnames(temp)<-t(cats)
 #' pdf("test.pdf")
@@ -149,7 +149,7 @@ peakDensity<-function(data,rawdata,n=0,width,verbose=FALSE,clust=NULL){
 #'   data<-hg19Sort(data.frame(chro=regions[,1],
 #'                             start=as.integer(regions[,2]),
 #'                             end=as.integer(regions[,3])))
-#'   score<-pileUp(data,rawdata,n=22)
+#'   #score<-pileUp(data,rawdata,n=22)
 #' @export
 pileUp<-function(data,rawdata,n=0,verbose=FALSE,clust=NULL){
     for(file in rawdata){
