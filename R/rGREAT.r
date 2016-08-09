@@ -87,13 +87,14 @@ geneRanges<-function(chrom,tss,strand,proxUp,proxDown,distal,
         else
             cbind(x[2],x[1])
     }
-    if( ! levels(strand)==c("+","-")){
+    if( ! all(levels(strand)==c("+","-"))){
         warning("Ensure that : levels(strand) == c(\"+\",\"-\")")
         return(NULL)
     }
     # Make sure that "+" strand -> -1 and "-" strand -> 1
     # Required to acuratly define basal domains
     levels(strand)=c(-1,+1)
+    strand<-as.numeric(strand)
     # Extend each gene TSS by the upper proximal distance and 
     # lower proximal distance. (the direction is dependent on the 
     # strandedness of the gene) and then unsure that the upper and
