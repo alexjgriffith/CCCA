@@ -46,7 +46,7 @@ findMotifDist<-function(fasta,motifa,motifb,loc,...){
         a<-cbind(which(loc),
                  selectRegionsByDistance(IUPACtoBase(motifa),
                                          IUPACtoBase(motifb),
-                                         loc,env$fasta))
+                                         loc,fasta))
         b<-a[!is.na(a[,2]),]
         b    
     }    
