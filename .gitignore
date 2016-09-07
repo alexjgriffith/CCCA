@@ -1,9 +1,9 @@
 ..Rcheck/
 .Rproj.user
 .Rhistory
-.RData
-.o
-.so
+*.RData
+*.o
+*.so
 *#
 #*
 /inst/deps
