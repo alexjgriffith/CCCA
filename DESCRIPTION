@@ -1,6 +1,6 @@
 Package: CCCA
 Title: Cross Condition ChIP Analyisis
-Version: 0.0.0.9000
+Version: 0.1.0
 Author: Alexander Griffith [aut, cre],
 Maintainer: Alexander Griffith <grifita@gmail.com>
 Description: Cross Condition ChIP Analysis (CCCA) combines ChIP seq data
