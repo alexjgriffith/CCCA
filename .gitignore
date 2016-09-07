@@ -1,3 +1,4 @@
+..Rcheck/
 .Rproj.user
 .Rhistory
 .RData
@@ -5,5 +6,6 @@
 .so
 *#
 #*
+/inst/deps
 /inst/data
 *~
