@@ -9,8 +9,76 @@ Alexander Griffith, University of Ottawa
 The current **develop** branch is a subset of the functionality of **v0.1.0** the notes presented here apply only to the develop branch, and not all of the functionality is fully tested. 
 
 ___
+### To Update for v0.2.0
 
+```R
+## Functions that will be exported
+## Ectract the functionality for these functions from the subset of
+## CCCA v0.1.0
+readPeaksXLS # copy
+readPeaksBed # copy
+makeAFS #copy
+print.AFS #new
+plot.AFS # new : plot pairwise correlation and pairwise overlap
+
+makeUDM ## copy from pileUp
+print.UDM # new :plot pairwise correlation 
+
+
+## Class prc
+## list normData eigenVecotrs cat2cont categories colours
+
+prc # copy: pca (include categories for contributions)
+plot.prc # new
+print.prc # new
+summary.prc # new
+normalize.prc #new
+
+contributions.prc # copy and simplify 
+falseP.prc # new ish
+
+clust.prc # new (this is going to be difficult)
+summary.prcClust # new
+print.prcClust # new
+
+## Class ccca
+## The class that hold the results of the analysis
+ccca 
+
+print.ccca # new
+addReg.ccca # new to replace generate
+
+addFasta.ccca # copy make sure to require('Biostrings') and class(genome) == BSGenome
+
+```
+
+---
 ### Installing CCCA
+
+Install Dependencies
+
+```R
+library(parallel)
+
+cs<-makeForkCluster(4)
+packs<-list(
+    "devtools",
+    "functional",
+	"abind",
+	"ggplot2",
+	"grid",
+	"httr" )
+
+parLapply(cs,packs,function(x) 
+install.packages(x,type="source",repos='http://cran.us.r-project.org'))
+
+   
+source("http://bioconductor.org/biocLite.R")
+biocLite("Biostrings")
+biocLite("BSgenome.Hsapiens.UCSC.hg19")
+
+
+```
 
 From within R
 ```R
@@ -207,10 +275,26 @@ cluster(motifs,
 ```
 
 #### Composite Motifs
+```R
+library(mT1)
+library(Biostrings)
+library(BSgenome.Hsapiens.UCSC.hg19)
+
+fasta<-mT1_fasta
+motifs<-unique(c("CANNTG","GATAA", mT1_jaspar[1:100]))
+
+obj<-mT1(fasta,motifs)
 
 
-
+```
 #### Gene Assosiation
+```R
+
+library(RGREAT)
+load("RefSeq.hg19.csv")
+
+```
+
 
 #### Gene Ontology 
 
