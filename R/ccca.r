@@ -48,9 +48,9 @@ addReg.ccca<-function(){
 }
 
 
-#' @method normalize ccca
+#' @method contribution ccca
 #' @export
-contributions.ccca<-function(prc,swapFun=function(string)string,swapColour=NULL,...){
+contribution.ccca<-function(prc,swapFun=function(string)string,swapColour=NULL,...){
     PC<-ccca$prc$eigenVectors
     over<-ccca$afs
     CCCA:::._stackedContrib(PC, "contrib2",CCCA:::._mergeFun(over[4:dim(over)[2]],swapFun),swapFun=swapFun,colourOveride =swapColour,...)

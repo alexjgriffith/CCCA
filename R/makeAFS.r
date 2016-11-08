@@ -7,7 +7,7 @@
 #' @param format The format to be imported, either bed or xls
 #' @param pvalue The pvalue cut off to be applied, only valid with xls format
 #' @param width The min width summits must be from one another in order to cluster
-#' @return
+#' @return The AFS generated from the input peak lists <chr><summit><catagory>
 #' @examples
 #' peakList<-c("sample1.xls","sample2.xls","sample3.xls")
 #' categories<-c("s1","s2","s3")
@@ -17,7 +17,7 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
     if(format!="xls" & !is.null(pvalue)){
         stop("to have a pvalue cut off the file format must be in MACS XLS output")
     }
-    if(! format in c("xls","bed") ){
+    if(! format %in% c("xls","bed") ){
         stop("format options are (xls|bed)")
     }
     loadBedFun<-switch(format,

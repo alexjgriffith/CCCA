@@ -127,3 +127,41 @@
         return ( orM(ltemp))
     }
 }
+
+
+#' PCA tp Matrix Transformation
+#' 
+#' @param x the normalized input data and eigenvectors 
+#' @param n normalizing function applied to the eigevectors
+#' @return the dot product of the normalized data and eigenvectors
+._pca2Matr<-function(x,n=pass){
+    if(is.null(x$normData) | is.null(x$eigenVectors))
+        stop("x needs variables normData and eigenVectors")
+                                        # need to add tests for dimensions
+    t(x$normData)%*%apply(x$eigenVectors,2,n)
+}
+
+
+._plotPCMatAux<-function(df,pcs,categories,colours,sdf=NULL,text=NULL,legend=NULL,label=NULL,blank=NULL){
+    if(is.null(sdf))
+       postext<-df
+   else
+       postext<-shiftCols(df$x,df$y,categories,sdf)
+    p<-ggplot(df,aes(x=x,y=y,col=Conditions,label=categories))+geom_point(size=10,shape=20)+theme_bw()+ylab(pcs[2])+xlab(pcs[1])
+    if(! is.null(blank))
+    p<-p+ theme(axis.line=element_blank(),axis.text.x=element_blank(),
+          axis.text.y=element_blank(),axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),legend.position="none",
+          panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),plot.background=element_blank())
+    if(! is.null(label))
+        p<-p+ylab("")+xlab("")
+    if(! is.null(text))
+        p<-p+geom_text(x=postext$x,y=postext$y,show_guide=F,size=5)
+    if(! is.null(colours))
+        p<-p+scale_color_manual(values=colours)
+    if(is.null(legend))
+        p<-p+theme(legend.position="none")+scale_x_continuous(breaks=NULL)+scale_y_continuous(breaks=NULL)
+    p
+}

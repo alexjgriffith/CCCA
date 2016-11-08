@@ -3,6 +3,26 @@ contribution<-function(x,...){
     UseMethod("contribution",x)
 }
 
+#' Contribution Plot
+clust<-function(x,...){
+    UseMethod("clust",x)
+}
+
+#' Normalize Plot
+normalize<-function(x,...){
+    UseMethod("normalize",x)
+}
+
+#' AddReg Plot
+addReg<-function(x,...){
+    UseMethod("addReg",x)
+}
+
+#' AddReg Plot
+addFasta<-function(x,...){
+    UseMethod("addFasta",x)
+}
+
 
 #' @rdname contribution
 #' @method contribution default

@@ -51,8 +51,10 @@ makePRC<-function(data,norm="qn"){
 
 #' @method plot prc
 #' @export
-plot.prc<-function(x,...){
-    
+plot.prc<-function(prc,pcs=pcs,cats=categories,swap=swapFun,swapCat=swapFunB,swapCol=swapFunC,...){
+    matr<-CCCA:::._pca2Matr(prc)
+    df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],categories=swapFun(categories),Conditions=swapFunB(categories))
+    CCCA:::._plotPCMatAux(df,pcs,categories,swapFunC(unique(sort(swapFunB(categories)))),...)    
 }
 
 #' @method print prc
@@ -77,6 +79,6 @@ normalize.prc<-function(x,...){
 
 #' @method clust prc
 #' @export
-clust.prc<-function(x,){
+clust.prc<-function(x,...){
     
 }
