@@ -15,13 +15,13 @@ ___
 ## Functions that will be exported
 ## Ectract the functionality for these functions from the subset of
 ## CCCA v0.1.0
-readPeaksXLS # copy
-readPeaksBed # copy
-makeAFS #copy
+readPeaksXLS # copy (writen)
+readPeaksBed # copy (writen)
+makeAFS #copy (writen)
 print.AFS #new
 plot.AFS # new : plot pairwise correlation and pairwise overlap
 
-makeUDM ## copy from pileUp
+makeUDM ## copy from pileUp (writen)
 print.UDM # new :plot pairwise correlation 
 
 
@@ -40,6 +40,9 @@ falseP.prc # new ish
 clust.prc # new (this is going to be difficult)
 summary.prcClust # new
 print.prcClust # new
+
+## 
+makeSwapFun
 
 ## Class ccca
 ## The class that hold the results of the analysis

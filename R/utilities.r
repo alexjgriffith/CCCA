@@ -58,3 +58,72 @@
     reverseSequence<-unlist(apply(sequence,2,order))
     ranks<-apply(matrix(unlist(lapply(seq(shape[2]),function(i,x,y) x[y[,i],i],data,sequence)),ncol=shape[2]),1,sum)/shape[2]
     apply(reverseSequence,2,function(x) ranks[x])}
+
+
+#' Normalize
+#'
+#' privides unit normalization for numeric x
+#' @param x numeric input
+#' @return numeric of length x
+#' @examples
+#' x<-rnorm(100,10,2)
+#' y<-normalize(x)
+#' print(c(mean(y),sd(y)))
+._normalize<-function(x){
+    norm<-function(x){
+                      (x-mean(x))/(sqrt(var(x)))}
+    if(is.null(dim(x)))
+        norm(x)
+    else
+        apply(x,2,norm)
+}
+
+
+#' Merge Fun
+#'
+#' 
+._mergeFun<-function(ma,swapFun=swapFun){
+    newCols<-swapFun(colnames(ma))
+    #print(newCols)
+    unc<-unique(newCols)
+    outL<-c()
+    for(i in unc){
+        pos<-which(i==newCols)
+        #print(pos)
+        #print(data.frame(c=colnames(ma)[pos],v=do.call(rbind,lapply(pos,function(x) sum(ma[,x])))))
+        if(length(pos)>1)
+            temp<-CCCA:::._orM(ma[,pos])
+        else{
+            temp<-ma[,pos]
+            #print(sum(temp))
+        }
+        outL<-cbind(outL,temp)}
+    
+    colnames(outL)<-unc
+    outL
+}
+
+#' orM
+#'
+#' applies the or (|) function accross a matrix recursivly
+#' @seealso ~\code{\link{ors} \link{"|"}}
+#' @param mat input matrix of logicals
+#' @return a vector of logicals
+#' @examples
+#' a<-as.matrix(cbind(c(TRUE,TRUE,TRUE),
+#'                     c(FALSE,TRUE,FALSE)))
+#' result<-orM(a)
+#' result==c(TRUE,TRUE,TRUE)
+._orM<-function(mat){
+    l<-dim(mat)[2]
+    if(l==0)
+        return(NULL)
+    if(l==1)
+        return(mat[,1])
+    if(l==2)
+        return(mat[,1] | mat[,2])
+    if(l>2){
+        ltemp<-cbind((mat[,1] | mat[,2]),mat[,3:l])
+        return ( orM(ltemp))
+    }
+}

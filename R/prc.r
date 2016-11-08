@@ -18,8 +18,18 @@
 #' \item{none}{ no normalization}
 #' }
 #' @return list($normData,$eigenVectors)
+#' @examples
+#' dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
+#' peakList<-c("sample1.xls","sample2.xls","sample3.xls")
+#' categories<-c("s1","s2","s3")
+#' afs<-makeAFS(peakList,categories,pvalue=20)
+#' udm<-makeUDM(afs,dataSets)
+#' prc<-makePRC(udm)
+#' summary(prc)
+#' plot(prc)
+#' plot(clust(prc))
 #' @export
-makrPRC<-function(data,norm="qn"){
+makePRC<-function(data,norm="qn"){
     #print(head(data))
     if( is.function(norm))
        normData<-norm(data)
@@ -31,10 +41,42 @@ makrPRC<-function(data,norm="qn"){
                normCol=apply(data,2, function(x) (x-mean(x))/var(x)),
                rowsVarOne=t(apply(data,1, function(x) x/var(x))),
                colsVarOne=apply(data,2, function(x) x/var(x)),
-               qn=CCCA::._qn(data),
+               qn=CCCA:::._qn(data),
                none=data,
                data)
     #print(head(normData))
     prc<-prcomp(t(normData))$rotation
     list(normData=normData,eigenVectors=prc)
+}
+
+#' @method plot prc
+#' @export
+plot.prc<-function(x,...){
+    
+}
+
+#' @method print prc
+#' @export
+print.prc<-function(x,...){
+
+}
+
+#' @method summary prc
+#' @export
+summary.prc<-function(x,...){
+    
+}
+
+#' @method normalize prc
+#' @export
+normalize.prc<-function(x,...){
+    apply(x$eigenVector,1,CCCA:::._normalize)
+}
+
+
+
+#' @method clust prc
+#' @export
+clust.prc<-function(x,){
+    
 }

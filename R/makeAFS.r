@@ -10,6 +10,8 @@
 #' @return
 #' @examples
 #' peakList<-c("sample1.xls","sample2.xls","sample3.xls")
+#' categories<-c("s1","s2","s3")
+#' afs<-makeAFS(peakList,categories,pvalue=20)
 #' @export
 makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
     if(format!="xls" & !is.null(pvalue)){
@@ -22,7 +24,7 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
                        xls=function(a,b=a){readPeaksXLS(a,b,pvalue)},
                        bed=readPeaksBed)
     ## Load each of th files
-    files<-lapply( CCCA::._mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))
+    files<-lapply( CCCA:::._mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))
     ## Unify the peaks based on width (default 700)
     testBed<-unifyBedFile(
         sortDataFrame(do.call(rbind,Filter(function(x) ! is.null(x), files)),"chr","summit"),width)
