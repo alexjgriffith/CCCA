@@ -17,7 +17,8 @@ Imports:
 Suggests:    
     grid,
     httr,
-    BSgenome.Hsapiens.UCSC.hg19
+    BSgenome.Hsapiens.UCSC.hg19,
+    data.table,
 License: GPL
 LazyData: true
 RoxygenNote: 5.0.1

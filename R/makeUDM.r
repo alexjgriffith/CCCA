@@ -48,5 +48,19 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
 #' @method print UDM
 #' @export
 print.UDM<-function(x,...){
+    if(!require('data.table'))
+        print(x)
+    else
+        print(as.data.table(x))
+}
 
+#' @method plot UDM
+#' @export
+plot.UDM<-function(x,...){
+    n<-dim(x)[2]
+    names<-colnames(x)
+    par(mfrow=c(n,n))
+    for( i in seq(n))
+        for( j in seq(n))
+            plot(x[,c(i,j)],main=paste0(names[i]," & ",names[j]))
 }

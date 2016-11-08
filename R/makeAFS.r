@@ -9,7 +9,10 @@
 #' @param width The min width summits must be from one another in order to cluster
 #' @return The AFS generated from the input peak lists <chr><summit><catagory>
 #' @examples
-#' peakList<-c("sample1.xls","sample2.xls","sample3.xls")
+#' peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
+#'   function(file){
+#'     system.file("extdata", file, package = "CCCA")
+#'   })
 #' categories<-c("s1","s2","s3")
 #' afs<-makeAFS(peakList,categories,pvalue=20)
 #' @export
@@ -41,14 +44,9 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
 #' @method print AFS
 #' @export
 print.AFS<-function(x,...){
-    cats<-dim(x)[2]-3
-    nump<-dim(x)[1]
-    print(paste0("AFS: ",))
-    print(main)
+    if(!require('data.table'))
+        print(x)
+    else
+        print(as.data.table(x))
 }
 
-#' @method plot AFS
-#' @export
-plot.AFS<-function(x,...){
-
-}

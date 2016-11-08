@@ -5,8 +5,15 @@
 #' @param categories the moniker to be attached to each of the data set files
 #' @return a list of class ccca containing afs,udm, and prc
 #' @examples
-#' dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
-#' peakList<-c("sample1.xls","sample2.xls","sample3.xls")
+#' 
+#' dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
+#'   function(file){
+#'     system.file("extdata", file, package = "CCCA")
+#'   })
+#' peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
+#'   function(file){
+#'     system.file("extdata", file, package = "CCCA")
+#'   })
 #' categories<-c("s1","s2","s3")
 #' ccca<-ccca(dataSets,peakLists,categories)
 #' ## Find dimensions that seperate data sets of interest
@@ -37,27 +44,45 @@ ccca<-function(dataSets,peakLists,categories){
     ret
 }
 
-#' @method print ccca
-#' @export
-print.ccca<-function(){
-}
+## #' @method print ccca
+## #' @export
+## print.ccca<-function(){
+## }
 
 #' @method addReg ccca
 #' @export
-addReg.ccca<-function(){
+addReg.ccca<-function(x, tag,logic,...){
+    if(is.null(x$reg))
+        x$reg<-cbind(logic)
+    else{
+        if(length(logic)!=dim(x$reg)[1])
+            stop("Reg length not equal to region being added")
+        x$reg<-cbind(x$reg,tag=logic)
+    }
+    x
 }
 
 
 #' @method contribution ccca
 #' @export
-contribution.ccca<-function(prc,swapFun=function(string)string,swapColour=NULL,...){
-    PC<-ccca$prc$eigenVectors
+contribution.ccca<-function(prc,i,swapFun=function(string)string,swapColour=NULL,...){
+    PC<-ccca$prc$eigenVectors[,i]
     over<-ccca$afs
     CCCA:::._stackedContrib(PC, "contrib2",CCCA:::._mergeFun(over[4:dim(over)[2]],swapFun),swapFun=swapFun,colourOveride =swapColour,...)
 }
 
 #' @method addFasta ccca
 #' @export
-addFasta.ccca<-function(ccca,genome,...){
+addFasta.ccca<-function(ccca,genome,width=200...){
     require('Biostrings')
+    if (is.null(ccca$afs$chr) | is.null(ccca$afs$start)) 
+        stop("addFasta env list must contain afs$chr afs$start and afs$end")
+    if (!require(Biostrings)) 
+        stop(paste0("Must install the Biostrings package from Bioconductor.\n",
+                    "source(\"https://bioconductor.org/biocLite.R\"); biocLite(\"Biostrings\")"))
+    ccca$fasta <- getSeq(genome, ccca$afs$chr, start = (ccca$afs$start + 
+                                                      ccca$afs$end)/2 - floor(width/2), width = width)
+    ccca
 }
+
+

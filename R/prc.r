@@ -1,4 +1,4 @@
-#' PCA
+#' make PRC
 #'
 #' Normalizes a data matrix and then preformes quantile normalization
 #' using \code{prcomp} on the transform of the normalized data. The
@@ -19,18 +19,15 @@
 #' }
 #' @return list($normData,$eigenVectors)
 #' @examples
-#' dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
-#' peakList<-c("sample1.xls","sample2.xls","sample3.xls")
-#' categories<-c("s1","s2","s3")
-#' afs<-makeAFS(peakList,categories,pvalue=20)
+#' dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
+#'   function(file){
+#'     system.file("extdata", file, package = "CCCA")
+#'   })
 #' udm<-makeUDM(afs,dataSets)
 #' prc<-makePRC(udm)
-#' summary(prc)
 #' plot(prc)
-#' plot(clust(prc))
 #' @export
 makePRC<-function(data,norm="qn"){
-    #print(head(data))
     if( is.function(norm))
        normData<-norm(data)
     else
@@ -44,7 +41,6 @@ makePRC<-function(data,norm="qn"){
                qn=CCCA:::._qn(data),
                none=data,
                data)
-    #print(head(normData))
     prc<-prcomp(t(normData))$rotation
     list(normData=normData,eigenVectors=prc)
 }
@@ -57,17 +53,15 @@ plot.prc<-function(prc,pcs=pcs,cats=categories,swap=swapFun,swapCat=swapFunB,swa
     CCCA:::._plotPCMatAux(df,pcs,categories,swapFunC(unique(sort(swapFunB(categories)))),...)    
 }
 
-#' @method print prc
-#' @export
-print.prc<-function(x,...){
+## #' @method print prc
+## #' @export
+## print.prc<-function(x,...){
+## }
 
-}
-
-#' @method summary prc
-#' @export
-summary.prc<-function(x,...){
-    
-}
+## #' @method summary prc
+## #' @export
+## summary.prc<-function(x,...){    
+## }
 
 #' @method normalize prc
 #' @export
@@ -75,10 +69,7 @@ normalize.prc<-function(x,...){
     apply(x$eigenVector,1,CCCA:::._normalize)
 }
 
-
-
-#' @method clust prc
-#' @export
-clust.prc<-function(x,...){
-    
-}
+## #' @method clust prc
+## #' @export
+## clust.prc<-function(x,...){    
+## }

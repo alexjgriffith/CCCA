@@ -141,7 +141,9 @@
     t(x$normData)%*%apply(x$eigenVectors,2,n)
 }
 
-
+#' Plot PCA Matrix Auxilary
+#'
+#' 
 ._plotPCMatAux<-function(df,pcs,categories,colours,sdf=NULL,text=NULL,legend=NULL,label=NULL,blank=NULL){
     if(is.null(sdf))
        postext<-df
@@ -165,3 +167,67 @@
         p<-p+theme(legend.position="none")+scale_x_continuous(breaks=NULL)+scale_y_continuous(breaks=NULL)
     p
 }
+
+
+#' genSwapFun
+#' 
+#' takes two equal length vectors and returns a function that maps
+#' each input to its corresponding output. This can be used to alias
+#' vectors if the mapping is known beforehand.
+#' Note: the input vector must consist of strings. 
+#' @param ouput The output mapping
+#' @param input The input mapping
+#' @return A function that maps each input to a single output
+#' and returns a string
+#' @examples
+#' swapFun<-genSwapFun(c("a","b"),c(1,2))
+#' swapFun("a")==1
+#' swapFun("b")==2
+#' swapFun("c")==NA
+._genSwapFun<-function(input,output){
+    # old name getSwapCats
+    if(!length(output)==length(input))
+        warning("output and input lengths are not equal")
+    if(! is.character(input))
+        warning("inputs must be a character, i.e. a vector of strings")
+    names(output)<-input
+    function(x){as.character(unlist(lapply(x,function(x) output[x])))}
+}
+
+
+#' Pass
+#'
+#' This function is used as a placeholder when a filter is required.
+#' @param x variable
+#' @return x unchanged
+#' @examples
+#' a<-1
+#' pass(a) #> 1
+._pass<-function(x) x
+
+#' Create Zip
+#'
+#' takes a vector and retuns a list of pairs
+#' @param x even length input vector
+#' @return a list of pairs
+#' @examples
+#' createZip(c(1,2,3,4,5,6)) == list(c(1,2),c(3,4),c(5,6))
+._createZip<-function(x){
+    is.even<-function(x)
+        (length(x) %% 2) ==0
+    if(! is.even(x)){
+        warning("length(x) is not even.")
+        # x<-rbind(x,x) # This option created too many issues.
+                        # Just let it fail.
+    }
+    Map(function(i,j)cbind(x[i],x[j]),seq(1,length(x),2),seq(2,length(x),2))
+}
+
+#' Split Zip
+#'
+#' Extracts the first and second values from a list of pairs.
+#' @examples
+#' splitZip(createZip(c(1,2,3,4,5,6))) == list(c(1,3,5),c(2,4,6))
+._splitZip<-function(inList)
+    list(sapply(inList,"[",1),sapply(inList,"[",2))
+
