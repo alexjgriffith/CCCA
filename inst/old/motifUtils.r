@@ -254,6 +254,8 @@ motifString<-function(x){
                 ),collapse="")
 }
 
+
+
 #' PWM to Consensus Motif
 #'
 #' A caller for ConsesnusIUPAC, Recives PWM and returns a consusensus motif

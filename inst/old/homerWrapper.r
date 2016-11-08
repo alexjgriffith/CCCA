@@ -1,4 +1,5 @@
-#!/usr/bin/env R
+
+                                        #!/usr/bin/env R
 #
 # This file is part of CCCA,
 # http://github.com/alexjgriffith/CCCA/, 
@@ -32,6 +33,25 @@ homerWrapper<-function(sequences,foreground,background,homerLocation,motifsFile=
     writeXStringSet(sequences[foreground],treatmentFile)
     writeXStringSet(sequences[background],controlFile)
     cmd<-paste(homerLocation, "denovo -i ",treatmentFile," -b ",controlFile,opts," > ",motifsFile,sep=" ")
+    system(cmd)
+    loadPWM(motifsFile,"homer")
+}
+
+
+homerWrapperKnown<-function(sequences,foreground,background,homerLocation,motifs,motifsFile=FALSE,opts=""){
+    if (!is.character(motifsFile))
+        motifsFile<-tempfile()
+    treatmentFile<-tempfile()
+    controlFile<-tempfile()
+    motifInFile<-tempfile()
+    
+    ##write.table(motifs,file=motifInFile,quote=FALSE,col.names=FALSE,row.names=FALSE)
+    cat(motifList2Homer(motifs),file=motifInFile)
+    print(read.delim(motifInFile,sep="\n"))
+    writeXStringSet(sequences[foreground],treatmentFile)
+    writeXStringSet(sequences[background],controlFile)
+    cmd<-paste(homerLocation, "known -i ",treatmentFile," -b ",controlFile," -m ",motifInFile," ",opts," > ",motifsFile,sep=" ")
+    print(cmd)
     system(cmd)
     loadPWM(motifsFile,"homer")
 }

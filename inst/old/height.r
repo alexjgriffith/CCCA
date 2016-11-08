@@ -19,7 +19,8 @@
 loadBedFile<-function(file){
     file<-normalizePath(file)
     if(!file.exists(file)){
-        sprintf("Can't find file %s.",file)}
+        stop(paste0("Can't find file: ",file))
+    }
     else{
         fileLength<-as.integer(.C("file_length",file,stringLength=integer(1))[[2]])
         results<-.C("read_bed",file,chro=character(fileLength),start=integer(fileLength),end=integer(fileLength))
