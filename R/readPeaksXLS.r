@@ -11,7 +11,7 @@
 #' @export
 readPeaksXLS<-function(file,name=file,pvalue=0){
     bedData<-read.table(file,header=TRUE,skip="#")
-    bedData<-bedData[bedData$X.log10.pvalue>pValue,]
+    bedData<-bedData[bedData$X.log10.pvalue>pvalue,]
     if(dim(bedData)[1]>0){
         ret<-data.frame(bedData$chr,bedData$abs_summit,name)
         colnames(ret)<-c("chr","summit","name")

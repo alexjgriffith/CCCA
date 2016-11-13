@@ -24,7 +24,10 @@ The AFS generated from the input peak lists <chr><summit><catagory>
 Take a list of peaks and create a unified set.
 }
 \examples{
-peakList<-c("sample1.xls","sample2.xls","sample3.xls")
+peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
+  function(file){
+    system.file("extdata", file, package = "CCCA")
+  })
 categories<-c("s1","s2","s3")
 afs<-makeAFS(peakList,categories,pvalue=20)
 }

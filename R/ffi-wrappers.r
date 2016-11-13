@@ -1,3 +1,38 @@
+#' Compare multiple ChIP data sets across experimental conditions
+#'
+#' @docType package
+#' @name CCCA
+#' @author "Alexander Griffith <griffitaj@@gmail.com>"
+NULL
+
+#' @useDynLib CCCA, .registration =TRUE
+#' @import parallel
+#' @import Biostrings
+#' @import functional
+#' @import ggplot2
+#' @import abind
+NULL
+
+
+#' unity output
+#'
+#' Wrapper for the unityOutput C function.
+#' 
+#' @param peaks A 2xN matrix representing overlaping peak regions
+#' @param intChr N length list of chomosomes represented as integers
+#' @param intSummit The summit location 
+#' @param intname The data set or name that the peak come froms in int form
+._unityOutput<-function(peaks,intChr,intSummit,intname){
+    nchr<-length(unique(intname))
+    lpeaks<-dim(peaks)[1]
+    retChr<-integer(lpeaks)
+    retMatrix<-integer(lpeaks*nchr)
+    retSummit<-integer(lpeaks)
+    data<-.C("unityOutput",as.integer(intChr),as.integer(intSummit),as.integer(intname),as.integer(peaks[,1]),as.integer(peaks[,2]),as.integer(lpeaks),as.integer(nchr),chr=retChr,summit=retSummit,matrix=retMatrix)
+    list(chro=data$chr,summit=data$summit,matrix=t(matrix(data$matrix,nrow=nchr)))
+   }
+
+
 #' load Bed File
 #' 
 #' Calls file_length and read_bed from hg19Height.c and returns a 3 column bed file

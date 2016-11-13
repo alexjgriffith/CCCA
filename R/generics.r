@@ -1,7 +1,7 @@
 #' Contribution Plot
 #'
 #' Generates the contribution histogram of the prc along a specified Principle Compoenent
-#' @rdname addMotif
+#' @rdname contribution
 #' @param prc The prc object to be ploted
 #' @param i the PC to plot along
 #' @param swapFun A function mapping the categoies of prc to another set of categories
@@ -23,7 +23,7 @@ contribution<-function(prc,i,swapFun=function(string)string,swapColour=NULL,...)
 ## }
 
 #' Normalize Plot
-#' @param x
+#' @param x Vector or matrix to be normalized
 #' @examples
 #' r<-runif(100,0,100)
 #' normalize(x)
@@ -38,9 +38,9 @@ normalize<-function(x,...){
 
 #' AddReg Plot
 #'
-#' @param x
-#' @param tag
-#' @param logic
+#' @param x The object with a $reg value to be added
+#' @param tag The moniker of the new region to be added
+#' @param logic A logical list of equal length to other regions in x$reg
 #' @export
 addReg<-function(x, tag,logic,...){
     UseMethod("addReg",x)
@@ -48,14 +48,14 @@ addReg<-function(x, tag,logic,...){
 
 #' AddReg Plot
 #'
-#' @param ccca
-#' @param genome
-#' @param width
+#' @param ccca The object used to generate the fasta strings
+#' @param genome A BS.genome object 
+#' @param width The width of fasta files, centered around the summit of each peak in ccca
 #' @return ccca with fasta values
 #' @examples
 #' 
 #' @export
-addFasta<-function(ccca,genome,width=200...){
+addFasta<-function(ccca,genome,width=200,...){
     UseMethod("addFasta",x)
 }
 

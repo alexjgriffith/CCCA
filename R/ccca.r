@@ -33,9 +33,9 @@
 #' s1Fasta<-ccca$fasta[ccca$reg[,"s1.me"]]
 #' @export
 ccca<-function(dataSets,peakLists,categories){
-    dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
-    peakList<-c("sample1.xls","sample2.xls","sample3.xls")
-    categories<-c("s1","s2","s3")
+    ##dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
+    ##peakList<-c("sample1.xls","sample2.xls","sample3.xls")
+    ##categories<-c("s1","s2","s3")
     afs<-makeAFS(peakList,categories,pvalue=20)
     udm<-makeUDM(afs,dataSets)
     prc<-makePRC(udm)
@@ -73,7 +73,7 @@ contribution.ccca<-function(prc,i,swapFun=function(string)string,swapColour=NULL
 
 #' @method addFasta ccca
 #' @export
-addFasta.ccca<-function(ccca,genome,width=200...){
+addFasta.ccca<-function(ccca,genome,width=200,...){
     require('Biostrings')
     if (is.null(ccca$afs$chr) | is.null(ccca$afs$start)) 
         stop("addFasta env list must contain afs$chr afs$start and afs$end")

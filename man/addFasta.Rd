@@ -5,11 +5,24 @@
 \alias{addFasta.default}
 \title{AddReg Plot}
 \usage{
-addFasta(x, ...)
+addFasta(ccca, genome, width = 200, ...)
 
 \method{addFasta}{default}()
 }
+\arguments{
+\item{ccca}{The object used to generate the fasta strings}
+
+\item{genome}{A BS.genome object}
+
+\item{width}{The width of fasta files, centered around the summit of each peak in ccca}
+}
+\value{
+ccca with fasta values
+}
 \description{
 AddReg Plot
+}
+\examples{
+
 }
 

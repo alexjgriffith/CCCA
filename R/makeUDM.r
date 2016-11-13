@@ -9,7 +9,10 @@
 #' @return A matrix of class UDM containing the pile up counts under each peak in the AFS
 #' @examples
 #' library(paralell)
-#' dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
+#' dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
+#'   function(file){
+#'     system.file("extdata", file, package = "CCCA")
+#'   })
 #' cl<-makeForkcluster(3)
 #' UDM<-makeUDM(afs,raw,n=1,clust=cl)
 #' stopCluster(cl)
@@ -33,26 +36,26 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
             cs<-makeForkCluster(n,renice=0)
         else
             cs<-clust
-        ret<-matrix(unlist(parLapply(cs,rawdata,._getPileUp,data,chroms,peakLength)),nrow=peakLength)
+        ret<-matrix(unlist(parLapply(cs,rawdata,CCCA:::._getPileUp,data,chroms,peakLength)),nrow=peakLength)
         if(is.null(clust))
             stopCluster(cs)
     }
     ## Serial Implementation    
     else{
-        ret<-matrix(unlist(lapply(rawdata,getPileUp,data,chroms,peakLength)),nrow=peakLength)
+        ret<-matrix(unlist(lapply(rawdata,CCCA:::._getPileUp,data,chroms,peakLength)),nrow=peakLength)
     }
     attr(ret,"class")<-"UDM"
     ret
 }
 
-#' @method print UDM
-#' @export
-print.UDM<-function(x,...){
-    if(!require('data.table'))
-        print(x)
-    else
-        print(as.data.table(x))
-}
+## #' @method print UDM
+## #' @export
+## print.UDM<-function(x,...){
+##     if(!require('data.table'))
+##         print.default(x)
+##     else
+##         print(as.data.table(x))
+## }
 
 #' @method plot UDM
 #' @export

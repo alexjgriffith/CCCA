@@ -5,9 +5,16 @@
 \alias{addReg.default}
 \title{AddReg Plot}
 \usage{
-addReg(x, ...)
+addReg(x, tag, logic, ...)
 
 \method{addReg}{default}()
+}
+\arguments{
+\item{x}{The object with a $reg value to be added}
+
+\item{tag}{The moniker of the new region to be added}
+
+\item{logic}{A logical list of equal length to other regions in x$reg}
 }
 \description{
 AddReg Plot

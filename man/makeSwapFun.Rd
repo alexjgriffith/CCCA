@@ -2,11 +2,21 @@
 % Please edit documentation in R/makeSwapFun.r
 \name{makeSwapFun}
 \alias{makeSwapFun}
-\title{Make Swap Fun}
+\title{string to swap fun}
 \usage{
-makeSwapFun()
+makeSwapFun(x)
+}
+\arguments{
+\item{x}{input string}
+}
+\value{
+a function mapping the even values of x to the odd
 }
 \description{
-Make Swap Fun
+takes a string and produces a swap fun from it. The string is
+broken allong spaces.
+}
+\examples{
+makeSwapFun("a b c d")("b")=="a"
 }
 

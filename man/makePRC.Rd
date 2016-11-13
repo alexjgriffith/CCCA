@@ -2,7 +2,7 @@
 % Please edit documentation in R/prc.r
 \name{makePRC}
 \alias{makePRC}
-\title{PCA}
+\title{make PRC}
 \usage{
 makePRC(data, norm = "qn")
 }
@@ -32,14 +32,12 @@ using \code{prcomp} on the transform of the normalized data. The
 eigenvectors are returned in a list with the normalized data
 }
 \examples{
-dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
-peakList<-c("sample1.xls","sample2.xls","sample3.xls")
-categories<-c("s1","s2","s3")
-afs<-makeAFS(peakList,categories,pvalue=20)
+dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
+  function(file){
+    system.file("extdata", file, package = "CCCA")
+  })
 udm<-makeUDM(afs,dataSets)
 prc<-makePRC(udm)
-summary(prc)
 plot(prc)
-plot(clust(prc))
 }
 

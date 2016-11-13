@@ -1,3 +1,57 @@
+#' Shift from zero
+#' 
+#' Checks if the result of subtracting width from value is zero
+#'
+#' @param value integer or double which cannot be less than 0
+#' @param width integer or double
+#' @return a range value+width value-width where value-width >0
+._shiftFromZero<-function(summit){
+   testBedSE<-cbind(summit-350,summit+350)
+   x<-which(testBedSE[,1]<0)
+   testBedSE[x,2]=testBedSE[x,2]-testBedSE[x,1]
+   testBedSE[x,1]=0
+   testBedSE
+}
+
+
+#' sort data frame
+#'
+#' A small utility to functionalize the sorting of data frames
+#' @export
+#' @examples
+#' dd<-data.frame(initial1=LETTERS[runif(100,1,24)],
+#'                initial2=LETTERS[runif(100,1,24)],
+#'                age=floor(runif(100,21,35)))
+#' sortDataFrame(dd,"initial2","age")
+._sortDataFrame<-function(dd,...)    
+    dd[do.call(order,lapply(list(...),function(x) dd[x])),]
+
+
+#' unify bed file
+#'
+#' unify bed file
+._unifyBedFile<-function(dataset,overlapWidth, chr="chr",summit="summit",name="name"){
+    chrcats<-levels(dataset[chr,])
+    l<-nrow(dataset)
+    t1<-dataset[1:l-1,]
+    t2<-dataset[2:l,]
+    b<-(t1[,chr]==t2[,chr] & abs(as.numeric(t1[,summit])-as.numeric(t2[,summit]))<overlapWidth)
+    prePeaks<-unlist(lapply(which(b==FALSE),function(x){c(x,x+1)}))
+    peaks<-t(matrix(c(1,prePeaks[1:length(prePeaks)-1]),nrow=2))
+    data<-CCCA:::._unityOutput(peaks,
+                as.integer(dataset[,chr]),
+                as.integer(dataset[,summit]),
+                as.integer(dataset[,name]))
+    names(data)<-list(chr,summit,"matrix")
+    data[[chr]]<-as.factor(data[[chr]])
+    levels(data[[chr]])<-levels(dataset[,chr])
+    colnames(data$matrix)<-levels(dataset[,name])
+    od<-data.frame(chr=data[[chr]],summit=data[[summit]])
+    od<-cbind(od,data$matrix)
+    od
+}
+
+
 #' map zip list
 #'
 #' Takes a list of lists and groups the nth member of each list

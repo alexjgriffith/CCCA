@@ -29,10 +29,10 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
     ## Load each of th files
     files<-lapply( CCCA:::._mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))
     ## Unify the peaks based on width (default 700)
-    testBed<-unifyBedFile(
-        sortDataFrame(do.call(rbind,Filter(function(x) ! is.null(x), files)),"chr","summit"),width)
+    testBed<-CCCA:::._unifyBedFile(
+        CCCA:::._sortDataFrame(do.call(rbind,Filter(function(x) ! is.null(x), files)),"chr","summit"),width)
     ## Make sure none of the peaks have values less than 0
-    testBedSE<-shiftFromZero(testBed$summit)
+    testBedSE<-CCCA:::._shiftFromZero(testBed$summit)
     ## Return a data frame of form <chr><start><end><h1>...<hn>
     width<-dim(testBed)[2]
     retData<-data.frame(chr=testBed[,1], start=testBedSE[,1],end=testBedSE[,2])
@@ -41,12 +41,12 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
     ret
 }
 
-#' @method print AFS
-#' @export
-print.AFS<-function(x,...){
-    if(!require('data.table'))
-        print(x)
-    else
-        print(as.data.table(x))
-}
+## #' @method print AFS
+## #' @export
+## print.AFS<-function(x,...){
+##     if(!require('data.table'))
+##         print.default(x)
+##     else
+##         print(as.data.table(x))
+## }
 
