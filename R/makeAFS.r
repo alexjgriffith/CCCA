@@ -50,3 +50,11 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
 ##         print(as.data.table(x))
 ## }
 
+#' Read AFS
+#' @export
+readAFS<-function(fname){
+    ##"~/Dropbox/Data/AFS/22_pvalue_20_control_combined.txt"
+    ret<-CCCA:::._orderBed(read.table(fname,header=T))
+    attr(ret,"class")<-c("AFS","data.frame")
+    ret
+}

@@ -27,7 +27,9 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
     }
     peakLength<-length(data$chr)
     chroms<-as.character(data$chr)
-    ## Parallell Implementation
+    ## Sort afs
+    data<-CCCA:::._orderBed(data)
+    ## Parallell Implementation    
     if(n>0){
         if(!require(parallel))
             stop("The parallel package must be loaded to run in paralell")
@@ -66,4 +68,14 @@ plot.UDM<-function(x,...){
     for( i in seq(n))
         for( j in seq(n))
             plot(x[,c(i,j)],main=paste0(names[i]," & ",names[j]))
+}
+
+#' Read UDM
+#'
+#' @export
+readUDM<-function(fname){
+    ## "~/Dropbox/Data/UDM/22_treatment_pvalue_20_control_combined.txt"
+    ret<-read.table(fname,header=T)
+    attr(ret,"class")<-c("UDM","data.frame")
+    ret
 }

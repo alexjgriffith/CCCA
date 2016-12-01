@@ -1,3 +1,15 @@
+#' Order Bed
+#'
+#' sorts a data.frame based on the first and third columns
+#' @param ret data frame
+#' @return sorted data frame
+#' @examples
+#' orderBed(data.frame(c("a","a","c"),c(1,2,3),c(5,4,6)))
+#' @export
+._orderBed<-function(ret)
+    ret[order(as.character(ret[,1]),ret[,3]),]
+
+
 #' Shift from zero
 #' 
 #' Checks if the result of subtracting width from value is zero
@@ -188,7 +200,7 @@
 #' @param x the normalized input data and eigenvectors 
 #' @param n normalizing function applied to the eigevectors
 #' @return the dot product of the normalized data and eigenvectors
-._pca2Matr<-function(x,n=pass){
+._pca2Matr<-function(x,n=function(x) x){
     if(is.null(x$normData) | is.null(x$eigenVectors))
         stop("x needs variables normData and eigenVectors")
                                         # need to add tests for dimensions

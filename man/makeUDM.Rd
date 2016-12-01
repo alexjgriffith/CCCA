@@ -25,7 +25,10 @@ Generates a pile up matrix from a unified set of peaks and a list of raw data se
 }
 \examples{
 library(paralell)
-dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
+dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
+  function(file){
+    system.file("extdata", file, package = "CCCA")
+  })
 cl<-makeForkcluster(3)
 UDM<-makeUDM(afs,raw,n=1,clust=cl)
 stopCluster(cl)

@@ -44,6 +44,19 @@ ccca<-function(dataSets,peakLists,categories){
     ret
 }
 
+#' Load CCCA
+#'
+#' @export
+loadCCCA<-function(peaks,heights,categories){
+    afs<-readAFS(peaks)
+    udm<-readUDM(heights)
+    prc<-makePRC(udm)
+    ret<-list(afs=afs,udm=udm,prc=prc,fasta=NULL,reg=NULL,categories=categories)
+    attr(ret,"class")<-"ccca"
+    ret
+
+}
+
 ## #' @method print ccca
 ## #' @export
 ## print.ccca<-function(){
@@ -52,12 +65,16 @@ ccca<-function(dataSets,peakLists,categories){
 #' @method addReg ccca
 #' @export
 addReg.ccca<-function(x, tag,logic,...){
-    if(is.null(x$reg))
+    if(is.null(x$reg)){
         x$reg<-cbind(logic)
+        colnames(x$reg)=tag
+    }
     else{
         if(length(logic)!=dim(x$reg)[1])
             stop("Reg length not equal to region being added")
-        x$reg<-cbind(x$reg,tag=logic)
+        logicp<-cbind(logic)
+        colnames(logicp)<-tag
+        x$reg<-cbind(x$reg,logicp)
     }
     x
 }

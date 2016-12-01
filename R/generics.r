@@ -56,7 +56,7 @@ addReg<-function(x, tag,logic,...){
 #' 
 #' @export
 addFasta<-function(ccca,genome,width=200,...){
-    UseMethod("addFasta",x)
+    UseMethod("addFasta",ccca)
 }
 
 #' @rdname contribution
@@ -77,7 +77,7 @@ contribution.default<-function(prc,i,...){
 #' @method normalize default
 #' @export
 normalize.default<-function(x,...){
-    x
+    CCCA:::._normalize(x)
 }
 
 #' @rdname addReg

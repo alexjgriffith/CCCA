@@ -10,7 +10,8 @@
 
 int getChromosome(char value[10])
 {
-  int i;
+  
+  int i; //
   for(i=0;i<25;i++)
     if(!strcmp(value,hg19Chrom[i].value))
       return i;

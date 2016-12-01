@@ -42,7 +42,9 @@ makePRC<-function(data,norm="qn"){
                none=data,
                data)
     prc<-prcomp(t(normData))$rotation
-    list(normData=normData,eigenVectors=prc)
+    ret<-list(normData=normData,eigenVectors=prc)
+    class(ret)<-c("PRC","list")
+    ret
 }
 
 #' @method plot prc
@@ -66,7 +68,7 @@ plot.prc<-function(prc,pcs=pcs,cats=categories,swap=swapFun,swapCat=swapFunB,swa
 #' @method normalize prc
 #' @export
 normalize.prc<-function(x,...){
-    apply(x$eigenVector,1,CCCA:::._normalize)
+    apply(x$eigenVector,2,CCCA:::._normalize)
 }
 
 ## #' @method clust prc
