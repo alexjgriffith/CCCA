@@ -28,7 +28,7 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
     peakLength<-length(data$chr)
     chroms<-as.character(data$chr)
     ## Sort afs
-    data<-CCCA:::._orderBed(data)
+    data<-._orderBed(data)
     ## Parallell Implementation
     if(n>0){
         if(!require(parallel))
@@ -38,13 +38,13 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
             cs<-makeForkCluster(n,renice=0)
         else
             cs<-clust
-        ret<-matrix(unlist(parLapply(cs,rawdata,CCCA:::._getPileUp,data,chroms,peakLength)),nrow=peakLength)
+        ret<-matrix(unlist(parLapply(cs,rawdata,._getPileUp,data,chroms,peakLength)),nrow=peakLength)
         if(is.null(clust))
             stopCluster(cs)
     }
     ## Serial Implementation
     else{
-        ret<-matrix(unlist(lapply(rawdata,CCCA:::._getPileUp,data,chroms,peakLength)),nrow=peakLength)
+        ret<-matrix(unlist(lapply(rawdata,._getPileUp,data,chroms,peakLength)),nrow=peakLength)
     }
     attr(ret,"class")<-"UDM"
     ret
@@ -74,8 +74,7 @@ plot.UDM<-function(x,...){
 #'
 #' @export
 writeUDM<-function(data,fname){
-    ## "~/Dropbox/Data/UDM/22_treatment_pvalue_20_control_combined.txt"
-    ret<-write.table(data,fname,quote=FALSE,rowname=FALSE,sep"\t")
+    ret<-write.table(data,fname,quote=FALSE,rowname=FALSE,sep="\t")
 }
 
 
@@ -83,7 +82,6 @@ writeUDM<-function(data,fname){
 #'
 #' @export
 readUDM<-function(fname){
-    ## "~/Dropbox/Data/UDM/22_treatment_pvalue_20_control_combined.txt"
     ret<-read.table(fname,header=T)
     attr(ret,"class")<-c("UDM","data.frame")
     ret

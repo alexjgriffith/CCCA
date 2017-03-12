@@ -14,7 +14,7 @@
 #'     system.file("extdata", file, package = "CCCA")
 #'   })
 #' categories<-c("s1","s2","s3")
-#' afs<-makeAFS(peakList,categories,pvalue=20)
+#' sampleafs<-makeAFS(peakList,categories,pvalue=20)
 #' @export
 makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
     if(format!="xls" & !is.null(pvalue)){
@@ -27,12 +27,12 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
                        xls=function(a,b=a){readPeaksXLS(a,b,pvalue)},
                        bed=readPeaksBed)
     ## Load each of th files
-    files<-lapply( CCCA:::._mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))
+    files<-lapply(._mapziplist(peakList,categories),function(x) do.call(loadBedFun, as.list(x)))
     ## Unify the peaks based on width (default 700)
-    testBed<-CCCA:::._unifyBedFile(
-        CCCA:::._sortDataFrame(do.call(rbind,Filter(function(x) ! is.null(x), files)),"chr","summit"),width)
+    testBed<-._unifyBedFile(
+       ._sortDataFrame(do.call(rbind,Filter(function(x) ! is.null(x), files)),"chr","summit"),width)
     ## Make sure none of the peaks have values less than 0
-    testBedSE<-CCCA:::._shiftFromZero(testBed$summit)
+    testBedSE<-._shiftFromZero(testBed$summit)
     ## Return a data frame of form <chr><start><end><h1>...<hn>
     width<-dim(testBed)[2]
     retData<-data.frame(chr=testBed[,1], start=testBedSE[,1],end=testBedSE[,2])
@@ -52,11 +52,15 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
 
 #' Write AFS
 #' Write the AFS to a table
+#' @param data AFS object to be saved
+#' @param fname Save filename
 #' @export
 #' @examples
+#' filename<-system.file("extdata","sample.afs", package = "CCCA")
+#' sampleAFS<-readAFS(filename)
 #' writeAFS(sampleAFS,"sample.afs")
-wrtieAFS<-function(data,fname){
-    ret<-write.table(data,fname,quote=FALSE,rowname=FALSE,sep"\t")
+writeAFS<-function(data,fname){
+    write.table(data,file=fname,quote=FALSE,row.name=FALSE,sep="\t")
 }
 
 
@@ -64,9 +68,10 @@ wrtieAFS<-function(data,fname){
 #' Read an AFS file
 #' @export
 #' @examples
-#' sampleAFS<-readAFS("sample.afs")
+#' filename<-system.file("extdata","sample.afs", package = "CCCA")
+#' sampleAFS<-readAFS(filename)
 readAFS<-function(fname){
-    ret<-CCCA:::._orderBed(read.table(fname,header=T))
+    ret<-._orderBed(read.table(fname,header=T))
     attr(ret,"class")<-c("AFS","data.frame")
     ret
 }

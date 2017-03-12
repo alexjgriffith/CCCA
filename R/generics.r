@@ -14,7 +14,7 @@
 #' contribution(CCCA_prc,swapFun,swapColour)
 #' @export
 contribution<-function(prc,i,swapFun=function(string)string,swapColour=NULL,...){
-    UseMethod("contribution",x)
+    UseMethod("contribution",prc)
 }
 
 ## #' Contribution Plot
@@ -51,6 +51,7 @@ addReg<-function(x, tag,logic,...){
 #' @param ccca The object used to generate the fasta strings
 #' @param genome A BS.genome object 
 #' @param width The width of fasta files, centered around the summit of each peak in ccca
+#' @param ... Extension aguments
 #' @return ccca with fasta values
 #' @examples
 #' 
@@ -77,19 +78,19 @@ contribution.default<-function(prc,i,...){
 #' @method normalize default
 #' @export
 normalize.default<-function(x,...){
-    CCCA:::._normalize(x)
+   ._normalize(x)
 }
 
 #' @rdname addReg
 #' @method addReg default
 #' @export
-addReg.default<-function(){
+addReg.default<-function(x, tag,logic,...){
     stop("Currently only implemented for the ccca class.")
 }
 
 #' @rdname addFasta
 #' @method addFasta default
 #' @export
-addFasta.default<-function(){
+addFasta.default<-function(ccca,genome,width=200,...){
     stop("Currently only implemented for the ccca class.")
 }

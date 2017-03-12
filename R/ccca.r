@@ -10,7 +10,7 @@
 #'   function(file){
 #'     system.file("extdata", file, package = "CCCA")
 #'   })
-#' peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
+#' peakLists<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
 #'   function(file){
 #'     system.file("extdata", file, package = "CCCA")
 #'   })
@@ -36,7 +36,7 @@ ccca<-function(dataSets,peakLists,categories){
     ##dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
     ##peakList<-c("sample1.xls","sample2.xls","sample3.xls")
     ##categories<-c("s1","s2","s3")
-    afs<-makeAFS(peakList,categories,pvalue=20)
+    afs<-makeAFS(peakLists,categories,pvalue=20)
     udm<-makeUDM(afs,dataSets)
     prc<-makePRC(udm)
     ret<-list(afs=afs,udm=udm,prc=prc,fasta=NULL,reg=NULL,categories=categories)
@@ -85,7 +85,7 @@ addReg.ccca<-function(x, tag,logic,...){
 contribution.ccca<-function(prc,i,swapFun=function(string)string,swapColour=NULL,...){
     PC<-ccca$prc$eigenVectors[,i]
     over<-ccca$afs
-    CCCA:::._stackedContrib(PC, "contrib2",CCCA:::._mergeFun(over[4:dim(over)[2]],swapFun),swapFun=swapFun,colourOveride =swapColour,...)
+   ._stackedContrib(PC, "contrib2",._mergeFun(over[4:dim(over)[2]],swapFun),swapFun=swapFun,colourOveride =swapColour,...)
 }
 
 #' @method addFasta ccca

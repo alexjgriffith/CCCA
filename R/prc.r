@@ -34,14 +34,14 @@ makePRC<-function(data,norm="qn"){
         normData<-switch(norm,
                rowSumOne=t(apply(data,1, function(x) {x/sum(x)})),
                colSumOne=apply(data,2, function(x) x/sum(x)),
-               normRow=t(apply(data,1, function(x) (x-mean(x))/var(x))),
-               normCol=apply(data,2, function(x) (x-mean(x))/var(x)),
-               rowsVarOne=t(apply(data,1, function(x) x/var(x))),
-               colsVarOne=apply(data,2, function(x) x/var(x)),
-               qn=CCCA:::._qn(data),
+               normRow=t(apply(data,1, function(x) (x-mean(x))/stats::var(x))),
+               normCol=apply(data,2, function(x) (x-mean(x))/stats::var(x)),
+               rowsVarOne=t(apply(data,1, function(x) x/stats::var(x))),
+               colsVarOne=apply(data,2, function(x) x/stats::var(x)),
+               qn=._qn(data),
                none=data,
                data)
-    prc<-prcomp(t(normData))$rotation
+    prc<-stats::prcomp(t(normData))$rotation
     ret<-list(normData=normData,eigenVectors=prc)
     class(ret)<-c("PRC","list")
     ret
@@ -49,10 +49,10 @@ makePRC<-function(data,norm="qn"){
 
 #' @method plot prc
 #' @export
-plot.prc<-function(prc,pcs=pcs,cats=categories,swap=swapFun,swapCat=swapFunB,swapCol=swapFunC,...){
-    matr<-CCCA:::._pca2Matr(prc)
-    df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],categories=swapFun(categories),Conditions=swapFunB(categories))
-    CCCA:::._plotPCMatAux(df,pcs,categories,swapFunC(unique(sort(swapFunB(categories)))),...)    
+plot.prc<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
+    matr<-._pca2Matr(x)
+    df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],categories=swapFun(categories),Conditions=swapCat(categories))
+   ._plotPCMatAux(df,pcs,categories,swapCol(unique(sort(swapCat(categories)))),swapCat,...)    
 }
 
 ## #' @method print prc
@@ -68,7 +68,7 @@ plot.prc<-function(prc,pcs=pcs,cats=categories,swap=swapFun,swapCat=swapFunB,swa
 #' @method normalize prc
 #' @export
 normalize.prc<-function(x,...){
-    apply(x$eigenVector,2,CCCA:::._normalize)
+    apply(x$eigenVector,2,._normalize)
 }
 
 ## #' @method clust prc

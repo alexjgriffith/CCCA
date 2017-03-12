@@ -50,7 +50,7 @@
     b<-(t1[,chr]==t2[,chr] & abs(as.numeric(t1[,summit])-as.numeric(t2[,summit]))<overlapWidth)
     prePeaks<-unlist(lapply(which(b==FALSE),function(x){c(x,x+1)}))
     peaks<-t(matrix(c(1,prePeaks[1:length(prePeaks)-1]),nrow=2))
-    data<-CCCA:::._unityOutput(peaks,
+    data<-._unityOutput(peaks,
                 as.integer(dataset[,chr]),
                 as.integer(dataset[,summit]),
                 as.integer(dataset[,name]))
@@ -158,7 +158,7 @@
         #print(pos)
         #print(data.frame(c=colnames(ma)[pos],v=do.call(rbind,lapply(pos,function(x) sum(ma[,x])))))
         if(length(pos)>1)
-            temp<-CCCA:::._orM(ma[,pos])
+            temp<-._orM(ma[,pos])
         else{
             temp<-ma[,pos]
             #print(sum(temp))
@@ -178,7 +178,7 @@
 #' @examples
 #' a<-as.matrix(cbind(c(TRUE,TRUE,TRUE),
 #'                     c(FALSE,TRUE,FALSE)))
-#' result<-orM(a)
+#' result<-._orM(a)
 #' result==c(TRUE,TRUE,TRUE)
 ._orM<-function(mat){
     l<-dim(mat)[2]
@@ -190,7 +190,7 @@
         return(mat[,1] | mat[,2])
     if(l>2){
         ltemp<-cbind((mat[,1] | mat[,2]),mat[,3:l])
-        return ( orM(ltemp))
+        return ( ._orM(ltemp))
     }
 }
 
@@ -210,7 +210,22 @@
 #' Plot PCA Matrix Auxilary
 #'
 #' 
-._plotPCMatAux<-function(df,pcs,categories,colours,sdf=NULL,text=NULL,legend=NULL,label=NULL,blank=NULL){
+._plotPCMatAux<-function(df,pcs,categories,colours,swapCat,sdf=NULL,text=NULL,legend=NULL,label=NULL,blank=NULL){
+    shiftCols<-function(x,y,categories,shiftdf){
+        nx<-diff(range(x))/2
+        ny<-diff(range(y))/2
+        cats<-as.character(unlist(categories))
+        cat<-as.character(unlist(shiftdf$categories))
+        for(i in seq(dim(shiftdf)[1])){
+            if(cat[i] %in% cats){
+                print(shiftdf$y*ny)
+                x[which(cat[i]==cats)]= x[which(cat[i]==cats)]+shiftdf$x[i]*nx
+                y[which(cat[i]==cats)]= y[which(cat[i]==cats)]+shiftdf$y[i]*ny
+            }
+        }
+        data.frame(x=x,y=y,categories=cats)
+    }
+    Conditions<-swapCat(categories)
     if(is.null(sdf))
        postext<-df
    else
