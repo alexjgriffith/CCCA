@@ -1,6 +1,6 @@
 #' Make AFS
-#' 
-#' Take a list of peaks and create a unified set.
+#'
+#' Take a list of peaks and create a unified set. The unified set is created by grouping summits that fall within \code{width} of one another. The mean of the grouped summits is used as a shared summit between the grouped peaks. The start and end of the new peak is defined as the new sumit +/ 1/2 \code{width}.
 #'
 #' @param peakList A list of strings refering to file locations containing Peak data
 #' @param categories The monikers these peak files will be refered to ass
@@ -50,10 +50,22 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
 ##         print(as.data.table(x))
 ## }
 
-#' Read AFS
+#' Write AFS
+#' Write the AFS to a table
 #' @export
+#' @examples
+#' writeAFS(sampleAFS,"sample.afs")
+wrtieAFS<-function(data,fname){
+    ret<-write.table(data,fname,quote=FALSE,rowname=FALSE,sep"\t")
+}
+
+
+#' Read AFS
+#' Read an AFS file
+#' @export
+#' @examples
+#' sampleAFS<-readAFS("sample.afs")
 readAFS<-function(fname){
-    ##"~/Dropbox/Data/AFS/22_pvalue_20_control_combined.txt"
     ret<-CCCA:::._orderBed(read.table(fname,header=T))
     attr(ret,"class")<-c("AFS","data.frame")
     ret

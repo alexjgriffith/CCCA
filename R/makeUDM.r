@@ -1,6 +1,6 @@
 #' Make UDM
 #'
-#' Generates a pile up matrix from a unified set of peaks and a list of raw data sets
+#' Generates a pile up matrix from a unified set of peaks and a list of raw data sets.
 #' @param data A preloaded bed data.frame which includes slots $chro $start $end
 #' @param rawdata a list of raw data files
 #' @param n the number of nodes to use. If 0 then the parrallel package is not used
@@ -29,7 +29,7 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
     chroms<-as.character(data$chr)
     ## Sort afs
     data<-CCCA:::._orderBed(data)
-    ## Parallell Implementation    
+    ## Parallell Implementation
     if(n>0){
         if(!require(parallel))
             stop("The parallel package must be loaded to run in paralell")
@@ -42,7 +42,7 @@ makeUDM<-function(data,rawdata,n=0,verbose=NULL,clust=NULL){
         if(is.null(clust))
             stopCluster(cs)
     }
-    ## Serial Implementation    
+    ## Serial Implementation
     else{
         ret<-matrix(unlist(lapply(rawdata,CCCA:::._getPileUp,data,chroms,peakLength)),nrow=peakLength)
     }
@@ -69,6 +69,15 @@ plot.UDM<-function(x,...){
         for( j in seq(n))
             plot(x[,c(i,j)],main=paste0(names[i]," & ",names[j]))
 }
+
+#' Write UDM
+#'
+#' @export
+writeUDM<-function(data,fname){
+    ## "~/Dropbox/Data/UDM/22_treatment_pvalue_20_control_combined.txt"
+    ret<-write.table(data,fname,quote=FALSE,rowname=FALSE,sep"\t")
+}
+
 
 #' Read UDM
 #'
