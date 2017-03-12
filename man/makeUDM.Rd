@@ -13,24 +13,27 @@ makeUDM(data, rawdata, n = 0, verbose = NULL, clust = NULL)
 
 \item{n}{the number of nodes to use. If 0 then the parrallel package is not used}
 
-\item{clust}{pass in a cluster defined outside of makeUDM}
+\item{verbose}{if not null then print each file that is found}
 
-\item{verboes}{if not null then print each file that is found}
+\item{clust}{pass in a cluster defined outside of makeUDM}
 }
 \value{
 A matrix of class UDM containing the pile up counts under each peak in the AFS
 }
 \description{
-Generates a pile up matrix from a unified set of peaks and a list of raw data sets
+Generates a pile up matrix from a unified set of peaks and a list of raw data sets.
 }
 \examples{
-library(paralell)
-dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
+rawdata<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
   function(file){
     system.file("extdata", file, package = "CCCA")
   })
-cl<-makeForkcluster(3)
-UDM<-makeUDM(afs,raw,n=1,clust=cl)
-stopCluster(cl)
+sampleAFS<-readAFS(system.file("extdata","sample.afs", package = "CCCA"))
+sampleUDM<-makeUDM(sampleAFS,rawdata,n=0)
+## Parallel version
+## library(parallel)
+## cl<-makeForkCluster(3)
+## sampleUDM<-makeUDM(sampleAFS,rawdata,n=1,clust=cl)
+## stopCluster(cl)
 }
 

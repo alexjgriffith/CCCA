@@ -11,16 +11,18 @@ normalize(x, ...)
 }
 \arguments{
 \item{x}{Vector or matrix to be normalized}
+
+\item{...}{additional arguments}
 }
 \description{
 Normalize Plot
 }
 \examples{
 r<-runif(100,0,100)
-normalize(x)
+normalize(r)
 b=NULL
-b$eivenVector<-matrix(r,10)
-class(b)<-"prc"
-normalize(b)$eigenVector
+b$eigenVector<-matrix(r,10)
+class(b)<-"PRC"
+normalize(b)
 }
 

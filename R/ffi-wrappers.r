@@ -9,6 +9,9 @@ NULL
 #' @import parallel
 #' @import Biostrings
 #' @import functional
+#' @import graphics
+#' @importFrom stats var
+#' @importFrom utils read.table str write.table
 #' @import ggplot2
 #' @import abind
 NULL

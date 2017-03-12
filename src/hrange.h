@@ -16,10 +16,10 @@ typedef struct peak{
 
 
 
-int printConvertedHeights(int ** collect,peak * temp, int length);
+void printConvertedHeights(int ** collect,peak * temp, int length);
 void rheight(char * filename,peak * peaks,int length, peak *** scores,int ** heights);
 
-int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn);
+void convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn);
 
 void  peakDensity(char ** filename,char ** chro,int *start,
 		  int *end,int *length,int *scoresOut);

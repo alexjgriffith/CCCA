@@ -6,7 +6,20 @@
 \usage{
 loadCCCA(peaks, heights, categories)
 }
+\arguments{
+\item{peaks}{the AFS tab file}
+
+\item{heights}{The UDM tab file}
+
+\item{categories}{an array of categories}
+}
 \description{
-Load CCCA
+Generate the ccca object from premade AFS and UDM files.
+See \link[CCCA]{makeCCCA}
+}
+\examples{
+afsfiles<-system.file("extdata", "sample.afs", package = "CCCA")
+udmfiles<-system.file("extdata", "sample.udm", package = "CCCA")
+ccca<-loadCCCA(afsfiles,udmfiles,c("s1","s2","s3"))
 }
 

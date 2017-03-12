@@ -7,7 +7,8 @@
 #' @return a data.frame <chr><summit><name> | NULL if file has no entries
 #' @examples
 #' # need to create sample.xls
-#' S1_20<-readPeaksXLS("sample.xls","s1",20)
+#' filename<-system.file("extdata","sample1.xls", package = "CCCA")
+#' readPeaksXLS(filename)
 #' @export
 readPeaksXLS<-function(file,name=file,pvalue=0){
     bedData<-read.table(file,header=TRUE,skip="#")

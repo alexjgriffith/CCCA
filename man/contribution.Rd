@@ -5,19 +5,21 @@
 \alias{contribution.default}
 \title{Contribution Plot}
 \usage{
-contribution(prc, i, swapFun = function(string) string, swapColour = NULL,
+contribution(ccca, i, swapFun = function(string) string, swapColour = NULL,
   ...)
 
-\method{contribution}{default}(prc, i, ...)
+\method{contribution}{default}(ccca, i, ...)
 }
 \arguments{
-\item{prc}{The prc object to be ploted}
+\item{ccca}{The ccca object to be ploted}
 
 \item{i}{the PC to plot along}
 
 \item{swapFun}{A function mapping the categoies of prc to another set of categories}
 
 \item{swapColour}{A function that maps the results of swapFun to specifc colours}
+
+\item{...}{additional arguments}
 }
 \value{
 A ggplot2 object
@@ -26,9 +28,8 @@ A ggplot2 object
 Generates the contribution histogram of the prc along a specified Principle Compoenent
 }
 \examples{
-
-swapFun<-makeSwapfun("s1 sample1 s2 sample2 s3 sample3")
-swapColour<-makeSwapfun("sample1 red sample2 blue sample3 orange")
-contribution(CCCA_prc,swapFun,swapColour)
+swapFun<-makeSwapFun("s1 sample1 s2 sample2 s3 sample3")
+swapColour<-makeSwapFun("sample1 red sample2 blue sample3 orange")
+contribution(CCCA_prc,1,swapFun,swapColour,n=1,steps=10)
 }
 

@@ -7,7 +7,7 @@
 \usage{
 addFasta(ccca, genome, width = 200, ...)
 
-\method{addFasta}{default}()
+\method{addFasta}{default}(ccca, genome, width = 200, ...)
 }
 \arguments{
 \item{ccca}{The object used to generate the fasta strings}
@@ -15,6 +15,8 @@ addFasta(ccca, genome, width = 200, ...)
 \item{genome}{A BS.genome object}
 
 \item{width}{The width of fasta files, centered around the summit of each peak in ccca}
+
+\item{...}{Extension aguments}
 }
 \value{
 ccca with fasta values
@@ -23,6 +25,10 @@ ccca with fasta values
 AddReg Plot
 }
 \examples{
-
+\dontrun{
+library(BSgenome.Hsapiens.UCSC.hg19)
+genome=BSgenome.Hsapiens.UCSC.hg19
+addFasta(CCCA_prc,genome)
+}
 }
 

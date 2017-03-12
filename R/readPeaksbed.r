@@ -7,10 +7,11 @@
 #' @return a data.frame <chr><summit><name> | NULL if file has no entries
 #' @examples
 #' # need to create sample.xls
-#' S1_20<-readPeaksBed("sample.bed","s1",20)
+#' filename<-system.file("extdata","raw_sample1.bed", package = "CCCA")
+#' readPeaksBed(filename)
 #' @export
 readPeaksBed<-function(file,name=file){ 
-    bedData<-CCCA::._loadBedFile(file)
+    bedData<-._loadBedFile(file)
     colnames(bedData)<-c("chr","start","end")
     summit<-bedData$start+floor((bedData$end-bedData$start)/2)
     data.frame(chr=bedData$chr,summit=summit,name=name)

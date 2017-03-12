@@ -32,12 +32,15 @@ using \code{prcomp} on the transform of the normalized data. The
 eigenvectors are returned in a list with the normalized data
 }
 \examples{
+## raw read file names
 dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
   function(file){
     system.file("extdata", file, package = "CCCA")
   })
-udm<-makeUDM(afs,dataSets)
-prc<-makePRC(udm)
-plot(prc)
+## load AFS
+filename<-system.file("extdata","sample.afs", package = "CCCA")
+sampleAFS<-readAFS(filename)
+## Generate UDM
+udm<-makeUDM(sampleAFS,dataSets)
 }
 

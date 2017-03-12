@@ -130,7 +130,7 @@ void rheight(char * filename,peak * peaks,int length, peak *** scores,int ** hei
 }
 
 
-int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn){
+void convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *** collectIn){
   int height=0;
   int ht;
   int j;
@@ -158,7 +158,7 @@ int convertHeights(peak * temp, int  length, peak ** scores, int * lengths,int *
   }
 }
 
-int printConvertedHeights(int ** collect,peak * temp, int length){
+void printConvertedHeights(int ** collect,peak * temp, int length){
   int i;
   int j;
   for(i=0;i<length;i++){

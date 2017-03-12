@@ -21,7 +21,7 @@ makeAFS(peakList, categories, format = "xls", pvalue = NULL, width = 700)
 The AFS generated from the input peak lists <chr><summit><catagory>
 }
 \description{
-Take a list of peaks and create a unified set.
+Take a list of peaks and create a unified set. The unified set is created by grouping summits that fall within \code{width} of one another. The mean of the grouped summits is used as a shared summit between the grouped peaks. The start and end of the new peak is defined as the new sumit +/ 1/2 \code{width}.
 }
 \examples{
 peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
@@ -29,6 +29,6 @@ peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
     system.file("extdata", file, package = "CCCA")
   })
 categories<-c("s1","s2","s3")
-afs<-makeAFS(peakList,categories,pvalue=20)
+sampleafs<-makeAFS(peakList,categories,pvalue=20)
 }
 

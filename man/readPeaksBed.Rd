@@ -20,6 +20,7 @@ Cannot filter peaks based on macs score.
 }
 \examples{
 # need to create sample.xls
-S1_20<-readPeaksBed("sample.bed","s1",20)
+filename<-system.file("extdata","raw_sample1.bed", package = "CCCA")
+readPeaksBed(filename)
 }
 

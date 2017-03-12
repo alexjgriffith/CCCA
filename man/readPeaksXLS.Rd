@@ -21,6 +21,7 @@ Read in peaks that MACs has output in its XLS format. Works with MACS 2.1 and 1.
 }
 \examples{
 # need to create sample.xls
-S1_20<-readPeaksXLS("sample.xls","s1",20)
+filename<-system.file("extdata","sample1.xls", package = "CCCA")
+readPeaksXLS(filename)
 }
 

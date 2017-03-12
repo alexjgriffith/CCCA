@@ -19,13 +19,16 @@
 #' }
 #' @return list($normData,$eigenVectors)
 #' @examples
+#' ## raw read file names
 #' dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
 #'   function(file){
 #'     system.file("extdata", file, package = "CCCA")
 #'   })
-#' udm<-makeUDM(afs,dataSets)
-#' prc<-makePRC(udm)
-#' plot(prc)
+#' ## load AFS
+#' filename<-system.file("extdata","sample.afs", package = "CCCA")
+#' sampleAFS<-readAFS(filename)
+#' ## Generate UDM
+#' udm<-makeUDM(sampleAFS,dataSets)
 #' @export
 makePRC<-function(data,norm="qn"){
     if( is.function(norm))
@@ -47,9 +50,9 @@ makePRC<-function(data,norm="qn"){
     ret
 }
 
-#' @method plot prc
+#' @method plot PRC
 #' @export
-plot.prc<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
+plot.PRC<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
     matr<-._pca2Matr(x)
     df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],categories=swapFun(categories),Conditions=swapCat(categories))
    ._plotPCMatAux(df,pcs,categories,swapCol(unique(sort(swapCat(categories)))),swapCat,...)    
@@ -57,7 +60,7 @@ plot.prc<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
 
 ## #' @method print prc
 ## #' @export
-## print.prc<-function(x,...){
+## print.PRC<-function(x,...){
 ## }
 
 ## #' @method summary prc
@@ -65,9 +68,9 @@ plot.prc<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
 ## summary.prc<-function(x,...){    
 ## }
 
-#' @method normalize prc
+#' @method normalize PRC
 #' @export
-normalize.prc<-function(x,...){
+normalize.PRC<-function(x,...){
     apply(x$eigenVector,2,._normalize)
 }
 

@@ -5,10 +5,20 @@
 #' @return sorted data frame
 #' @examples
 #' orderBed(data.frame(c("a","a","c"),c(1,2,3),c(5,4,6)))
-#' @export
-._orderBed<-function(ret)
-    ret[order(as.character(ret[,1]),ret[,3]),]
-
+._orderBed<-function(ret){
+    if(is.list(ret)){
+        if(sum(!is.na(match(c("chr","start"),names(ret))))<2)
+            stop("requires a chr and start member if list")
+        or<-order(as.character(ret$chr),ret$start)
+        name<-names(ret)
+        ret<-lapply(ret,function(x) x[or])
+        names(ret)<-name
+        ret
+    }
+    else{
+        ret[order(as.character(ret[,1]),ret[,3]),] # for matrix
+    }    
+}
 
 #' Shift from zero
 #' 
@@ -29,7 +39,6 @@
 #' sort data frame
 #'
 #' A small utility to functionalize the sorting of data frames
-#' @export
 #' @examples
 #' dd<-data.frame(initial1=LETTERS[runif(100,1,24)],
 #'                initial2=LETTERS[runif(100,1,24)],
@@ -137,7 +146,7 @@
 #' print(c(mean(y),sd(y)))
 ._normalize<-function(x){
     norm<-function(x){
-                      (x-mean(x))/(sqrt(var(x)))}
+        (x-mean(x))/(sqrt(stats::var(x)))}
     if(is.null(dim(x)))
         norm(x)
     else
@@ -211,6 +220,9 @@
 #'
 #' 
 ._plotPCMatAux<-function(df,pcs,categories,colours,swapCat,sdf=NULL,text=NULL,legend=NULL,label=NULL,blank=NULL){
+    ## df<-data.frame(x=df$x,y=df$y) # required to pass check
+    x<-0
+    y<-0
     shiftCols<-function(x,y,categories,shiftdf){
         nx<-diff(range(x))/2
         ny<-diff(range(y))/2
@@ -228,9 +240,9 @@
     Conditions<-swapCat(categories)
     if(is.null(sdf))
        postext<-df
-   else
-       postext<-shiftCols(df$x,df$y,categories,sdf)
-    p<-ggplot(df,aes(x=x,y=y,col=Conditions,label=categories))+geom_point(size=10,shape=20)+theme_bw()+ylab(pcs[2])+xlab(pcs[1])
+    else        
+        postext<-shiftCols(df$x,df$y,categories,sdf)
+    p<-ggplot(df,aes(x,y,col=Conditions,label=categories))+geom_point(size=10,shape=20)+theme_bw()+ylab(pcs[2])+xlab(pcs[1])
     if(! is.null(blank))
     p<-p+ theme(axis.line=element_blank(),axis.text.x=element_blank(),
           axis.text.y=element_blank(),axis.ticks=element_blank(),

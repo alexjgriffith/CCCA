@@ -1,68 +1,41 @@
 #' Stacked Contribution
 #'
-#' @examples
-#' library(mulcal)
-#' library(ggplot2)
-#' library(parallel)
-#'
-#' prepApp<-function(prefix,suffix,...)
-#'   {function(x) paste(prefix,x,suffix,...)}
-#' 
-#' createZip<-function(x)
-#'    Map(function(i,j)cbind(x[i],x[j]),seq(1,length(x),2),seq(2,length(x),2))
-#'    
-#' splitZip<-function(inList)
-#'    list(sapply(inList,"[",1),sapply(inList,"[",2))
-#' 
-#' getSwapCats<-function(cats,names){    
-#'    swCat<-cats
-#'    names(swCat)<-names
-#'    function(x){as.character(unlist(lapply(x,function(x) swCat[x])))}
-#' }
-#' 
-#' stringToSwap<-function(x)do.call(getSwapCats,splitZip(createZip(strsplit(x," ")[[1]])))
-#' 
-#' swapFun<-stringToSwap(paste (rev(strsplit("rpmi Leukemia tall_p3 Leukemia tall_p2 Leukemia tall_p1 Leukemia tall_p2_1 Leukemia tall_p2_2 Leukemia tall_p3_1 Leukemia tall_p3_2 Leukemia jurk_sandar_1 Leukemia jurk_sandar Leukemia jurk Leukemia rpmi_1 Leukemia rpmi_2 Leukemia cem_1 Leukemia cem_2 Leukemia cem Leukemia ecfc-tsa ECFC ecfc ECFC meka MEKA cd133 HSC cd34 HSC cd34_new HSC eryt Erythroid eryt_f Erythroid eryt_a Erythroid k562 Erythroid k562_1 Erythroid k562_2 Erythroid", " ")[[1]]),collapse=" "))
-#'
-#' cats<-data.frame(strsplit("eryt cd34_new cem_1 jurk", " ")) #1
-#' rawdata<-prepApp("/mnt/brand01-00/mbrand_analysis/data_sets/","_unique_nodupes.bed",sep="")((function(x)paste(x,"/",x,sep=""))(unlist(cats))) #2
-#' tagFile<-"~/4x4~combined_unified.bed" #4
-#' score<-pileUp(hg19Sort(loadBedFile(tagFile)),rawdata,20) #3
-#' normData=qn(score[apply(score,1,sum)>0,])
-#' pcs<-prcomp(t(normData))
-#' data<-pcs$rotation[,1]
-#' tags<-hg19Sort(tin)$tags
-#' stackedContrib(data,tags,3,51,swapFun,sum=TRUE)
-#' ggsave("test.png")
-#'
-#' ############
-#' data<-dl[[2]]$rotation[,1]
-#' tags<-dl[[6]]
-#' n=2
-#' steps=51
-#' 
-#' stackedContrib(datax,tags,n,steps)
 ._stackedContrib<-function(data,command="hist",tags=c(FALSE),n=3,steps=40,
-                         swapFun=function(string)string,sum=TRUE,colourOveride=NULL,blank=NULL){
-    # Takes a character with some seperation value and applies a
-    # transformation function to the split values
-    # swapLevel :: String -> Function [String] -> String -> String
+                           swapFun=function(string)string,sum=TRUE,colourOveride=NULL,blank=NULL){
+    x<-0
+    ## Recursivly finds the union of a list of logicals
+    ors<-function(inList){
+        l<-length(inList)
+        if(l==0)
+            return(NULL)
+        if(l==1)
+            return(inList[[1]])
+        if(l==2)
+            return(inList[[1]] | inList[[2]])
+        if(l>2){
+            ltemp<-append(list(inList[[1]] | inList[[2]]),inList[3:l])
+            return ( ors(ltemp))
+        }
+    }
+    ## Takes a character with some seperation value and applies a
+    ## transformation function to the split values
+    ## swapLevel :: String -> Function [String] -> String -> String
     swapLevel<-function(inChars,changeChars,split="-"){    
         paste(sapply(strsplit(inChars,split),changeChars),collapse=split)
     }
 
-    # Returns a function that Generates an upper and lower
-    # bound of n standard deviations from the mean of x
-    # ( a var to be passed in)
-    # upDown :: Numeric -> Function [Numeric]
+    ## Returns a function that Generates an upper and lower
+    ## bound of n standard deviations from the mean of x
+    ## ( a var to be passed in)
+    ## upDown :: Numeric -> Function [Numeric]
     upDown<-function(n){
-        c(function(x){mean(x)+sqrt(var(x))*n},
-          function(x){mean(x)-sqrt(var(x))*n})
+        c(function(x){mean(x)+sqrt(stats::var(x))*n},
+          function(x){mean(x)-sqrt(stats::var(x))*n})
     }
 
-    # Determines which member of a vector are greater or equal to
-    # the min and strictly less than min + width
-    # boundLimit :: Numeric -> [Numeric] -> numeric -> [bool]
+    ## Determines which member of a vector are greater or equal to
+    ## the min and strictly less than min + width
+    ## boundLimit :: Numeric -> [Numeric] -> numeric -> [bool]
     boundLimit<-function(min,vector,width){
         f<-cbind(function(x){x>=min},
                  function(x){x<min+width})
@@ -70,8 +43,8 @@
         unlist(a[[1]]==a[[2]])
     }
 
-    # Splits the data vector into a set of bounds, the bound size is
-    # defined by f
+    ## Splits the data vector into a set of bounds, the bound size is
+    ## defined by f
     defineRegions<-function(boundFun,f,steps,data){
         bounds<-getBounds(f,data)
         range<-bounds$max-bounds$min
@@ -80,9 +53,9 @@
         lapply(x,boundFun,data,iter)    
     }
 
-    # takes a list of tags c(A-B,A-B,A-B-C) and returns a logical matrix
-    # ret<-matrix(TRUE TRUE FALSE TRUE TRUE FALSE TRUE TRUE TRUE,ncol=3)
-    # names(ret)<-c("A","B","C")
+    ## takes a list of tags c(A-B,A-B,A-B-C) and returns a logical matrix
+    ## ret<-matrix(TRUE TRUE FALSE TRUE TRUE FALSE TRUE TRUE TRUE,ncol=3)
+    ## names(ret)<-c("A","B","C")
     tagToMatrix<-function(tags){    
         tagLevels=sapply(tags,strsplit,"-")
         cats<-unique(unlist(tagLevels))
@@ -101,9 +74,9 @@
         return(tempMatrix)
     }
 
-    # generates a Numerical matrix from the bins generated by
-    # defineRegions and the logical matrix generated from tagToMatrix.
-    # Has the option of normalizing the rows to generate a % contrib plot
+    ## generates a Numerical matrix from the bins generated by
+    ## defineRegions and the logical matrix generated from tagToMatrix.
+    ## Has the option of normalizing the rows to generate a % contrib plot
     dataMatrix<-function(bins,tagmatrix,sum=FALSE){
         catagory<-function(bd){
             apply(tagmatrix,2,function(x) length(which(bd[x])))
@@ -114,35 +87,35 @@
         plMat
     }
 
-    # Wrapper for the combination of defineRegions with boundLimit,
-    # the boundLimit function may be changed if non uniform limits
-    # are desired (ie only the top percentile or bottom percentile of
-    # the data vector.
+    ## Wrapper for the combination of defineRegions with boundLimit,
+    ## the boundLimit function may be changed if non uniform limits
+    ## are desired (ie only the top percentile or bottom percentile of
+    ## the data vector.
     binData<-function(data,limitFun,steps){
         defineRegions(boundLimit,limitFun,steps,data)
     }
 
-    # Takes in a list of tag values and a function with a n->1 transform
-    # to change the value of the tag. ie tall_p3 -> prima2 or
-    # tall_p3 -> Leukemia can be made by changeing the swapfun. Swapfun can
-    # be any function which takes a single string and returns another Single
-    # string, by default it is pass<-function(string) string
-    # changeTagNames :: Factor chr -> [chr]
+    ## Takes in a list of tag values and a function with a n->1 transform
+    ## to change the value of the tag. ie tall_p3 -> prima2 or
+    ## tall_p3 -> Leukemia can be made by changeing the swapfun. Swapfun can
+    ## be any function which takes a single string and returns another Single
+    ## string, by default it is pass<-function(string) string
+    ## changeTagNames :: Factor chr -> [chr]
     changeTagNames<-function(tags,swapFun){
         tfun<-function(tags)swapLevel(as.character(unlist(tags)),swapFun)
         sapply(tags, tfun)
     }
 
-    # A wraper combining tagToMatrix and ChangeTagNames, if no changes in
-    # names are desired this can be short circuited
+    ## A wraper combining tagToMatrix and ChangeTagNames, if no changes in
+    ## names are desired this can be short circuited
     genTagMatrix<-function(tags,swapFun)
         tagToMatrix(changeTagNames(tags,swapFun))
 
-    # A utility for get bounds
+    ## A utility for get bounds
     fapply<-function(x,y) x(y)
 
-    # Applies F to data to find the limits of the analysis, returns a
-    # list(max=f[1](data),min=f[2](data))
+    ## Applies F to data to find the limits of the analysis, returns a
+    ## list(max=f[1](data),min=f[2](data))
     getBounds<-function(f,data){
         bounds<-lapply(f,fapply,data)
         names(bounds)<-c("max","min")
@@ -167,8 +140,7 @@
                       lapply(cats,
                              function(x)
                                  ors(lapply(which(cats==x),
-                                            function(i) tags2[,i]))))
-        print(str(test))
+                                            function(i) tags2[,i]))))        
         colnames(test)<-cats
         return(test)
     }
@@ -188,15 +160,16 @@
                ,levels=rev(catagories[rord])))    
     }
 
-    # Uses GGPLOT2 to generate the contributed plot by default
-    # the data will be ploted with the smallest values at the bottom
-    # and the greatest total contributions at the top. In order to change
-    # the order preset the rord variable. Rather than executing the result
-    # it regurns a ggplot object which can be modified downstream before
-    # ploting.
+    ## Uses GGPLOT2 to generate the contributed plot by default
+    ## the data will be ploted with the smallest values at the bottom
+    ## and the greatest total contributions at the top. In order to change
+    ## the order preset the rord variable. Rather than executing the result
+    ## it regurns a ggplot object which can be modified downstream before
+    ## ploting.
     plotplMat<-function(dt,overideColour=NULL,blank=NULL){
+        x<-0 # needed to pass check
         p<-ggplot(data=dt,
-                       aes(x=x,y=data,fill=cats,order=-as.numeric(cats)))+
+                       aes(x,data,fill=dt$cats,order=-as.numeric(dt$cats)))+
                 geom_area(position="stack")+
                 theme(panel.background=element_blank(),
                       panel.grid.major=element_blank(),
@@ -223,6 +196,7 @@
     }
 
     plotGlobal<-function(dt){
+        dt<-data.frame(x=dt$x,data=dt$data) # required to pass check
         ggplot(data=dt,aes(x=x,y=data))+
         geom_area(position="stack")+
         theme(panel.background=element_blank(),
@@ -237,7 +211,7 @@
     norm<-function(data){
         (data-mean(data))/sqrt(var(data))      
     }
-    if(!(require(ggplot2)))
+    if(!(requireNamespace("ggplot2")))
         stop("Requires ggplot2")
     switch(command,
            "hist"= plotGlobal(globalPlotData(data,n,steps)),

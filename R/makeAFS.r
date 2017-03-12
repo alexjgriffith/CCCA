@@ -60,13 +60,28 @@ makeAFS<-function(peakList,categories,format="xls",pvalue=NULL,width=700){
 #' sampleAFS<-readAFS(filename)
 #' writeAFS(sampleAFS,"sample.afs")
 writeAFS<-function(data,fname){
-    write.table(data,file=fname,quote=FALSE,row.name=FALSE,sep="\t")
+    if(class(data)!="AFS")
+        stop("must be of class \"AFS\"")
+    frame<-as.data.frame(do.call(cbind,data))
+    chrs<-data$chr
+    frame[,1]<-chrs
+    frame
+    write.table(frame,file=fname,quote=FALSE,row.names=FALSE,sep="\t")
 }
 
+#' @method as.data.frame AFS
+#' @export
+as.data.frame.AFS<-function(x,...){
+    frame<-as.data.frame(do.call(cbind,x))
+    chrs<-x$chr
+    frame[,1]<-chrs
+    frame
+}
 
 #' Read AFS
 #' Read an AFS file
 #' @export
+#' @param fname Save filename
 #' @examples
 #' filename<-system.file("extdata","sample.afs", package = "CCCA")
 #' sampleAFS<-readAFS(filename)
