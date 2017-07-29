@@ -6,7 +6,7 @@ Maintainer: Alexander Griffith <griffitaj@gmail.com>
 Description: Cross Condition ChIP Analysis (CCCA) combines ChIP seq data
     between species, and applies machine learning algorithms to elucidate underlying
     similarities between data sets.
-Depends: R (>= 3.3)
+Depends: R (>= 3.4)
 Imports: graphics, stats, utils, abind, functional, ggplot2,
          Biostrings, parallel
 License: GPL
