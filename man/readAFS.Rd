@@ -10,6 +10,9 @@ readAFS(fname)
 \arguments{
 \item{fname}{Save filename}
 }
+\value{
+An AFS object
+}
 \description{
 Read AFS
 Read an AFS file

@@ -14,8 +14,11 @@ normalize(x, ...)
 
 \item{...}{additional arguments}
 }
+\value{
+an array wher len = length(x)
+}
 \description{
-Normalize Plot
+Substract the mean and divide by the standard deviation.
 }
 \examples{
 r<-runif(100,0,100)

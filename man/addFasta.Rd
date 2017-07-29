@@ -3,7 +3,7 @@
 \name{addFasta}
 \alias{addFasta}
 \alias{addFasta.default}
-\title{AddReg Plot}
+\title{Add Fasta}
 \usage{
 addFasta(ccca, genome, width = 200, ...)
 
@@ -14,7 +14,8 @@ addFasta(ccca, genome, width = 200, ...)
 
 \item{genome}{A BS.genome object}
 
-\item{width}{The width of fasta files, centered around the summit of each peak in ccca}
+\item{width}{The width of fasta files, centered around the summit
+of each peak in ccca}
 
 \item{...}{Extension aguments}
 }
@@ -22,9 +23,12 @@ addFasta(ccca, genome, width = 200, ...)
 ccca with fasta values
 }
 \description{
-AddReg Plot
+Sets the fasta value of ccca to the neuclotide values of the supplied
+genome between start and end.
 }
 \examples{
+#' @examples
+## See ?makeCCCA
 \dontrun{
 library(BSgenome.Hsapiens.UCSC.hg19)
 genome=BSgenome.Hsapiens.UCSC.hg19

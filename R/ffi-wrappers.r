@@ -31,14 +31,22 @@ NULL
     retChr<-integer(lpeaks)
     retMatrix<-integer(lpeaks*nchr)
     retSummit<-integer(lpeaks)
-    data<-.C("unityOutput",as.integer(intChr),as.integer(intSummit),as.integer(intname),as.integer(peaks[,1]),as.integer(peaks[,2]),as.integer(lpeaks),as.integer(nchr),chr=retChr,summit=retSummit,matrix=retMatrix)
-    list(chro=data$chr,summit=data$summit,matrix=t(matrix(data$matrix,nrow=nchr)))
-   }
+    data<-.C("unityOutput",as.integer(intChr),
+             as.integer(intSummit),
+             as.integer(intname),
+             as.integer(peaks[,1]),
+             as.integer(peaks[,2]),
+             as.integer(lpeaks),
+             as.integer(nchr),chr=retChr,summit=retSummit,matrix=retMatrix)
+    list(chro=data$chr,summit=data$summit,
+         matrix=t(matrix(data$matrix,nrow=nchr)))
+}
 
 
 #' load Bed File
 #' 
-#' Calls file_length and read_bed from hg19Height.c and returns a 3 column bed file
+#' Calls file_length and read_bed from hg19Height.c and returns a 3 column
+#' bed file
 #' @param file the location of the bed file of interest
 #' @return data.frame $chro $start $end
 #' @examples
@@ -49,11 +57,13 @@ NULL
         stop(paste0("Can't find file: ",file))
     }
     else{
-        fileLength<-as.integer(.C("file_length",file,stringLength=integer(1))[[2]])
-        results<-.C("read_bed",file,chro=character(fileLength),start=integer(fileLength),end=integer(fileLength))
+        fileLength<-as.integer(.C("file_length",file,
+                                  stringLength=integer(1))[[2]])
+        results<-.C("read_bed",file,chro=character(fileLength),
+                    start=integer(fileLength),end=integer(fileLength))
         data.frame(chro=results$chro,start=results$start,end=results$end)
-    }		
-}	
+    }
+}
 
 #' Get Pile Up
 #'
@@ -61,7 +71,8 @@ NULL
 #' returns a integer vector of computed read pileups
 #' @param file The raw data file of interest
 #' @param bed The preloaded bed infromation including bed$start and bed$end
-#' @param chroms a list of chromosomes whos string values have been repalced with ranks
+#' @param chroms a list of chromosomes whos string values have
+#' been repalced with ranks
 #' @param peakLength The length of the bed data provided
 ._getPileUp<-function(file,bed,chroms,peakLength){
     file<-normalizePath(file)
@@ -74,6 +85,7 @@ NULL
     end<-as.integer(as.character(bed$end))
     peaknum<-as.integer(peakLength)
     score<-as.integer(rep(0,peakLength))
-    results<-.C("pileup",file,chrom=chroms,start=start,end=end,peaknum=peaknum,score=score)
+    results<-.C("pileup",file,chrom=chroms,start=start,end=end,
+                peaknum=peaknum,score=score)
     results$score
 }

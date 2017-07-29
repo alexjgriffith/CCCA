@@ -17,7 +17,8 @@ readPeaksXLS(file, name = file, pvalue = 0)
 a data.frame <chr><summit><name> | NULL if file has no entries
 }
 \description{
-Read in peaks that MACs has output in its XLS format. Works with MACS 2.1 and 1.3.1
+Read in peaks that MACs has output in its XLS format. Works with MACS
+2.1 and 1.3.1
 }
 \examples{
 # need to create sample.xls

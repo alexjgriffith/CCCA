@@ -12,6 +12,9 @@ writeAFS(data, fname)
 
 \item{fname}{Save filename}
 }
+\value{
+Nothing
+}
 \description{
 Write AFS
 Write the AFS to a table

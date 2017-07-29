@@ -3,7 +3,7 @@
 \name{addReg}
 \alias{addReg}
 \alias{addReg.default}
-\title{AddReg Plot}
+\title{Add Region}
 \usage{
 addReg(x, tag, logic, ...)
 
@@ -18,7 +18,14 @@ addReg(x, tag, logic, ...)
 
 \item{...}{additional arguments}
 }
+\value{
+An array is appended to <ccca>$reg
+}
 \description{
-AddReg Plot
+Add a region to the ccca object. These regions will be used as a mask to
+identify seperate contexts.
+}
+\examples{
+## See ?makeCCCA
 }
 

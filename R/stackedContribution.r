@@ -1,7 +1,8 @@
 #' Stacked Contribution
 #'
 ._stackedContrib<-function(data,command="hist",tags=c(FALSE),n=3,steps=40,
-                           swapFun=function(string)string,sum=TRUE,colourOveride=NULL,blank=NULL){
+                           swapFun=function(string)string,
+                           sum=TRUE,colourOveride=NULL,blank=NULL){
     x<-0
     ## Recursivly finds the union of a list of logicals
     ors<-function(inList){
@@ -134,7 +135,7 @@
 
     cleanTagNames<-function(tags,swapFun){
         tags2<-apply(tags,2,as.logical)
-        #colnames(tags2)<-sapply(colnames(tags),swapFun)
+        ##colnames(tags2)<-sapply(colnames(tags),swapFun)
         cats<-unique(colnames(tags2))
         test<-do.call(cbind,
                       lapply(cats,
@@ -157,7 +158,7 @@
             x=seq(from=bounds$min,to=bounds$max, length.out=steps),
             data=as.numeric(plMat[,rord]),
             cats=factor(unlist(lapply(catagories[rord],rep,steps))
-               ,levels=rev(catagories[rord])))    
+                       ,levels=rev(catagories[rord])))    
     }
 
     ## Uses GGPLOT2 to generate the contributed plot by default
@@ -169,16 +170,16 @@
     plotplMat<-function(dt,overideColour=NULL,blank=NULL){
         x<-0 # needed to pass check
         p<-ggplot(data=dt,
-                       aes(x,data,fill=dt$cats,order=-as.numeric(dt$cats)))+
-                geom_area(position="stack")+
-                theme(panel.background=element_blank(),
-                      panel.grid.major=element_blank(),
-                      panel.grid.minor=element_blank(),
-                      panel.border=element_blank(),
-                      axis.title.y=element_blank()) +
-                scale_y_continuous(breaks=NULL)
-                
-                
+                  aes(x,data,fill=dt$cats,order=-as.numeric(dt$cats)))+
+            geom_area(position="stack")+
+            theme(panel.background=element_blank(),
+                  panel.grid.major=element_blank(),
+                  panel.grid.minor=element_blank(),
+                  panel.border=element_blank(),
+                  axis.title.y=element_blank()) +
+            scale_y_continuous(breaks=NULL)
+        
+        
         if(! is.null(overideColour)){
             print(levels(dt$cats))
             print(overideColour(levels(dt$cats)))
@@ -188,7 +189,10 @@
             p<-p+scale_fill_discrete(name="Cell Conditions")
         print(blank)
         if(! is.null(blank)){
-            p<-p+theme(legend.position="none",axis.title.x=element_blank(),plot.margin=unit(c(0,0,-.5,-.5),"cm"))+scale_x_continuous(breaks=NULL)
+            p<-p+theme(legend.position="none",
+                       axis.title.x=element_blank(),
+                       plot.margin=unit(c(0,0,-.5,-.5),"cm"))+
+                scale_x_continuous(breaks=NULL)
         }
         else
             p<-p+scale_x_continuous(name="Principle Component Value")
@@ -198,14 +202,14 @@
     plotGlobal<-function(dt){
         dt<-data.frame(x=dt$x,data=dt$data) # required to pass check
         ggplot(data=dt,aes(x=x,y=data))+
-        geom_area(position="stack")+
-        theme(panel.background=element_blank(),
-              panel.grid.major=element_blank(),
-              panel.grid.minor=element_blank(),
-              panel.border=element_blank(),
-              axis.title.y=element_blank()) +
-        scale_y_continuous(breaks=NULL) +
-        scale_x_continuous(name="Principle Component Value")
+            geom_area(position="stack")+
+            theme(panel.background=element_blank(),
+                  panel.grid.major=element_blank(),
+                  panel.grid.minor=element_blank(),
+                  panel.border=element_blank(),
+                  axis.title.y=element_blank()) +
+            scale_y_continuous(breaks=NULL) +
+            scale_x_continuous(name="Principle Component Value")
     }
 
     norm<-function(data){
@@ -215,7 +219,11 @@
         stop("Requires ggplot2")
     switch(command,
            "hist"= plotGlobal(globalPlotData(data,n,steps)),
-           "contrib"=plotplMat(stackedPlotData(data,n,steps,genTagMatrix(tags,swapFun),swapFun,sum)),
-           "contrib2"=plotplMat(stackedPlotData(norm(data),n,steps,tags,swapFun,sum),colourOveride,blank),
+           "contrib"=plotplMat(
+               stackedPlotData(data,n,steps,
+                               genTagMatrix(tags,swapFun),swapFun,sum)),
+           "contrib2"=plotplMat(
+               stackedPlotData(norm(data),n,steps,tags,swapFun,sum),
+               colourOveride,blank),
            "tagToMat"=genTagMatrix(tags,swapFun))
 }

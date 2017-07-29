@@ -9,7 +9,8 @@ makeCCCA(dataSets, peakLists, categories, pvalue)
 \arguments{
 \item{dataSets}{list of files containing the raw reads in bed format}
 
-\item{peakLists}{list of files containing the peaks reads in MACS xls format}
+\item{peakLists}{list of files containing the peaks reads in MACS'
+xls format}
 
 \item{categories}{the moniker to be attached to each of the data set files}
 
@@ -19,7 +20,8 @@ makeCCCA(dataSets, peakLists, categories, pvalue)
 a list of class ccca containing afs,udm, and prc
 }
 \description{
-Generate a ChIP Component object from peaks, reads, and a list of categories
+Generate a ChIP Component object from peaks, reads, and a list of
+categories
 }
 \examples{
 dataSets<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),
@@ -40,9 +42,12 @@ ccca<-local({
   ccca<-addReg(ccca,"s1",nm[,1]<(mean(nm[,1])-3*sd(nm[,1])))
   ccca<-addReg(ccca,"s2",nm[,1]>(mean(nm[,1])+3*sd(nm[,1])))
   ccca<-addReg(ccca,"s3",nm[,2]>(mean(nm[,2])+3*sd(nm[,2])))
-  ccca<-addReg(ccca,"s1.me",ccca$reg[,"s1"] & !(ccca$reg[,"s2"] | ccca$reg[,"s3"]))
-  ccca<-addReg(ccca,"s2.me",ccca$reg[,"s2"] & !(ccca$reg[,"s1"] | ccca$reg[,"s3"]))
-  ccca<-addReg(ccca,"s3.me",ccca$reg[,"s3"] & !(ccca$reg[,"s2"] | ccca$reg[,"s1"]))
+  ccca<-addReg(ccca,"s1.me",ccca$reg[,"s1"] & !(ccca$reg[,"s2"]
+               | ccca$reg[,"s3"]))
+  ccca<-addReg(ccca,"s2.me",ccca$reg[,"s2"] & !(ccca$reg[,"s1"]
+               | ccca$reg[,"s3"]))
+  ccca<-addReg(ccca,"s3.me",ccca$reg[,"s3"] & !(ccca$reg[,"s2"]
+               | ccca$reg[,"s1"]))
   ccca
 })
 \dontrun{

@@ -7,21 +7,25 @@
 makeUDM(data, rawdata, n = 0, verbose = NULL, clust = NULL)
 }
 \arguments{
-\item{data}{A preloaded bed data.frame which includes slots $chro $start $end}
+\item{data}{A preloaded bed data.frame which includes slots $chro
+$start $end}
 
 \item{rawdata}{a list of raw data files}
 
-\item{n}{the number of nodes to use. If 0 then the parrallel package is not used}
+\item{n}{the number of nodes to use. If 0 then the parrallel package
+is not used}
 
 \item{verbose}{if not null then print each file that is found}
 
 \item{clust}{pass in a cluster defined outside of makeUDM}
 }
 \value{
-A matrix of class UDM containing the pile up counts under each peak in the AFS
+A matrix of class UDM containing the pile up counts under each
+peak in the AFS
 }
 \description{
-Generates a pile up matrix from a unified set of peaks and a list of raw data sets.
+Generates a pile up matrix from a unified set of peaks and a list of
+raw data sets.
 }
 \examples{
 rawdata<-sapply(c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed"),

@@ -8,6 +8,9 @@
 \usage{
 CCCA_prc
 }
+\value{
+A CCCA Object for samples 1 - 3
+}
 \description{
 Sample CCCA object generated from samples 1-3
 }

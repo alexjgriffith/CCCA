@@ -7,7 +7,8 @@
 makeAFS(peakList, categories, format = "xls", pvalue = NULL, width = 700)
 }
 \arguments{
-\item{peakList}{A list of strings refering to file locations containing Peak data}
+\item{peakList}{A list of strings refering to file locations containing
+Peak data}
 
 \item{categories}{The monikers these peak files will be refered to ass}
 
@@ -15,13 +16,18 @@ makeAFS(peakList, categories, format = "xls", pvalue = NULL, width = 700)
 
 \item{pvalue}{The pvalue cut off to be applied, only valid with xls format}
 
-\item{width}{The min width summits must be from one another in order to cluster}
+\item{width}{The min width summits must be from one another in order to
+cluster}
 }
 \value{
 The AFS generated from the input peak lists <chr><summit><catagory>
 }
 \description{
-Take a list of peaks and create a unified set. The unified set is created by grouping summits that fall within \code{width} of one another. The mean of the grouped summits is used as a shared summit between the grouped peaks. The start and end of the new peak is defined as the new sumit +/ 1/2 \code{width}.
+Take a list of peaks and create a unified set. The unified set is
+created by grouping summits that fall within \code{width} of one
+another. The mean of the grouped summits is used as a shared summit
+between the grouped peaks. The start and end of the new peak is defined
+as the new sumit +/ 1/2 \code{width}.
 }
 \examples{
 peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),

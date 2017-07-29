@@ -9,6 +9,9 @@ readUDM(fname)
 \arguments{
 \item{fname}{Save filename}
 }
+\value{
+A udm object
+}
 \description{
 Read the UDM from its tab format
 }

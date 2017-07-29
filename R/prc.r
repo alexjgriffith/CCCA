@@ -32,18 +32,19 @@
 #' @export
 makePRC<-function(data,norm="qn"){
     if( is.function(norm))
-       normData<-norm(data)
+        normData<-norm(data)
     else
-        normData<-switch(norm,
-               rowSumOne=t(apply(data,1, function(x) {x/sum(x)})),
-               colSumOne=apply(data,2, function(x) x/sum(x)),
-               normRow=t(apply(data,1, function(x) (x-mean(x))/stats::var(x))),
-               normCol=apply(data,2, function(x) (x-mean(x))/stats::var(x)),
-               rowsVarOne=t(apply(data,1, function(x) x/stats::var(x))),
-               colsVarOne=apply(data,2, function(x) x/stats::var(x)),
-               qn=._qn(data),
-               none=data,
-               data)
+        normData<-switch(
+            norm,
+            rowSumOne=t(apply(data,1, function(x) {x/sum(x)})),
+            colSumOne=apply(data,2, function(x) x/sum(x)),
+            normRow=t(apply(data,1, function(x) (x-mean(x))/stats::var(x))),
+            normCol=apply(data,2, function(x) (x-mean(x))/stats::var(x)),
+            rowsVarOne=t(apply(data,1, function(x) x/stats::var(x))),
+            colsVarOne=apply(data,2, function(x) x/stats::var(x)),
+            qn=._qn(data),
+            none=data,
+            data)
     prc<-stats::prcomp(t(normData))$rotation
     ret<-list(normData=normData,eigenVectors=prc)
     class(ret)<-c("PRC","list")
@@ -54,8 +55,12 @@ makePRC<-function(data,norm="qn"){
 #' @export
 plot.PRC<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
     matr<-._pca2Matr(x)
-    df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],categories=swapFun(categories),Conditions=swapCat(categories))
-   ._plotPCMatAux(df,pcs,categories,swapCol(unique(sort(swapCat(categories)))),swapCat,...)    
+    df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],
+                   categories=swapFun(categories),
+                   Conditions=swapCat(categories))
+    ._plotPCMatAux(df,pcs,categories,
+                   swapCol(unique(sort(swapCat(categories)))),
+                   swapCat,...)    
 }
 
 ## #' @method print prc

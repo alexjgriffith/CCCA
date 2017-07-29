@@ -13,6 +13,9 @@ loadCCCA(peaks, heights, categories)
 
 \item{categories}{an array of categories}
 }
+\value{
+A ccca object
+}
 \description{
 Generate the ccca object from premade AFS and UDM files.
 See \link[CCCA]{makeCCCA}

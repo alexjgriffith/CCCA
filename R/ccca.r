@@ -1,8 +1,10 @@
 #' makeCCCA
 #'
-#' Generate a ChIP Component object from peaks, reads, and a list of categories
+#' Generate a ChIP Component object from peaks, reads, and a list of
+#' categories
 #' @param dataSets list of files containing the raw reads in bed format
-#' @param peakLists list of files containing the peaks reads in MACS xls format
+#' @param peakLists list of files containing the peaks reads in MACS'
+#' xls format
 #' @param categories the moniker to be attached to each of the data set files
 #' @param pvalue the pvalue that the AFS peaks will be filtered by
 #' @return a list of class ccca containing afs,udm, and prc
@@ -25,9 +27,12 @@
 #'   ccca<-addReg(ccca,"s1",nm[,1]<(mean(nm[,1])-3*sd(nm[,1])))
 #'   ccca<-addReg(ccca,"s2",nm[,1]>(mean(nm[,1])+3*sd(nm[,1])))
 #'   ccca<-addReg(ccca,"s3",nm[,2]>(mean(nm[,2])+3*sd(nm[,2])))
-#'   ccca<-addReg(ccca,"s1.me",ccca$reg[,"s1"] & !(ccca$reg[,"s2"] | ccca$reg[,"s3"]))
-#'   ccca<-addReg(ccca,"s2.me",ccca$reg[,"s2"] & !(ccca$reg[,"s1"] | ccca$reg[,"s3"]))
-#'   ccca<-addReg(ccca,"s3.me",ccca$reg[,"s3"] & !(ccca$reg[,"s2"] | ccca$reg[,"s1"]))
+#'   ccca<-addReg(ccca,"s1.me",ccca$reg[,"s1"] & !(ccca$reg[,"s2"]
+#'                | ccca$reg[,"s3"]))
+#'   ccca<-addReg(ccca,"s2.me",ccca$reg[,"s2"] & !(ccca$reg[,"s1"]
+#'                | ccca$reg[,"s3"]))
+#'   ccca<-addReg(ccca,"s3.me",ccca$reg[,"s3"] & !(ccca$reg[,"s2"]
+#'                | ccca$reg[,"s1"]))
 #'   ccca
 #' })
 #' \dontrun{
@@ -43,7 +48,8 @@ makeCCCA<-function(dataSets,peakLists,categories,pvalue){
     afs<-makeAFS(peakLists,categories,pvalue=pvalue)
     udm<-makeUDM(afs,dataSets)
     prc<-makePRC(udm)
-    ret<-list(afs=afs,udm=udm,prc=prc,fasta=NULL,reg=NULL,categories=categories)
+    ret<-list(afs=afs,udm=udm,prc=prc,fasta=NULL,reg=NULL,
+              categories=categories)
     attr(ret,"class")<-"ccca"
     ret
 }
@@ -55,6 +61,7 @@ makeCCCA<-function(dataSets,peakLists,categories,pvalue){
 #' @param peaks the AFS tab file
 #' @param heights The UDM tab file
 #' @param categories an array of categories
+#' @return A ccca object
 #' @examples
 #' afsfiles<-system.file("extdata", "sample.afs", package = "CCCA")
 #' udmfiles<-system.file("extdata", "sample.udm", package = "CCCA")
@@ -64,7 +71,8 @@ loadCCCA<-function(peaks,heights,categories){
     afs<-readAFS(peaks)
     udm<-readUDM(heights)
     prc<-makePRC(udm)
-    ret<-list(afs=afs,udm=udm,prc=prc,fasta=NULL,reg=NULL,categories=categories)
+    ret<-list(afs=afs,udm=udm,prc=prc,fasta=NULL,reg=NULL,
+              categories=categories)
     attr(ret,"class")<-"ccca"
     ret
 
@@ -76,8 +84,9 @@ plot.ccca<-function(x,PC1,PC2,
                     swapFun=function(x){x},
                     swapCat=function(x){x},...){
     matr<-._pca2Matr(x$prc)
-    df<-data.frame(x=matr[,PC1],y=matr[,PC2],categories=x$categories,Conditions=swapCat(x$categories))
-   ._plotPCMatAux(df,c(PC1,PC2),x$categories,NULL,swapCat,...)    
+    df<-data.frame(x=matr[,PC1],y=matr[,PC2],categories=x$categories,
+                   Conditions=swapCat(x$categories))
+    ._plotPCMatAux(df,c(PC1,PC2),x$categories,NULL,swapCat,...)    
 }
 
 ## #' @method print ccca
@@ -105,10 +114,13 @@ addReg.ccca<-function(x, tag,logic,...){
 
 #' @method contribution ccca
 #' @export
-contribution.ccca<-function(ccca,i,swapFun=function(string)string,swapColour=NULL,...){
+contribution.ccca<-function(ccca,i,swapFun=function(string)string,
+                            swapColour=NULL,...){
     PC<-ccca$prc$eigenVectors[,i]
     over<-as.data.frame(ccca$afs)
-   ._stackedContrib(PC, "contrib2",._mergeFun(over[4:dim(over)[2]],swapFun),swapFun=swapFun,colourOveride =swapColour,...)
+    ._stackedContrib(PC, "contrib2",
+                     ._mergeFun(over[4:dim(over)[2]],swapFun),
+                     swapFun=swapFun,colourOveride =swapColour,...)
 }
 
 #' @method addFasta ccca
@@ -118,10 +130,16 @@ addFasta.ccca<-function(ccca,genome,width=200,...){
     if (is.null(ccca$afs$chr) | is.null(ccca$afs$start)) 
         stop("addFasta env list must contain afs$chr afs$start and afs$end")
     if (!requireNamespace("Biostrings")) 
-        stop(paste0("Must install the Biostrings package from Bioconductor.\n",
-                    "source(\"https://bioconductor.org/biocLite.R\"); biocLite(\"Biostrings\")"))
-    ccca$fasta <- getSeq(genome, ccca$afs$chr, start = (ccca$afs$start + 
-                                                      ccca$afs$end)/2 - floor(width/2), width = width)
+        stop(paste0("Must install the Biostrings package from",
+                    " Bioconductor.\n",
+                    "source(\"https://bioconductor.org/biocLite.R\");",
+                    " biocLite(\"Biostrings\")"))
+
+    start<- (ccca$afs$start + ccca$afs$end)/2-floor(width/2)
+    ccca$fasta <- getSeq(genome,
+                         ccca$afs$chr,
+                         start = start,
+                         width = width)
     ccca
 }
 

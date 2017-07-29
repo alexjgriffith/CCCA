@@ -28,11 +28,11 @@
 #' @param width integer or double
 #' @return a range value+width value-width where value-width >0
 ._shiftFromZero<-function(summit){
-   testBedSE<-cbind(summit-350,summit+350)
-   x<-which(testBedSE[,1]<0)
-   testBedSE[x,2]=testBedSE[x,2]-testBedSE[x,1]
-   testBedSE[x,1]=0
-   testBedSE
+    testBedSE<-cbind(summit-350,summit+350)
+    x<-which(testBedSE[,1]<0)
+    testBedSE[x,2]=testBedSE[x,2]-testBedSE[x,1]
+    testBedSE[x,1]=0
+    testBedSE
 }
 
 
@@ -51,18 +51,20 @@
 #' unify bed file
 #'
 #' unify bed file
-._unifyBedFile<-function(dataset,overlapWidth, chr="chr",summit="summit",name="name"){
+._unifyBedFile<-function(dataset,overlapWidth, chr="chr",
+                         summit="summit",name="name"){
     chrcats<-levels(dataset[chr,])
     l<-nrow(dataset)
     t1<-dataset[1:l-1,]
     t2<-dataset[2:l,]
-    b<-(t1[,chr]==t2[,chr] & abs(as.numeric(t1[,summit])-as.numeric(t2[,summit]))<overlapWidth)
+    b<-(t1[,chr]==t2[,chr] & abs(as.numeric(t1[,summit])-
+                                 as.numeric(t2[,summit]))<overlapWidth)
     prePeaks<-unlist(lapply(which(b==FALSE),function(x){c(x,x+1)}))
     peaks<-t(matrix(c(1,prePeaks[1:length(prePeaks)-1]),nrow=2))
     data<-._unityOutput(peaks,
-                as.integer(dataset[,chr]),
-                as.integer(dataset[,summit]),
-                as.integer(dataset[,name]))
+                        as.integer(dataset[,chr]),
+                        as.integer(dataset[,summit]),
+                        as.integer(dataset[,name]))
     names(data)<-list(chr,summit,"matrix")
     data[[chr]]<-as.factor(data[[chr]])
     levels(data[[chr]])<-levels(dataset[,chr])
@@ -97,20 +99,20 @@
 }
 
 
-#' hg19Sort
-#'
-#' Reorders the chro factor in data to that which is outputed by BWA.
-#' This allows for the sorting step to be skipped, however if another chromasome is used then a new order must be defined.
-#' 
-#' @param data [chr,start,end]
-#' @return The same members of data but sorted on chr and start
-#' 
-._hg19Sort<-function(data){    
-    neworder<-Filter(function(x) x %in% levels(data$chro), strsplit("chr1 chr2 chr3 chr4 chr5 chr6 chr7 chrX chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr20 chrY chr19 chr22 chr21 chrM" ," ")[[1]])
-    data$chro<-factor(data$chro,neworder)
-    data<-data[with(data,order(chro,start)),]
-    data
-}
+## #' hg19Sort
+## #'
+## #' Reorders the chro factor in data to that which is outputed by BWA.
+## #' This allows for the sorting step to be skipped, however if another chromasome is used then a new order must be defined.
+## #' 
+## #' @param data [chr,start,end]
+## #' @return The same members of data but sorted on chr and start
+## #' 
+## ._hg19Sort<-function(data){    
+##     neworder<-Filter(function(x) x %in% levels(data$chro), strsplit("chr1 chr2 chr3 chr4 chr5 chr6 chr7 chrX chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr20 chrY chr19 chr22 chr21 chrM" ," ")[[1]])
+##     data$chro<-factor(data$chro,neworder)
+##     data<-data[with(data,order(chro,start)),]
+##     data
+## }
 
 
 #' Quantile Normalization
@@ -131,7 +133,10 @@
     shape<-dim(data)
     sequence<-apply(data,2,order)
     reverseSequence<-unlist(apply(sequence,2,order))
-    ranks<-apply(matrix(unlist(lapply(seq(shape[2]),function(i,x,y) x[y[,i],i],data,sequence)),ncol=shape[2]),1,sum)/shape[2]
+    matr<-matrix(unlist(lapply(seq(shape[2]),
+                               function(i,x,y) x[y[,i],i],data,sequence)),
+                 ncol=shape[2])
+    ranks<-apply(matr,1,sum)/shape[2]
     apply(reverseSequence,2,function(x) ranks[x])}
 
 
@@ -159,18 +164,14 @@
 #' 
 ._mergeFun<-function(ma,swapFun=swapFun){
     newCols<-swapFun(colnames(ma))
-    #print(newCols)
     unc<-unique(newCols)
     outL<-c()
     for(i in unc){
         pos<-which(i==newCols)
-        #print(pos)
-        #print(data.frame(c=colnames(ma)[pos],v=do.call(rbind,lapply(pos,function(x) sum(ma[,x])))))
         if(length(pos)>1)
             temp<-._orM(ma[,pos])
         else{
             temp<-ma[,pos]
-            #print(sum(temp))
         }
         outL<-cbind(outL,temp)}
     
@@ -219,7 +220,8 @@
 #' Plot PCA Matrix Auxilary
 #'
 #' 
-._plotPCMatAux<-function(df,pcs,categories,colours,swapCat,sdf=NULL,text=NULL,legend=NULL,label=NULL,blank=NULL){
+._plotPCMatAux<-function(df,pcs,categories,colours,swapCat,sdf=NULL,
+                         text=NULL,legend=NULL,label=NULL,blank=NULL){
     ## df<-data.frame(x=df$x,y=df$y) # required to pass check
     x<-0
     y<-0
@@ -231,33 +233,39 @@
         for(i in seq(dim(shiftdf)[1])){
             if(cat[i] %in% cats){
                 print(shiftdf$y*ny)
-                x[which(cat[i]==cats)]= x[which(cat[i]==cats)]+shiftdf$x[i]*nx
-                y[which(cat[i]==cats)]= y[which(cat[i]==cats)]+shiftdf$y[i]*ny
+                x[which(cat[i]==cats)]= x[which(cat[i]==cats)]+
+                    shiftdf$x[i]*nx
+                y[which(cat[i]==cats)]= y[which(cat[i]==cats)]+
+                    shiftdf$y[i]*ny
             }
         }
         data.frame(x=x,y=y,categories=cats)
     }
     Conditions<-swapCat(categories)
     if(is.null(sdf))
-       postext<-df
+        postext<-df
     else        
         postext<-shiftCols(df$x,df$y,categories,sdf)
     p<-ggplot(df,aes(x,y,col=Conditions,label=categories))+geom_point(size=10,shape=20)+theme_bw()+ylab(pcs[2])+xlab(pcs[1])
     if(! is.null(blank))
-    p<-p+ theme(axis.line=element_blank(),axis.text.x=element_blank(),
-          axis.text.y=element_blank(),axis.ticks=element_blank(),
-          axis.title.x=element_blank(),
-          axis.title.y=element_blank(),legend.position="none",
-          panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
-          panel.grid.minor=element_blank(),plot.background=element_blank())
+        p<-p+ theme(axis.line=element_blank(),axis.text.x=element_blank(),
+                    axis.text.y=element_blank(),axis.ticks=element_blank(),
+                    axis.title.x=element_blank(),
+                    axis.title.y=element_blank(),legend.position="none",
+                    panel.background=element_blank(),
+                    panel.border=element_blank(),
+                    panel.grid.major=element_blank(),
+                    panel.grid.minor=element_blank(),
+                    plot.background=element_blank())
     if(! is.null(label))
         p<-p+ylab("")+xlab("")
     if(! is.null(text))
-        p<-p+geom_text(x=postext$x,y=postext$y,show_guide=F,size=5)
+        p<-p+geom_text(x=postext$x,y=postext$y,show_guide=FALSE,size=5)
     if(! is.null(colours))
         p<-p+scale_color_manual(values=colours)
     if(is.null(legend))
-        p<-p+theme(legend.position="none")+scale_x_continuous(breaks=NULL)+scale_y_continuous(breaks=NULL)
+        p<-p+theme(legend.position="none")+scale_x_continuous(breaks=NULL)+
+            scale_y_continuous(breaks=NULL)
     p
 }
 
@@ -278,7 +286,7 @@
 #' swapFun("b")==2
 #' swapFun("c")==NA
 ._genSwapFun<-function(input,output){
-    # old name getSwapCats
+                                        # old name getSwapCats
     if(!length(output)==length(input))
         warning("output and input lengths are not equal")
     if(! is.character(input))
@@ -307,11 +315,9 @@
 #' createZip(c(1,2,3,4,5,6)) == list(c(1,2),c(3,4),c(5,6))
 ._createZip<-function(x){
     is.even<-function(x)
-        (length(x) %% 2) ==0
+    (length(x) %% 2) ==0
     if(! is.even(x)){
-        warning("length(x) is not even.")
-        # x<-rbind(x,x) # This option created too many issues.
-                        # Just let it fail.
+        warning("length(x) is not even.")        
     }
     Map(function(i,j)cbind(x[i],x[j]),seq(1,length(x),2),seq(2,length(x),2))
 }

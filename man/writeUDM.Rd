@@ -11,6 +11,9 @@ writeUDM(data, fname)
 
 \item{fname}{Save filename}
 }
+\value{
+Nothing
+}
 \description{
 Write the unified data matrix to a file.
 }

@@ -1,25 +1,19 @@
 Package: CCCA
 Title: Cross Condition ChIP Analyisis
-Version: 0.1.0
+Version: 0.98.0
 Author: Alexander Griffith [aut, cre],
-Maintainer: Alexander Griffith <grifita@gmail.com>
+Maintainer: Alexander Griffith <grifitaj@gmail.com>
 Description: Cross Condition ChIP Analysis (CCCA) combines ChIP seq data
     between species, and applies machine learning algorithms to elucidate underlying
     similarities between data sets.
-Depends:
-    R (>= 3.0.0)
-Imports:
-    stats,
-    utils,
-    abind,
-    functional,
-    grid,
-    httr,
-    ggplot2,
-    parallel,
-    Biostrings,
-    data.table,
-    BSgenome.Hsapiens.UCSC.hg19
+Depends: R (>= 3.3)
+Imports: graphics, stats, utils, abind, functional, ggplot2,
+         Biostrings, stats, parallel, parallel
 License: GPL
 LazyData: true
 RoxygenNote: 5.0.1
+NeedsCompilation: yes
+Suggests: knitr,
+          rmarkdown 
+VignetteBuilder: knitr
+biocViews: Annotation, Software, ChIPSeq, Bayesian, Sequencing

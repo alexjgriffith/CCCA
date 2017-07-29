@@ -1,6 +1,7 @@
 #' Read Peaks BED format
 #'
-#' Read in peaks that MACs has output in its bed format. Works with MACS 2.1 and 1.3.1.
+#' Read in peaks that MACs has output in its bed format. Works with MACS
+#' 2.1 and 1.3.1.
 #' Cannot filter peaks based on macs score.
 #' @param file The MACS xls output to be imported
 #' @param name A string as a moniker for this data set

@@ -15,9 +15,11 @@ contribution(ccca, i, swapFun = function(string) string, swapColour = NULL,
 
 \item{i}{the PC to plot along}
 
-\item{swapFun}{A function mapping the categoies of prc to another set of categories}
+\item{swapFun}{A function mapping the categoies of prc to another
+set of categories}
 
-\item{swapColour}{A function that maps the results of swapFun to specifc colours}
+\item{swapColour}{A function that maps the results of swapFun to
+specifc colours}
 
 \item{...}{additional arguments}
 }
@@ -25,7 +27,8 @@ contribution(ccca, i, swapFun = function(string) string, swapColour = NULL,
 A ggplot2 object
 }
 \description{
-Generates the contribution histogram of the prc along a specified Principle Compoenent
+Generates the contribution histogram of the prc along a specified
+Principle Compoenent
 }
 \examples{
 swapFun<-makeSwapFun("s1 sample1 s2 sample2 s3 sample3")

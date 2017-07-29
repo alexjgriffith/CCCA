@@ -1,6 +1,7 @@
 #' Read Peaks XLS format
 #'
-#' Read in peaks that MACs has output in its XLS format. Works with MACS 2.1 and 1.3.1
+#' Read in peaks that MACs has output in its XLS format. Works with MACS
+#' 2.1 and 1.3.1
 #' @param file The MACS xls output to be imported
 #' @param name A string as a moniker for this data set
 #' @param pvalue log10 pvalue used as a cut off, default 0
