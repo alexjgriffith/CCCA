@@ -25,4 +25,3 @@ Read in peaks that MACs has output in its XLS format. Works with MACS
 filename<-system.file("extdata","sample1.xls", package = "CCCA")
 readPeaksXLS(filename)
 }
-

@@ -25,4 +25,3 @@ afsfiles<-system.file("extdata", "sample.afs", package = "CCCA")
 udmfiles<-system.file("extdata", "sample.udm", package = "CCCA")
 ccca<-loadCCCA(afsfiles,udmfiles,c("s1","s2","s3"))
 }
-

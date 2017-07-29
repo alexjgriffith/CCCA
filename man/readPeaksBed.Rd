@@ -24,4 +24,3 @@ Cannot filter peaks based on macs score.
 filename<-system.file("extdata","raw_sample1.bed", package = "CCCA")
 readPeaksBed(filename)
 }
-

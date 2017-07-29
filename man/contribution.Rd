@@ -27,12 +27,10 @@ specifc colours}
 A ggplot2 object
 }
 \description{
-Generates the contribution histogram of the prc along a specified
-Principle Compoenent
+Generates the contribution histogram of the Principal Component
 }
 \examples{
 swapFun<-makeSwapFun("s1 sample1 s2 sample2 s3 sample3")
 swapColour<-makeSwapFun("sample1 red sample2 blue sample3 orange")
 contribution(CCCA_prc,1,swapFun,swapColour,n=1,steps=10)
 }
-

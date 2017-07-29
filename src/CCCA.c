@@ -112,7 +112,19 @@ void read_bed(char ** filename,char ** chrom,int *start, int *end)
   fclose(f);
 }
 
-void R_init_myLib(DllInfo *info)
+void file_length(char ** filename,int * i)
 {
-R_registerRoutines(info,cMethods,NULL,NULL,NULL);
+  char  buffer[1024];
+  FILE  * f = fopen(*filename,"r");
+  while(fgets(buffer,1024, f))
+    {      
+      *i=*i+1;
+    }
+}
+
+void R_init_ccca(DllInfo *info)
+{
+  R_registerRoutines(info,cMethods,NULL,NULL,NULL);
+  R_useDynamicSymbols(info, FALSE);
+  R_forceSymbols(info, TRUE);
 }

@@ -21,4 +21,3 @@ Read an AFS file
 filename<-system.file("extdata","sample.afs", package = "CCCA")
 sampleAFS<-readAFS(filename)
 }
-

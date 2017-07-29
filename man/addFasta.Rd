@@ -35,4 +35,3 @@ genome=BSgenome.Hsapiens.UCSC.hg19
 addFasta(CCCA_prc,genome)
 }
 }
-

@@ -19,4 +19,3 @@ Read the UDM from its tab format
 filename<-system.file("extdata","sample.udm", package = "CCCA")
 sampleUDM<-readUDM(filename)
 }
-

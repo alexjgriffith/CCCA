@@ -15,4 +15,3 @@ A CCCA Object for samples 1 - 3
 Sample CCCA object generated from samples 1-3
 }
 \keyword{datasets}
-

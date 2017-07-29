@@ -24,4 +24,3 @@ filename<-system.file("extdata","sample.afs", package = "CCCA")
 sampleAFS<-readAFS(filename)
 writeAFS(sampleAFS,"sample.afs")
 }
-

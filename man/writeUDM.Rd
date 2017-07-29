@@ -22,4 +22,3 @@ filename<-system.file("extdata","sample.udm", package = "CCCA")
 sampleUDM<-readUDM(filename)
 writeUDM(sampleUDM,"sample.udm")
 }
-

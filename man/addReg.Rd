@@ -28,4 +28,3 @@ identify seperate contexts.
 \examples{
 ## See ?makeCCCA
 }
-

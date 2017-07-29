@@ -43,4 +43,3 @@ sampleAFS<-readAFS(filename)
 ## Generate UDM
 udm<-makeUDM(sampleAFS,dataSets)
 }
-

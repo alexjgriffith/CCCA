@@ -11,7 +11,7 @@ Imports: graphics, stats, utils, abind, functional, ggplot2,
          Biostrings, parallel
 License: GPL
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: yes
 Suggests: knitr,
           rmarkdown 

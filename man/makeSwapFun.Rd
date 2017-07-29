@@ -19,4 +19,3 @@ broken allong spaces.
 \examples{
 makeSwapFun("a b c d")("b")=="a"
 }
-

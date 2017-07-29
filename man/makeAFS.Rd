@@ -37,4 +37,3 @@ peakList<-sapply(c("sample1.xls","sample2.xls","sample3.xls"),
 categories<-c("s1","s2","s3")
 sampleafs<-makeAFS(peakList,categories,pvalue=20)
 }
-

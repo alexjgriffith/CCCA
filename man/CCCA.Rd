@@ -11,4 +11,3 @@ Compare multiple ChIP data sets across experimental conditions
 \author{
 "Alexander Griffith <griffitaj@gmail.com>"
 }
-

@@ -40,4 +40,3 @@ sampleUDM<-makeUDM(sampleAFS,rawdata,n=0)
 ## sampleUDM<-makeUDM(sampleAFS,rawdata,n=1,clust=cl)
 ## stopCluster(cl)
 }
-

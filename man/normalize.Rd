@@ -28,4 +28,3 @@ b$eigenVector<-matrix(r,10)
 class(b)<-"PRC"
 normalize(b)
 }
-

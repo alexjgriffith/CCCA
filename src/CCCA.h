@@ -25,24 +25,23 @@ void file_length(char ** filename,int * i);
 
 void read_bed(char ** filename,char ** chrom,int *start, int *end);
 
-void unityOutput(int * intChr, int * intSummit, int * name, int * l1, int * l2, int * peaklength, int* peakwidth, int* retChr, int * retSummit, int * retMatrix);
+void unityOutput(int * intChr, int * intSummit, int * name, int * l1,
+		 int * l2, int * peaklength, int* peakwidth,
+		 int* retChr, int * retSummit, int * retMatrix);
 
-#ifndef CME_
+
 static R_NativePrimitiveArgType read_bed_t[]={STRSXP,STRSXP,INTSXP,INTSXP};
 static R_NativePrimitiveArgType file_length_t[]={STRSXP,INTSXP};
 static R_NativePrimitiveArgType pileup_t[]={STRSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
-P,INTSXP,INTSXP};
 static R_NativePrimitiveArgType unityOutput_t[]={INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP,INTSXP};
-};
+
 
 static R_CMethodDef cMethods[]={
-{"read_bed",(DL_FUNC) &read_bed,4,read_bed_t},
-{"file_length",(DL_FUNC) &file_length,2, file_length_t},
-{"pileup",(DL_FUNC) &pileup,6, pileup_t},
-{"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
-{NULL,NULL,0}
-  };
-#define CME_
-#endif
+  {"read_bed",(DL_FUNC) &read_bed,4,read_bed_t},
+  {"file_length",(DL_FUNC) &file_length,2, file_length_t},
+  {"pileup",(DL_FUNC) &pileup,6, pileup_t},
+  {"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
+  {NULL,NULL,0}
+};
 
-void R_init_myLib(DllInfo *info);
+void R_init_ccca(DllInfo *info);
