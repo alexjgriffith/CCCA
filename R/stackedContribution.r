@@ -183,7 +183,9 @@
         if(! is.null(overideColour)){
             print(levels(dt$cats))
             print(overideColour(levels(dt$cats)))
-            p<-p+scale_fill_manual(values=overideColour(levels(dt$cats)),name="Cell Conditions")
+            p<-p+scale_fill_manual(
+                     values=overideColour(levels(dt$cats)),
+                     name="Cell Conditions")
         }        
         else
             p<-p+scale_fill_discrete(name="Cell Conditions")

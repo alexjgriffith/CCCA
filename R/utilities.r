@@ -98,23 +98,6 @@
     lapply(seq(l),zip)
 }
 
-
-## #' hg19Sort
-## #'
-## #' Reorders the chro factor in data to that which is outputed by BWA.
-## #' This allows for the sorting step to be skipped, however if another chromasome is used then a new order must be defined.
-## #' 
-## #' @param data [chr,start,end]
-## #' @return The same members of data but sorted on chr and start
-## #' 
-## ._hg19Sort<-function(data){    
-##     neworder<-Filter(function(x) x %in% levels(data$chro), strsplit("chr1 chr2 chr3 chr4 chr5 chr6 chr7 chrX chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr20 chrY chr19 chr22 chr21 chrM" ," ")[[1]])
-##     data$chro<-factor(data$chro,neworder)
-##     data<-data[with(data,order(chro,start)),]
-##     data
-## }
-
-
 #' Quantile Normalization
 #'
 #' Applies quantile normalization to data in matrix form.
@@ -246,7 +229,8 @@
         postext<-df
     else        
         postext<-shiftCols(df$x,df$y,categories,sdf)
-    p<-ggplot(df,aes(x,y,col=Conditions,label=categories))+geom_point(size=10,shape=20)+theme_bw()+ylab(pcs[2])+xlab(pcs[1])
+    p<-ggplot(df,aes(x,y,col=Conditions,label=categories)) +
+        geom_point(size=10,shape=20)+theme_bw()+ylab(pcs[2])+xlab(pcs[1])
     if(! is.null(blank))
         p<-p+ theme(axis.line=element_blank(),axis.text.x=element_blank(),
                     axis.text.y=element_blank(),axis.ticks=element_blank(),

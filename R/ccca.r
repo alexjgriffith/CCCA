@@ -42,9 +42,6 @@
 #' }
 #' @export
 makeCCCA<-function(dataSets,peakLists,categories,pvalue){
-    ##dataSets<-c("raw_sample1.bed","raw_sample2.bed","raw_sample3.bed")
-    ##peakList<-c("sample1.xls","sample2.xls","sample3.xls")
-    ##categories<-c("s1","s2","s3")
     afs<-makeAFS(peakLists,categories,pvalue=pvalue)
     udm<-makeUDM(afs,dataSets)
     prc<-makePRC(udm)
