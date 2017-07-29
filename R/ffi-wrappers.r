@@ -57,8 +57,10 @@ NULL
         stop(paste0("Can't find file: ",file))
     }
     else{
-        fileLength<-as.integer(.C("file_length",file,
+        fileLength<-file.info(file)$size
+                    as.integer(.C("file_length",file,
                                   stringLength=integer(1))[[2]])
+
         results<-.C("read_bed",file,chro=character(fileLength),
                     start=integer(fileLength),end=integer(fileLength))
         data.frame(chro=results$chro,start=results$start,end=results$end)
