@@ -53,7 +53,10 @@ makePRC<-function(data,norm="qn"){
 
 #' @method plot PRC
 #' @export
-plot.PRC<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
+plot.PRC<-function(x,pcs,categories,
+                   swapFun=function(x){x},
+                   swapCat=function(x){"Context"},
+                   swapCol=function(x){"Blue"},...){
     matr<-._pca2Matr(x)
     df<-data.frame(x=matr[,pcs[1]],y=matr[,pcs[2]],
                    categories=swapFun(categories),
@@ -63,23 +66,8 @@ plot.PRC<-function(x,pcs,categories,swapFun,swapCat,swapCol,...){
                    swapCat,...)    
 }
 
-## #' @method print prc
-## #' @export
-## print.PRC<-function(x,...){
-## }
-
-## #' @method summary prc
-## #' @export
-## summary.prc<-function(x,...){    
-## }
-
 #' @method normalize PRC
 #' @export
 normalize.PRC<-function(x,...){
     apply(x$eigenVector,2,._normalize)
 }
-
-## #' @method clust prc
-## #' @export
-## clust.prc<-function(x,...){    
-## }

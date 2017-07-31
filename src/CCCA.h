@@ -41,7 +41,7 @@ static R_CMethodDef cMethods[]={
   {"file_length",(DL_FUNC) &file_length,2, file_length_t},
   {"pileup",(DL_FUNC) &pileup,6, pileup_t},
   {"unityOutput",(DL_FUNC) &unityOutput,10,unityOutput_t},
-  {NULL,NULL,0}
+  {NULL,NULL,0,NULL}
 };
 
 void R_init_ccca(DllInfo *info);

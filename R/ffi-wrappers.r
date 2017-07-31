@@ -5,7 +5,8 @@
 #' @author "Alexander Griffith <griffitaj@@gmail.com>"
 NULL
 
-#' @useDynLib CCCA, .registration =TRUE, .fixes = c_
+#' @useDynLib CCCA, "unityOutput" ,"file_length", "read_bed",
+#' "pileup" , .registration = TRUE
 #' @import parallel
 #' @import Biostrings
 #' @import functional
@@ -31,7 +32,7 @@ NULL
     retChr<-integer(lpeaks)
     retMatrix<-integer(lpeaks*nchr)
     retSummit<-integer(lpeaks)
-    data<-.C(c_unityOutput,as.integer(intChr),
+    data<-.C(unityOutput,as.integer(intChr),
              as.integer(intSummit),
              as.integer(intname),
              as.integer(peaks[,1]),
@@ -58,10 +59,10 @@ NULL
     }
     else{
         fileLength<-file.info(file)$size
-                    as.integer(.C(c_file_length,file,
+                    as.integer(.C(file_length,file,
                                   stringLength=integer(1))[[2]])
 
-        results<-.C(c_read_bed,file,chro=character(fileLength),
+        results<-.C(read_bed,file,chro=character(fileLength),
                     start=integer(fileLength),end=integer(fileLength))
         data.frame(chro=results$chro,start=results$start,end=results$end)
     }
@@ -87,7 +88,7 @@ NULL
     end<-as.integer(as.character(bed$end))
     peaknum<-as.integer(peakLength)
     score<-as.integer(rep(0,peakLength))
-    results<-.C(c_pileup,file,chrom=chroms,start=start,end=end,
+    results<-.C(pileup,file,chrom=chroms,start=start,end=end,
                 peaknum=peaknum,score=score)
     results$score
 }
