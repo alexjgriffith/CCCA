@@ -10,54 +10,54 @@ vignette: >
 ---
 
 ## Introduction
-ChIP-PCOMP 
+ChIP-PCOMP is a differential ChIP Seq analysis tool. It accepts aligned reads and peak locations for multiple data sets and uses Principal Component Analysis (PCA) to generate a new set of weights for each data set for each peak. The peaks can then be partitioned based on indivudial data sets, or be grouped with several data sets. The partitioned peaks can than be analyzed in a standard ChIP Seq functional analysis pipeline. For example, they can be used as inputs for David, GREAT or Homer.
 
 
 ## Generating the Alternate Feature Space
+The Alternate Feature Space (AFS) is the union of peaks from all data sets in the analysis. The `makeAFS` function takes two required variables, a list of peaks, and a list containing their biologically relevant name. By default `makeAFS` peaks accept the xls output of MACS, however they can also accept peaks in the standard 3 column BED format.
+
+``` r
+peakList <- c("cem_1.xls","cem_2.xls","ery_1.xls")
+categories <- c("cem1","cem2","erythroid")
+prc <- makeAFS(peakList,categories)
+```
 
 ## Generating the Unified Density Matrix
+The Unified Density Matrix (UDM) provides a density for each data set for each peak. The function `makeUDM` generates the UDM. It takes a list of files containing the raw reads for each data set, and the AFS generated from the peaks of those data sets. Currently the aligned read files must be in BED format, and the list must align with the list of peaks given to makeAFS.
 
-## Selecting Principle Components
-
-## Visualizations
-
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
-
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+``` r
+reads <- c("cem_1.bed","cem_2.bed","ery_1.bed")
+udm <- makeUDM(prc,categories)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## Finding the Principal Components of the UDM
+`makePRC` can be used to geneate the principal components (PCs) of the UDM. It takes the UDM and an optional normalization method as inputs. By default the UDM is quantile normalized.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+`makeCCCA` is an alternative approach. This function generates the AFS, UDM and the PRC, wraping them in a ccca s3 class. This should be the standard approach to using ChIP-PRCOMP.
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```r
+peakList <- c("cem_1.xls","cem_2.xls","ery_1.xls")
+categories <- c("cem1","cem2","erythroid")
+reads <- c("cem_1.bed","cem_2.bed","ery_1.bed")
+ccca<-makeCCCA(reads,peakList,categories)
 ```
 
-Also a quote using `>`:
+if you have previously generated the UDM and AFS and saved them to disk, the `loadCCCA` function can load those files and generate the the same ccca s3 class as `makeCCCA`. This is useful when you want to generate the AFS and UDM in parallel, or when there are many data sets.
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+## Selecting Principal Components
+PCA is applied to the UDM and the resulting principal components (PCs) are ranked based on their variance. Scaterplots of the PCs are used to identify which PCs distinguish between samples, or groups of samples. The `plot.ccca` function will plot a 2d scatterplot fo the provided ccca object and two PCs.
+
+``` r
+plot(ccca,"PC1","PC2")
+```
+
+If you would prefer to rename categories for the purpose of ploting them, a maping for swaping the categories can be generated.
+
+```r
+SF <- ._genSwapFun(c("cem1","cem2","erythroid"),c("cem","cem","erythroid"))
+plot(ccca,"PC1","PC2",swapCat = SF)
+```
+
+## Creating Partitions
+Once the
