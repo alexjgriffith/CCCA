@@ -86,10 +86,6 @@ plot.ccca<-function(x,PC1,PC2,
     ._plotPCMatAux(df,c(PC1,PC2),x$categories,NULL,swapCat,...)    
 }
 
-## #' @method print ccca
-## #' @export
-## print.ccca<-function(){
-## }
 
 #' @method addReg ccca
 #' @export

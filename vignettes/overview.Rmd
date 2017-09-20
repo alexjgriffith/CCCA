@@ -10,6 +10,8 @@ vignette: >
 ---
 
 ## Introduction
+ChIP-PCOMP 
+
 
 ## Generating the Alternate Feature Space
 

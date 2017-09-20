@@ -5,7 +5,7 @@
 #' @param x input string
 #' @return a function mapping the even values of x to the odd
 #' @examples
-#' makeSwapFun("a b c d")("b")=="a"
+#' makeSwapFun("a b c d")("a")=="b"
 #' @export
 makeSwapFun<-function(x){
     do.call(._genSwapFun,._splitZip(._createZip(strsplit(x," ")[[1]])))
